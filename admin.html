@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMPCS Dashboard - Admin Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/e2809407eb.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="chartjs-plugin-doughnutlabel.min.js"></script>
+</head>
+<body class="bg-light">
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="students.html">Students</a>
+    <a href="faculty.html">Faculty</a>
+    <a href="#">Admin</a>
+  </div>
+    <nav class="navbar maroon p-4">
+        <a href="/#"><img src="images/header.png" style="max-height: 30px;"></a>
+    </nav>
+    <div class="m-4">
+    <main class="p-5">
+        <section>
+            <a><i class="fas fa-bars" onclick="openNav()" style="cursor:pointer">&nbsp;</i>Analytics > <strong>ADMIN</strong></a>
+        </section>
+        <hr>
+        </div>
+    </main>
+    
+    <div class="card-columns m-4">
+    <div class="p-3 chart-card m-2 card">
+        <div class="card-header">Population of Faculty per Year by Rank</div>
+        <div class="card-body">
+            <form>
+                <div class="form-group">
+                    <label for="degree">Degree Program:</label>
+                    <select class="form-control" id="degree">
+                        <option value="program1">BSAM</option>
+                        <option value="program2">BSCS</option>
+                        <option value="program3">BSDS</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="year">Year:</label>
+                    <input type="text" class="form-control" id="year" placeholder="Enter year">
+                </div>
+                <div class="form-group">
+                    <label for="population">Population:</label>
+                    <input type="text" class="form-control" id="population" placeholder="Enter population number">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+      </div>
+      </div>
+
+</body>
+<script src="script.js"></script>
+<script src="students_script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</html>
