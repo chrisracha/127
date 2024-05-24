@@ -26,7 +26,7 @@ var ctx = document.getElementById('facultyNoYearlybyRank').getContext("2d");
 var myChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["2022", "2023", "2024", "2025"],
+    labels: ["22-23 1st Semester", "22-23 2nd Semester", "23-24 1st Semester", "23-24 2nd Semester"],
     datasets: [{
       label: 'Instructor',
       data: [12, 19, 3, 5],
@@ -114,7 +114,7 @@ var ctx = document.getElementById('facultyNoYearlybyEduc').getContext("2d");
 var myChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["2022", "2023", "2024", "2025"],
+    labels: ["22-23 1st Semester", "22-23 2nd Semester", "23-24 1st Semester", "23-24 2nd Semester"],
     datasets: [{
       label: 'PhD',
       data: [12, 19, 3, 5],
@@ -165,11 +165,11 @@ var myChart = new Chart(ctx, {
   }
 });
 
-var ctx = document.getElementById('numberOfPublications').getContext("2d");
+var ctx = document.getElementById('numberOfNewFaculty').getContext("2d");
 var myChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["2022", "2023", "2024", "2025"],
+    labels: ["22-23 1st Semester", "22-23 2nd Semester", "23-24 1st Semester", "23-24 2nd Semester"],
     datasets: [{
       label: 'Publications',
       data: [12, 19, 3, 5],
@@ -178,6 +178,29 @@ var myChart = new Chart(ctx, {
       ],
       borderColor: [
         '#8E1537'
+      ],
+      borderWidth: 1
+    }
+    ]    
+  },
+  options: {
+    responsive: true,
+  }
+});
+
+var ctx = document.getElementById('numberOfPublications').getContext("2d");
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ["22-23 First Semester", "22-23 Second Semester", "23-24 First Semester"],
+    datasets: [{
+      label: 'New Faculty',
+      data: [9, 7, 6],
+      backgroundColor: [
+        '#005740',
+      ],
+      borderColor: [
+        '#005740'
       ],
       borderWidth: 1
     }
