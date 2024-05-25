@@ -96,6 +96,7 @@
                 <canvas id="enrollmentData" class="w-100"></canvas>
               </div>
             </div>
+            <?php include 'getevent.php'; ?>
             <div class="p-3 chart-card m-2 card">
               <div class="card-header">Student Participation in Events</div>
               <div class="card-body">
@@ -107,19 +108,13 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Event 1</td>
-                      <td>10</td>
-                    </tr>
-                    <tr>
-                      <td>Event 2</td>
-                      <td>15</td>
-                    </tr>
-                    <tr>
-                      <td>Event 3</td>
-                      <td>8</td>
-                    </tr>
-                  </tbody>
+                    <?php foreach ($data['events'] as $event): ?>
+                      <tr>
+                        <td><?php echo $event['eventName']; ?></td>
+                        <td><?php echo $event['count']; ?></td>
+                      </tr>
+                    <?php endforeach; ?>
+            </tbody>
                 </table>
               </div>
             </div>
