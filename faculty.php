@@ -15,7 +15,7 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="students.php">Students</a>
     <a href="#">Faculty</a>
-    <a href="admin.html">Admin</a>
+    <a href="admin.php">Admin</a>
   </div>
     <nav class="navbar maroon p-4">
         <a href="/#"><img src="images/header.png" style="max-height: 30px;"></a>
