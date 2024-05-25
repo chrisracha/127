@@ -9,7 +9,6 @@
     <script src="https://kit.fontawesome.com/e2809407eb.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <script src="chartjs-plugin-doughnutlabel.min.js"></script>
 </head>
 <body class="bg-light">
   <div id="mySidenav" class="sidenav">
@@ -54,7 +53,7 @@
       <div class="p-3 chart-card m-2 card">
           <div class="card-header">Population of Faculty per Semester by Rank</div>
           <div class="card-body">
-            <canvas id="facultyNoYearlybyRank" class="w-100"></canvas>
+            <canvas id="facultySembyRank" class="w-100"></canvas>
           </div>
         </div>
           <div class="p-3 chart-card m-2 card">
@@ -66,7 +65,7 @@
         <div class="p-3 chart-card m-2 card">
           <div class="card-header">Population of Faculty per Semester by Educational Attainment</div>
           <div class="card-body">
-            <canvas id="facultyNoYearlybyEduc" class="w-100"></canvas>
+            <canvas id="facultyByEducAttainment" class="w-100"></canvas>
           </div>
         </div>
         <div class="p-3 chart-card m-2 card">
