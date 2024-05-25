@@ -171,7 +171,7 @@ var myChart = new Chart(ctx, {
   data: {
     labels: ["22-23 1st Semester", "22-23 2nd Semester", "23-24 1st Semester", "23-24 2nd Semester"],
     datasets: [{
-      label: 'Publications',
+      label: 'New Faculty',
       data: [12, 19, 3, 5],
       backgroundColor: [
         '#8E1537',
@@ -194,7 +194,7 @@ var myChart = new Chart(ctx, {
   data: {
     labels: ["22-23 First Semester", "22-23 Second Semester", "23-24 First Semester"],
     datasets: [{
-      label: 'New Faculty',
+      label: 'Publications',
       data: [9, 7, 6],
       backgroundColor: [
         '#005740',
