@@ -188,6 +188,29 @@ var myChart = new Chart(ctx, {
   }
 });
 
+var ctx = document.getElementById('numberOfTotalFaculty').getContext("2d");
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ["22-23 1st Semester", "22-23 2nd Semester", "23-24 1st Semester", "23-24 2nd Semester"],
+    datasets: [{
+      label: 'Total Faculty',
+      data: [34, 46, 23, 56],
+      backgroundColor: [
+        '#FFB81D',
+      ],
+      borderColor: [
+        '#FFB81D'
+      ],
+      borderWidth: 1
+    }
+    ]    
+  },
+  options: {
+    responsive: true,
+  }
+});
+
 var ctx = document.getElementById('numberOfPublications').getContext("2d");
 var myChart = new Chart(ctx, {
   type: 'line',
