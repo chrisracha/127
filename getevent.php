@@ -30,9 +30,6 @@ $conn->close();
 
 // Combining charts and events data into a single array
 $data = [
-    'events' => $events // Using correct variable name $events
+    'events' => $events
 ];
-
-// Encoding the combined data as JSON and outputting it
-echo json_encode($data);
 ?>
