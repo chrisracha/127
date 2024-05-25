@@ -28,7 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the statement
         if ($stmt->execute()) {
-            echo "Degree program added successfully.";
+            // Redirect to the main dashboard
+            header("Location: students.php");
+            exit();
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -48,7 +50,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the statement
         if ($stmt->execute()) {
-            echo "Degree program deleted successfully.";
+            // Redirect to the main dashboard
+            header("Location: students.php");
+            exit();
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -77,7 +81,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Execute the statement
         if ($stmt->execute()) {
-            echo "Research/publication added successfully.";
+            // Redirect to the main dashboard
+            header("Location: faculty.html");
+            exit();
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -98,13 +104,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Prepare SQL statement to update the publication
         $sql = "UPDATE publication SET title = ?, time_id = ?, count = ? WHERE publicationID = ?";
 
-        // Prepare and bind parameters
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssii", $researchName, $time_id, $participants, $publicationID);
-
-        // Execute the statement
+        /// Execute the statement
         if ($stmt->execute()) {
-            echo "Research/publication updated successfully.";
+            // Redirect to the main dashboard
+            header("Location: faculty.html");
+            exit();
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
