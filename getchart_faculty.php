@@ -103,7 +103,43 @@ $sql5 = "SELECT
 
 $charts['researchInvolvement'] = fetchQueryResults($conn, $sql5);
 
+// Execute SQL query to retrieve the population of faculty by rank per semester
+$sq6 = "SELECT 
+         time_period.SchoolYear,
+         time_period.semester,
+         rank_title.title AS Rank,
+         SUM(faculty.count) AS facultyCount
+      FROM 
+         faculty
+      JOIN 
+         rank_title ON faculty.rankID = rank_title.rankID
+      JOIN 
+         time_period ON faculty.timeID = time_period.timeID
+      GROUP BY 
+         time_period.SchoolYear, time_period.semester, rank_title.title
+      ORDER BY 
+         time_period.SchoolYear, time_period.semester, rank_title.title";
 
+$charts['facultySembyRank'] = fetchQueryResults($conn, $sq6);
+
+// Execute SQL query to retrieve the population of faculty by educational attainment
+$sql7 = "SELECT 
+         time_period.SchoolYear,
+         time_period.semester,
+         educ_attainment.attainment AS EducationalAttainment,
+         SUM(faculty.count) AS facultyCount
+      FROM 
+         faculty
+      JOIN 
+         educ_attainment ON faculty.educAttainmentID = educ_attainment.educAttainmentID
+      JOIN 
+         time_period ON faculty.timeID = time_period.timeID
+      GROUP BY 
+         time_period.SchoolYear, time_period.semester, educ_attainment.attainment
+      ORDER BY 
+         time_period.SchoolYear, time_period.semester, educ_attainment.attainment";
+
+$charts['facultyByEducAttainment'] = fetchQueryResults($conn, $sql7);
 echo json_encode($charts);
 $conn->close();
 ?>
