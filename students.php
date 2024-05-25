@@ -9,7 +9,6 @@
     <script src="https://kit.fontawesome.com/e2809407eb.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <script src="chartjs-plugin-doughnutlabel.min.js"></script>
 </head>
 <body class="bg-light">
   <div id="mySidenav" class="sidenav">
