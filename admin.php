@@ -16,8 +16,8 @@
 <body class="bg-light">
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="students.html">Students</a>
-        <a href="faculty.html">Faculty</a>
+        <a href="students.php">Students</a>
+        <a href="faculty.php">Faculty</a>
         <a href="#">Admin</a>
     </div>
     <nav class="navbar maroon p-4">
@@ -250,35 +250,35 @@
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Research/Publications</div>
             <div class="card-body">
-                <form action="admin_op.php" method="post">
+                <form action="your_php_file.php" method="post">
                     <div class="form-group">
-                        <label for="population">Research NAME:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter Research Name">
+                        <label for="researchName">Research NAME:</label>
+                        <input type="text" class="form-control" id="researchName" name="researchName" placeholder="Enter Research Name">
                     </div>
                     <div class="form-group">
                         <label for="year">Year:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
+                        <select class="form-control" id="year" name="year">
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="degree">Semester:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
+                        <label for="semester">Semester:</label>
+                        <select class="form-control" id="semester" name="semester">
+                            <option value="1st Semester">1st Semester</option>
+                            <option value="2nd Semester">2nd Semester</option>
+                            <option value="Both Semesters">Both Semesters</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="population">PARTICIPANTS:</label>
-                        <input type="number" class="form-control" id="population"
-                            placeholder="Enter Number of Participants">
+                        <label for="participants">PARTICIPANTS:</label>
+                        <input type="number" class="form-control" id="participants" name="participants" placeholder="Enter Number of Participants">
                     </div>
                     <button type="submit" class="btn btn-primary green border-0" name="add_publication">Add</button>
                     <button type="submit" class="btn btn-primary green border-0" name="update_publication">Update</button>
+                </form>
             </div>
-        </div>
+        </div>        
     </div>
     <footer class="maroon p-4">
         <p class="text-center text-white" style="font-family: 'Avenir Black';">© 2024 DMPCS</p>
