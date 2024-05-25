@@ -43,10 +43,11 @@ $sql2 = "SELECT time_period.SchoolYear, SUM(college_degree.count) AS totalEnroll
 
 $charts['enrolleesYearChart'] = fetchQueryResults($conn, $sql2);
 
-// Execute SQL query to get data for the total no. of students per year level
-$sql3 = "SELECT college_degree.yearLevel, SUM(college_degree.count) AS totalStudents
+// Execute SQL query to get data for the total no. of students per year level per degree program
+$sql3 = "SELECT deg_prog.name AS degprogName, college_degree.yearLevel, SUM(college_degree.count) AS totalStudents
          FROM college_degree
-         GROUP BY college_degree.yearLevel";
+         JOIN deg_prog ON college_degree.degprogID = deg_prog.degprogID
+         GROUP BY deg_prog.name, college_degree.yearLevel";
 
 $charts['studentsPerYear'] = fetchQueryResults($conn, $sql3);
 
@@ -104,45 +105,26 @@ $sql6 = "SELECT
 $charts['CSperDegProg'] = fetchQueryResults($conn, $sql6);
 
 // Execute SQL query to get data for the total number of students who receive Latin honors
-$sql7 = "SELECT award_type.awardType, SUM(student_awards.count) AS totalRecipients
+$sql7 = "SELECT time_period.SchoolYear, award_type.awardType, SUM(student_awards.count) AS totalRecipients
          FROM student_awards
          JOIN award_type ON student_awards.awardTypeID = award_type.awardTypeID
+         JOIN college_degree ON student_awards.degID = college_degree.degID
+         JOIN time_period ON college_degree.timeID = time_period.timeID
          WHERE award_type.awardTypeID IN ('SCL', 'MCL', 'CL')
-         GROUP BY student_awards.awardTypeID";
+         GROUP BY time_period.SchoolYear, award_type.awardType";
 
 $charts['PopulationLaudes'] = fetchQueryResults($conn, $sql7);
 
-// Execute SQL query to get event data
-$sql9 = "SELECT eventName, count FROM event";
-$result9 = $conn->query($sql9);
 
-if ($result9 === FALSE) {
-    die("Query failed: " . $conn->error);
-}
+// Execute SQL query to get data for the total number of enrollees per degree program per semester
+$sql8 = "SELECT dp.name as DegreeProgram, tp.SchoolYear, tp.semester, SUM(cd.count) as totalEnrollees
+         FROM college_degree cd
+         JOIN deg_prog dp ON cd.degprogID = dp.degprogID
+         JOIN time_period tp ON cd.timeID = tp.timeID
+         GROUP BY dp.name, tp.SchoolYear, tp.semester
+         ORDER BY tp.SchoolYear, tp.semester, dp.name";
 
-// Define the labels for the table headers
-$labels = ["Event Name", "Participation Count"];
-
-// Display the table headers
-echo '<table class="table"><tr>';
-foreach ($labels as $label) {
-    echo '<th>' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</th>';
-}
-echo '</tr>';
-
-// Display the table rows
-if ($result9->num_rows > 0) {
-    while ($row = $result9->fetch_assoc()) {
-        echo '<tr>';
-        echo '<td>' . htmlspecialchars($row["eventName"], ENT_QUOTES, 'UTF-8') . '</td>';
-        echo '<td>' . htmlspecialchars($row["count"], ENT_QUOTES, 'UTF-8') . '</td>';
-        echo '</tr>';
-    }
-} else {
-    echo '<tr><td colspan="2">No events found</td></tr>';
-}
-
-echo '</table>';
+$charts['enrollmentData'] = fetchQueryResults($conn, $sql8);
 
 $conn->close();
 
