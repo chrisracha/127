@@ -14,7 +14,7 @@
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#">Students</a>
-    <a href="faculty.html">Faculty</a>
+    <a href="faculty.php">Faculty</a>
     <a href="admin.html">Admin</a>
   </div>
     <nav class="navbar maroon p-4">
