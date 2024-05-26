@@ -276,6 +276,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary green border-0" name="add_publication">Add</button>
                     <button type="submit" class="btn btn-primary green border-0" name="update_publication">Update</button>
+                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_publication">Delete</button>
                 </form>
             </div>
         </div>        

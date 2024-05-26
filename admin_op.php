@@ -115,6 +115,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Close statement
         $stmt->close();
+    } elseif (isset($_POST["delete_publication"])) {
+        // Find publication based on name, year, and semester
+        $researchName = $_POST['researchName'];
+        $year = $_POST['year'];
+        $semester = $_POST['semester'];
+
+        $time_id = $year . " " . $semester;
+
+        $sql = "SELECT publicationID FROM publication WHERE title = ? AND time_id = ?";
+
+        // Prepare SQL statement to delete the publication
+        $sql = "DELETE FROM publication WHERE publicationID = ?";
+
+        // Prepare and bind parameters
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $publicationID);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Redirect to the main dashboard
+            header("Location: faculty.html");
+            exit();
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+
+        // Close statement
+        $stmt->close();
     }
 }
 
