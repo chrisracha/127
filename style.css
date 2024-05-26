@@ -40,6 +40,11 @@
     src: url("fonts/Inter-Black.woff2") format("woff2");
 }
 
+.indicator {
+    font-weight: bold;
+    font-family: 'Inter Bold', Arial Bold, sans-serif !important;
+}
+
 body {
     background-image: url('images/background.png');
     background-repeat: no-repeat;
