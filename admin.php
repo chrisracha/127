@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="chartjs-plugin-doughnutlabel.min.js"></script>
 </head>
-
 <body class="bg-light">
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -32,8 +31,38 @@
             <hr>
     </div>
     </main>
-
+    <h6 class="admin_header m-5">Admin > Time Data</h6>
     <div class="card-columns m-4">
+    <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Update Academic Year & Semester</div>
+            <div class="card-body">
+                <form action="admin_op.php" method="post">
+                    <div class="form-group">
+                        <label for="degreeCode">Academic Year (Format: 20XX-20XX):</label>
+                        <input type="text" class="form-control" id="acadYear" name="degreeCode"
+                            placeholder="20XX-20XX"></div>
+                    <div class="form-group">
+                        <label for="degreeCode">Semester:</label>
+                        <select class="form-control" id="degree">
+                            <option value="sem1">1st Semester</option>
+                            <option value="sem2">2nd Semester</option>
+                            <option value="sem3">Both Semesters</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary green border-0" name="add_acadYear">Add</button>
+                    <br />
+                    <br />
+                    <div class="form-group">
+                        <select class="form-control" id="degree">
+                            <option value="sem1">Current</option>
+                            <option value="sem2">2023-2024</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_acadYear">Delete</button>
+                </form>
+            </div>
+        </div>
+        
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Degree Program</div>
             <div class="card-body">
@@ -52,7 +81,10 @@
                 </form>
             </div>
         </div>
-
+        
+        </div>
+        <h6 class="admin_header m-5">Admin > Student Data</h6>
+        <div class="card-columns m-4">
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Degree Program Information</div>
             <div class="card-body">
@@ -85,6 +117,110 @@
                         <input type="text" class="form-control" id="population" placeholder="Enter population number">
                     </div>
                     <button type="submit" class="btn btn-primary green border-0">Update</button>
+                </form>
+            </div>
+        </div>
+        <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Update Achievements</div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group" id="degree">
+                        <label for="degree">Achievement:</label>
+                        <select class="form-control" id="degree">
+                            <option value="cs">College Scholar</option>
+                            <option value="us">University Scholar</option>
+                            <option value="cl">Cum Laude</option>
+                            <option value="ml">Magna Cum Laude</option>
+                            <option value="sl">Summa Cum Laude</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <select class="form-control" id="degree">
+                            <option value="sem1">Current</option>
+                            <option value="sem2">2023-2024</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="degree">Semester:</label>
+                        <select class="form-control" id="degree">
+                            <option value="sem1">1st Semester</option>
+                            <option value="sem2">2nd Semester</option>
+                            <option value="sem3">Both Semesters</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="population">Population:</label>
+                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
+                    </div>
+                    <button type="submit" class="btn btn-primary green border-0">Update</button>
+                </form>
+            </div>
+            </div>
+        <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Update Events</div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="population">EVENT NAME:</label>
+                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <select class="form-control" id="degree">
+                            <option value="sem1">Current</option>
+                            <option value="sem2">2023-2024</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="degree">Semester:</label>
+                        <select class="form-control" id="degree">
+                            <option value="sem1">1st Semester</option>
+                            <option value="sem2">2nd Semester</option>
+                            <option value="sem3">Both Semesters</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="population">PARTICIPANTS:</label>
+                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
+                    </div>
+                    <button type="submit" class="btn btn-primary green border-0">Update</button>
+                </form>
+            </div>
+        </div>
+        </div>
+        <h6 class="admin_header m-5">Admin > Faculty Data</h6>
+        <div class="card-columns m-4">
+        <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Update Research/Publications</div>
+            <div class="card-body">
+                <form action="your_php_file.php" method="post">
+                    <div class="form-group">
+                        <label for="researchName">Research Name:</label>
+                        <input type="text" class="form-control" id="researchName" name="researchName" placeholder="Enter Research Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <select class="form-control" id="year" name="year">
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="semester">Semester:</label>
+                        <select class="form-control" id="semester" name="semester">
+                            <option value="1st Semester">1st Semester</option>
+                            <option value="2nd Semester">2nd Semester</option>
+                            <option value="Both Semesters">Both Semesters</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="participants">PARTICIPANTS:</label>
+                        <input type="number" class="form-control" id="participants" name="participants" placeholder="Enter Number of Participants">
+                    </div>
+                    <button type="submit" class="btn btn-primary green border-0" name="add_publication">Add</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="update_publication">Update</button>
+                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_publication">Delete</button>
                 </form>
             </div>
         </div>
@@ -178,108 +314,8 @@
                     <button type="submit" class="btn btn-primary green border-0">Update</button>
                 </form>
             </div>
-        </div>
-        <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Update Achievements</div>
-            <div class="card-body">
-                <form>
-                    <div class="form-group" id="degree">
-                        <label for="degree">Achievement:</label>
-                        <select class="form-control" id="degree">
-                            <option value="cs">College Scholar</option>
-                            <option value="us">University Scholar</option>
-                            <option value="cl">Cum Laude</option>
-                            <option value="ml">Magna Cum Laude</option>
-                            <option value="sl">Summa Cum Laude</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="degree">Semester:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="population">Population:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
-                    </div>
-                    <button type="submit" class="btn btn-primary green border-0">Update</button>
-                </form>
-            </div>
-        </div>
-        <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Update Events</div>
-            <div class="card-body">
-                <form>
-                    <div class="form-group">
-                        <label for="population">EVENT NAME:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
-                    </div>
-                    <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="degree">Semester:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="population">PARTICIPANTS:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
-                    </div>
-                    <button type="submit" class="btn btn-primary green border-0">Update</button>
-                </form>
-            </div>
-        </div>
-        <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Update Research/Publications</div>
-            <div class="card-body">
-                <form action="your_php_file.php" method="post">
-                    <div class="form-group">
-                        <label for="researchName">Research NAME:</label>
-                        <input type="text" class="form-control" id="researchName" name="researchName" placeholder="Enter Research Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="year" name="year">
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="semester">Semester:</label>
-                        <select class="form-control" id="semester" name="semester">
-                            <option value="1st Semester">1st Semester</option>
-                            <option value="2nd Semester">2nd Semester</option>
-                            <option value="Both Semesters">Both Semesters</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="participants">PARTICIPANTS:</label>
-                        <input type="number" class="form-control" id="participants" name="participants" placeholder="Enter Number of Participants">
-                    </div>
-                    <button type="submit" class="btn btn-primary green border-0" name="add_publication">Add</button>
-                    <button type="submit" class="btn btn-primary green border-0" name="update_publication">Update</button>
-                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_publication">Delete</button>
-                </form>
-            </div>
         </div>        
+    </div>
     </div>
     <footer class="maroon p-4">
         <p class="text-center text-white" style="font-family: 'Avenir Black';">© 2024 DMPCS</p>

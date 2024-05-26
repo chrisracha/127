@@ -62,6 +62,12 @@ section a, section i {
 
 }
 
+.admin_header {
+    font-family: 'Inter Bold', Arial Bold, sans-serif !important;
+    color: #8E1537 !important;
+    text-transform: uppercase;
+}
+
 .maroon {
     background-color: #8E1537 !important;
 }
