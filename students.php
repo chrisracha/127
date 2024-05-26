@@ -64,24 +64,6 @@
             <div class="card-body">
               <canvas id="enrolleesCourseChart" class="w-100"></canvas>
             </div>
-        </div>
-          <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Population of Enrollees per Year</div>
-            <div class="card-body">
-              <canvas id="enrolleesYearChart" class="w-100"></canvas>
-            </div>
-          </div>
-          <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Students per Year Level</div>
-            <div class="card-body">
-              <canvas id="studentsPerYear" class="w-100"></canvas>
-            </div>
-          </div>
-          <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Population of Semestral Achievers per Semester</div>
-            <div class="card-body">
-              <canvas id="scholarsChart" class="w-100"></canvas>
-            </div>
           </div>
           <div class="p-3 chart-card m-2 card">
             <div class="card-header">Ratio of University Scholars between Degree Programs</div>
@@ -95,12 +77,30 @@
               <canvas id="CSperDegProg" class="w-100"></canvas>
             </div>
           </div>
+          <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Population of Semestral Achievers per Semester</div>
+            <div class="card-body">
+              <canvas id="scholarsChart" class="w-100"></canvas>
+            </div>
+          </div>
+          <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Population of Enrollees per Year</div>
+            <div class="card-body">
+              <canvas id="enrolleesYearChart" class="w-100"></canvas>
+            </div>
+          </div>
             <div class="p-3 chart-card m-2 card">
               <div class="card-header">Population of Graduates with Distinctions </div>
               <div class="card-body"> 
                 <canvas id="PopulationLaudes" class="w-100"></canvas>
               </div>
             </div>
+          <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Students per Year Level</div>
+            <div class="card-body">
+              <canvas id="studentsPerYear" class="w-100"></canvas>
+            </div>
+          </div>
             <div class="p-3 chart-card m-2 card">
               <div class="card-header">Enrollment Data</div>
               <div class="card-body">

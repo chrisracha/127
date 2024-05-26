@@ -60,7 +60,7 @@ function renderEnrolleesYearChart(chartData) {
       labels: labels,
       datasets: [
         {
-          label: "NUMBER OF ENROLLEES",
+          label: "Number of Enrollees",
           data: counts,
           backgroundColor: ["#8E1537"],
           borderColor: ["#8E1537"],
@@ -170,7 +170,7 @@ function renderScholarsChart(chartData) {
       labels: labels,
       datasets: [
         {
-          label: "NUMBER OF COLLEGE SCHOLARS",
+          label: "Number of College Scholars",
           data: collegeScholarsData,
           backgroundColor: "#8E1537",
           borderColor: "#8E1537",
@@ -178,7 +178,7 @@ function renderScholarsChart(chartData) {
           fill: false,
         },
         {
-          label: "NUMBER OF UNIVERSITY SCHOLARS",
+          label: "Number of University Scholars",
           data: universityScholarsData,
           backgroundColor: "#FFB81D",
           borderColor: "#FFB81D",
