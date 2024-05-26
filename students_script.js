@@ -116,9 +116,6 @@ function renderstudentsPerYear(chartData) {
 
 
 function renderScholarsChart(chartData) {
-  // Logging the chartData to debug
-  console.log("Chart Data:", chartData);
-
   // Extract unique labels (SchoolYear - semester) from the chartData
   var labels = [...new Set(chartData.map((item) => item.SchoolYear + " - " + item.semester))];
 
@@ -187,7 +184,6 @@ function renderScholarsChart(chartData) {
     },
   });
 }
-
 
 
 function renderUSperDegProg(chartData) {
@@ -267,11 +263,10 @@ function renderCSperDegProg(chartData) {
 }
 
 function renderPopulationLaudes(chartData) {
-  // Extracting data for labels (school year) and counts for each award type
-  var labels = chartData.map((item) => item.schoolYear);
+  var labels = chartData.map((item) => item.SchoolYear);
   var cumLaudeCounts = chartData.filter((item) => item.awardType === "Cum Laude").map((item) => item.totalRecipients);
-  var magnaCumLaudeCounts = chartData.filter((item) => item.awardType === "Magna Cum Laude").map((item) => item.totalRecipients);
-  var summaCumLaudeCounts = chartData.filter((item) => item.awardType === "Summa Cum Laude").map((item) => item.totalRecipients);
+  var magnaCumLaudeCounts = chartData.filter((item) => item.awardType === "Magna cum Laude").map((item) => item.totalRecipients);
+  var summaCumLaudeCounts = chartData.filter((item) => item.awardType === "Summa cum Laude").map((item) => item.totalRecipients);
 
   var ctx = document.getElementById("PopulationLaudes").getContext("2d");
   var myChart = new Chart(ctx, {
