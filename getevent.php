@@ -32,4 +32,3 @@ $conn->close();
 $data = [
     'events' => $events
 ];
-?>
