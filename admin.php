@@ -38,9 +38,9 @@
             <div class="card-body">
                 <form action="admin_op.php" method="post">
                     <div class="form-group">
-                        <label for="degreeCode">Academic Year (Format: 20XX-20XX):</label>
+                        <label for="degreeCode">Academic Year (Format: 23-24):</label>
                         <input type="text" class="form-control" id="acadYear" name="degreeCode"
-                            placeholder="20XX-20XX"></div>
+                            placeholder="XX-XX"></div>
                     <div class="form-group">
                         <label for="degreeCode">Semester:</label>
                         <select class="form-control" id="degree">
