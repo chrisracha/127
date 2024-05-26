@@ -53,8 +53,8 @@
             <option value="option1">1st Semester</option>
             <option value="option2">2nd Semester</option>
           </select>
-          <button class="btn btn-primary border-0 ml-2 maroon">Filter</button>
         </div>
+        <button class="btn btn-primary border-0 mt-2 ml-2 maroon">Filter</button>
     </main>
       <div class="card-columns m-4">
       <div class="p-3 chart-card m-2 card">

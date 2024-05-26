@@ -39,6 +39,11 @@ function renderRatioByRank(chartData){
     },
     options: {
         responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
     }
   });
 }
@@ -63,7 +68,12 @@ function renderRatioByEduc(chartData) {
         }]
     },
     options: {
-        responsive: true
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
     }
   });
 }
@@ -88,7 +98,12 @@ function renderNumberOfTotalFaculty(chartData) {
       }]
     },
     options: {
-      responsive: true
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
     }
   });
 }
@@ -112,7 +127,12 @@ function renderNumberOfPublications(chartData) {
       }]
     },
     options: {
-      responsive: true
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
     }
   });
 }
@@ -137,6 +157,11 @@ function renderResearchInvolvement(chartData) {
     },
     options: {
         responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
     }
   });
 }
@@ -204,7 +229,12 @@ function renderFacultySembyRank(chartData) {
           title: {
             display: true,
             text: ''
-          }
+          },
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'bottom'
         }
       }
     }
@@ -229,7 +259,7 @@ function renderFacultyByEducAttainment(chartData) {
         backgroundColor: customColors,
         borderColor: customColors,
         borderWidth: 1,
-        fill: false // Ensures line chart is not filled
+        fill: false
       };
     }
     var labelIndex = labels.indexOf(item.SchoolYear + " " + item.semester);
@@ -250,6 +280,11 @@ function renderFacultyByEducAttainment(chartData) {
     },
     options: {
       responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
     }
   });
 }

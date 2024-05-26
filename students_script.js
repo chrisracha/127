@@ -40,6 +40,11 @@ function renderEnrolleesCourseChart(chartData) {
     },
     options: {
       responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
     },
   });
 }
@@ -65,6 +70,11 @@ function renderEnrolleesYearChart(chartData) {
     },
     options: {
       responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
     },
   });
 }
@@ -93,6 +103,13 @@ function renderstudentsPerYear(chartData) {
         console.log(`Year: ${yearLevel}, Program: ${degprogName}, Students: ${item ? item.totalStudents : 0}`);
         return item ? item.totalStudents : 0;
       }),
+      options: {
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
     };
   });
 
@@ -110,6 +127,11 @@ function renderstudentsPerYear(chartData) {
     options: {
       barValueSpacing: 20,
       responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
     },
   });
 }
@@ -166,6 +188,11 @@ function renderScholarsChart(chartData) {
       ],
     },
     options: {
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      },
       responsive: true,
       scales: {
         x: {
@@ -220,6 +247,11 @@ function renderUSperDegProg(chartData) {
     },
     options: {
       responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
     },
   });
 }
@@ -258,6 +290,11 @@ function renderCSperDegProg(chartData) {
     options: {
       //cutoutPercentage: 40,
       responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
     },
   });
 }
@@ -301,6 +338,11 @@ function renderPopulationLaudes(chartData) {
       ]
     },
     options: {
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      },
       responsive: true,
       scales: {
         x: {
@@ -351,7 +393,12 @@ function renderenrollmentData(enrollmentData) {
     },
     options: {
       barValueSpacing: 20,
-      responsive: true
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      } 
     }
   });
 }
