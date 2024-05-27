@@ -1,3 +1,4 @@
+<?php include 'fetch.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,18 +45,23 @@
                     <div class="form-group">
                         <label for="semester">Semester:</label>
                         <select class="form-control" id="semester" name="semester">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
+                            <?php
+                                foreach ($semesters as $semester) {
+                                echo "<option value='$semester'>$semester</option>";
+                                }
+                            ?>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary green border-0" name="add_acadYear">Add</button>
                     <br /><br />
                     <div class="form-group">
-                        <select class="form-control" id="existingAcadYear" name="existingAcadYear">
-                            <option value="current">Current</option>
-                            <option value="2023-2024">2023-2024</option>
-                        </select>
+                    <select class="form-control" id="existingAcadYear" name="existingAcadYear">
+                        <?php
+                            foreach ($academic_years as $year) {
+                            echo "<option value='$year'>$year</option>";
+                            }
+                        ?>
+                    </select>       
                     </div>
                     <button type="submit" class="btn btn-primary green border-0" name="update_acadYear">Update</button>
                     <button type="submit" class="btn btn-primary maroon border-0" name="delete_acadYear">Delete</button>
@@ -88,26 +94,33 @@
             <div class="card-body">
                 <form action="admin_op.php" method="post">
                     <div class="form-group">
-                        <label for="degID">Degree Program:</label>
-                        <select class="form-control" id="degID" name="degID">
-                            <option value="BSAM">BSAM</option>
-                            <option value="BSCS">BSCS</option>
-                            <option value="BSDS">BSDS</option>
-                        </select>
+                    <label for="degprogID">Degree Program:</label>
+                    <select class="form-control" id="degprogID" name="degprogID">
+                        <?php
+                        foreach ($degree_programs as $degprogID => $name) {
+                            echo "<option value='$degprogID'>$name</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
-                        <label for="timeID">Year:</label>
-                        <select class="form-control" id="timeID" name="timeID">
-                            <option value="2023-2024">2023-2024</option>
-                            <option value="current">Current</option>
+                        <label for="SchoolYear">Year:</label>
+                        <select class="form-control" id="SchoolYear" name="SchoolYear">
+                            <?php
+                            foreach ($academic_years as $year) {
+                                echo "<option value='$year'>$year</option>";
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="semester">Semester:</label>
                         <select class="form-control" id="semester" name="semester">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
+                            <?php
+                            foreach ($semesters as $semester) {
+                                echo "<option value='$semester'>$semester</option>";
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="form-group">
@@ -124,30 +137,36 @@
             <div class="card-header">Update Achievements</div>
             <div class="card-body">
                 <form action="admin_op.php" method="post">
+                <div class="form-group">
+                    <label for="awardType">Achievement:</label>
+                    <select class="form-control" id="awardType" name="awardType">
+                        <?php
+                        foreach ($awardtypes as $awardType) {
+                            echo "<option value='$awardType'>$awardType</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+
                     <div class="form-group">
-                        <label for="awardTypeID">Achievement:</label>
-                        <select class="form-control" id="awardTypeID" name="awardTypeID">
-                            <option value="cs">College Scholar</option>
-                            <option value="us">University Scholar</option>
-                            <option value="cl">Cum Laude</option>
-                            <option value="ml">Magna Cum Laude</option>
-                            <option value="sl">Summa Cum Laude</option>
-                        </select>
+                    <label for="SchoolYear">Year:</label>
+                    <select class="form-control" id="SchoolYear" name="SchoolYear">
+                        <?php
+                        foreach ($academic_years as $year) {
+                            echo "<option value='$year'>$year</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
-                        <label for="timeID">Year:</label>
-                        <select class="form-control" id="timeID" name="timeID">
-                            <option value="2023-2024">2023-2024</option>
-                            <option value="current">Current</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="semester">Semester:</label>
-                        <select class="form-control" id="semester" name="semester">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
+                    <label for="semester">Semester:</label>
+                    <select class="form-control" id="semester" name="semester">
+                        <?php
+                        foreach ($semesters as $semester) {
+                            echo "<option value='$semester'>$semester</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
                         <label for="count">Population:</label>
@@ -168,19 +187,24 @@
                         <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter event">
                     </div>
                     <div class="form-group">
-                        <label for="timeID">Year:</label>
-                        <select class="form-control" id="timeID" name="timeID">
-                            <option value="2023-2024">2023-2024</option>
-                            <option value="current">Current</option>
-                        </select>
+                    <label for="SchoolYear">Year:</label>
+                    <select class="form-control" id="SchoolYear" name="SchoolYear">
+                        <?php
+                        foreach ($academic_years as $year) {
+                            echo "<option value='$year'>$year</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
-                        <label for="semester">Semester:</label>
-                        <select class="form-control" id="semester" name="semester">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
+                    <label for="semester">Semester:</label>
+                    <select class="form-control" id="semester" name="semester">
+                        <?php
+                        foreach ($semesters as $semester) {
+                            echo "<option value='$semester'>$semester</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
                         <label for="count">Population:</label>
@@ -205,11 +229,24 @@
                         <input type="text" class="form-control" id="title" name="title" placeholder="Enter Research Name">
                     </div>
                     <div class="form-group">
-                        <label for="timeID">Year-Semester:</label>
-                        <select class="form-control" id="timeID" name="timeID">
-                            <option value="2023-1">2023-1st Semester</option>
-                            <option value="2023-2">2023-2nd Semester</option>
-                        </select>
+                    <label for="SchoolYear">Year:</label>
+                    <select class="form-control" id="SchoolYear" name="SchoolYear">
+                        <?php
+                        foreach ($academic_years as $year) {
+                            echo "<option value='$year'>$year</option>";
+                        }
+                        ?>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                    <label for="semester">Semester:</label>
+                    <select class="form-control" id="semester" name="semester">
+                        <?php
+                        foreach ($semesters as $semester) {
+                            echo "<option value='$semester'>$semester</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
                         <label for="count">PARTICIPANTS:</label>
@@ -253,11 +290,24 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="timeID">Year-Semester:</label>
-                        <select class="form-control" id="timeID" name="timeID">
-                            <option value="2023-1">2023-1st Semester</option>
-                            <option value="2023-2">2023-2nd Semester</option>
-                        </select>
+                    <label for="SchoolYear">Year:</label>
+                    <select class="form-control" id="SchoolYear" name="SchoolYear">
+                        <?php
+                        foreach ($academic_years as $year) {
+                            echo "<option value='$year'>$year</option>";
+                        }
+                        ?>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                    <label for="semester">Semester:</label>
+                    <select class="form-control" id="semester" name="semester">
+                        <?php
+                        foreach ($semesters as $semester) {
+                            echo "<option value='$semester'>$semester</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
                         <label for="count">Population:</label>
@@ -284,10 +334,18 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="timeID">Year-Semester:</label>
+                        <label for="timeID">Year:</label>
                         <select class="form-control" id="timeID" name="timeID">
-                            <option value="2023-1">2023-1st Semester</option>
-                            <option value="2023-2">2023-2nd Semester</option>
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="current">Current</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="semester">Semester:</label>
+                        <select class="form-control" id="semester" name="semester">
+                            <option value="sem1">1st Semester</option>
+                            <option value="sem2">2nd Semester</option>
+                            <option value="sem3">Both Semesters</option>
                         </select>
                     </div>
                     <div class="form-group">
