@@ -13,15 +13,15 @@ if ($conn->connect_error) {
 }
 
 // Execute SQL query to get event data
-$sql9 = "SELECT eventName, count FROM event";
-$result9 = $conn->query($sql9);
+$sql10 = "SELECT eventName, count FROM event";
+$result10 = $conn->query($sql10);
 
-if ($result9 === FALSE) {
+if ($result10 === FALSE) {
     die("Query failed: " . $conn->error);
 }
 
 $events = [];
-while ($row = $result9->fetch_assoc()) {
+while ($row = $result10->fetch_assoc()) {
     $events[] = $row;
 }
 

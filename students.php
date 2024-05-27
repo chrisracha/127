@@ -26,13 +26,12 @@
             <a><i class="fas fa-bars" onclick="openNav()" style="cursor:pointer">&nbsp;</i>Analytics > <strong>Students</strong></a>
         </section>
         <hr>
-        <? include 'getyears.php'; ?>
-        <? print_r($years); ?>
+        <?php include 'getyears.php'; ?>
         <div class="d-flex w-100 ml-4 form-inline align-items-center">
             <label class="indicator mr-2">From:</label>
-            <label for="year">Year</label>
-            <select id="year" class="ml-2">
-              <?php foreach ($yrdata['years'] as $year): ?>
+            <label for="fromYear">Year</label>
+            <select id="fromYear" class="ml-2">
+              <?php foreach ($data['years'] as $year): ?>
               <option value="<?php echo 'from',$year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
               <?php endforeach; ?>
             </select>
@@ -44,10 +43,10 @@
         </div>
         <div class="d-flex w-100 ml-4 form-inline align-items-center">
           <label class="indicator mr-2">To:</label>
-          <label for="year">Year</label>
-          <select id="year" class="ml-2">
-            <?php foreach ($yrdata['years'] as $year): ?>
-              <option value="<?php echo $year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
+          <label for="toYear">Year</label>
+          <select id="toYear" class="ml-2">
+            <?php foreach ($data['years'] as $year): ?>
+              <option value="<?php echo 'to',$year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
             <?php endforeach; ?>
           </select>
           <label for="semester">Semester</label>
