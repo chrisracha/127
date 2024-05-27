@@ -33,50 +33,48 @@
     </main>
     <h6 class="admin_header m-5">Admin > Time Data</h6>
     <div class="card-columns m-4">
-    <div class="p-3 chart-card m-2 card">
+        <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Academic Year & Semester</div>
             <div class="card-body">
                 <form action="admin_op.php" method="post">
                     <div class="form-group">
-                        <label for="degreeCode">Academic Year (Format: 23-24):</label>
-                        <input type="text" class="form-control" id="acadYear" name="degreeCode"
-                            placeholder="XX-XX"></div>
+                        <label for="SchoolYear">Academic Year (Format: 23-24):</label>
+                        <input type="text" class="form-control" id="SchoolYear" name="SchoolYear" placeholder="XX-XX">
+                    </div>
                     <div class="form-group">
-                        <label for="degreeCode">Semester:</label>
-                        <select class="form-control" id="degree">
+                        <label for="semester">Semester:</label>
+                        <select class="form-control" id="semester" name="semester">
                             <option value="sem1">1st Semester</option>
                             <option value="sem2">2nd Semester</option>
                             <option value="sem3">Both Semesters</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary green border-0" name="add_acadYear">Add</button>
-                    <br />
-                    <br />
+                    <br /><br />
                     <div class="form-group">
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
+                        <select class="form-control" id="existingAcadYear" name="existingAcadYear">
+                            <option value="current">Current</option>
+                            <option value="2023-2024">2023-2024</option>
                         </select>
                     </div>
+                    <button type="submit" class="btn btn-primary green border-0" name="update_acadYear">Update</button>
                     <button type="submit" class="btn btn-primary maroon border-0" name="delete_acadYear">Delete</button>
                 </form>
             </div>
         </div>
-        
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Degree Program</div>
             <div class="card-body">
                 <form action="admin_op.php" method="post">
                     <div class="form-group">
-                        <label for="degreeCode">Degree Program Code:</label>
-                        <input type="text" class="form-control" id="degreeCode" name="degreeCode"
-                            placeholder="Enter degree program code">
+                        <label for="degprogID">Degree Program Code:</label>
+                        <input type="text" class="form-control" id="degprogID" name="degprogID" placeholder="Enter degree program code">
                         <br />
-                        <label for="degreeName">Degree Program Name:</label>
-                        <input type="text" class="form-control" id="degreeName" name="degreeName"
-                            placeholder="Enter degree program name">
+                        <label for="name">Degree Program Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter degree program name">
                     </div>
                     <button type="submit" class="btn btn-primary green border-0" name="add_degree">Add</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="update_degree">Update</button>
                     <button type="submit" class="btn btn-primary maroon border-0" name="delete_degree">Delete</button>
                 </form>
             </div>
@@ -84,49 +82,51 @@
         
         </div>
         <h6 class="admin_header m-5">Admin > Student Data</h6>
-        <div class="card-columns m-4">
+    <div class="card-columns m-4">
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Degree Program Information</div>
             <div class="card-body">
-                <form>
+                <form action="admin_op.php" method="post">
                     <div class="form-group">
-                        <label for="degree">Degree Program:</label>
-                        <select class="form-control" id="degree">
-                            <option value="program1">BSAM</option>
-                            <option value="program2">BSCS</option>
-                            <option value="program3">BSDS</option>
+                        <label for="degID">Degree Program:</label>
+                        <select class="form-control" id="degID" name="degID">
+                            <option value="BSAM">BSAM</option>
+                            <option value="BSCS">BSCS</option>
+                            <option value="BSDS">BSDS</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
+                        <label for="timeID">Year:</label>
+                        <select class="form-control" id="timeID" name="timeID">
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="current">Current</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="degree">Semester:</label>
-                        <select class="form-control" id="degree">
+                        <label for="semester">Semester:</label>
+                        <select class="form-control" id="semester" name="semester">
                             <option value="sem1">1st Semester</option>
                             <option value="sem2">2nd Semester</option>
                             <option value="sem3">Both Semesters</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="population">Population:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
+                        <label for="count">Population:</label>
+                        <input type="text" class="form-control" id="count" name="count" placeholder="Enter population number">
                     </div>
-                    <button type="submit" class="btn btn-primary green border-0">Update</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="add_student_data">Add</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="update_student_data">Update</button>
+                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_student_data">Delete</button>
                 </form>
             </div>
         </div>
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Achievements</div>
             <div class="card-body">
-                <form>
-                    <div class="form-group" id="degree">
-                        <label for="degree">Achievement:</label>
-                        <select class="form-control" id="degree">
+                <form action="admin_op.php" method="post">
+                    <div class="form-group">
+                        <label for="awardTypeID">Achievement:</label>
+                        <select class="form-control" id="awardTypeID" name="awardTypeID">
                             <option value="cs">College Scholar</option>
                             <option value="us">University Scholar</option>
                             <option value="cl">Cum Laude</option>
@@ -135,88 +135,85 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="degree">Semester:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="population">Population:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
-                    </div>
-                    <button type="submit" class="btn btn-primary green border-0">Update</button>
-                </form>
-            </div>
-            </div>
-        <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Update Events</div>
-            <div class="card-body">
-                <form>
-                    <div class="form-group">
-                        <label for="population">EVENT NAME:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
-                    </div>
-                    <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="degree">Semester:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="population">PARTICIPANTS:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
-                    </div>
-                    <button type="submit" class="btn btn-primary green border-0">Update</button>
-                </form>
-            </div>
-        </div>
-        </div>
-        <h6 class="admin_header m-5">Admin > Faculty Data</h6>
-        <div class="card-columns m-4">
-        <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Update Research/Publications</div>
-            <div class="card-body">
-                <form action="your_php_file.php" method="post">
-                    <div class="form-group">
-                        <label for="researchName">Research Name:</label>
-                        <input type="text" class="form-control" id="researchName" name="researchName" placeholder="Enter Research Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="year" name="year">
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
+                        <label for="timeID">Year:</label>
+                        <select class="form-control" id="timeID" name="timeID">
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="current">Current</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="semester">Semester:</label>
                         <select class="form-control" id="semester" name="semester">
-                            <option value="1st Semester">1st Semester</option>
-                            <option value="2nd Semester">2nd Semester</option>
-                            <option value="Both Semesters">Both Semesters</option>
+                            <option value="sem1">1st Semester</option>
+                            <option value="sem2">2nd Semester</option>
+                            <option value="sem3">Both Semesters</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="participants">PARTICIPANTS:</label>
-                        <input type="number" class="form-control" id="participants" name="participants" placeholder="Enter Number of Participants">
+                        <label for="count">Population:</label>
+                        <input type="text" class="form-control" id="count" name="count" placeholder="Enter population number">
+                    </div>
+                    <button type="submit" class="btn btn-primary green border-0" name="add_achievement">Add</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="update_achievement">Update</button>
+                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_achievement">Delete</button>
+                </form>
+            </div>
+        </div>
+        <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Update Events</div>
+            <div class="card-body">
+                <form action="admin_op.php" method="post">
+                    <div class="form-group">
+                        <label for="eventName">Event:</label>
+                        <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Enter event">
+                    </div>
+                    <div class="form-group">
+                        <label for="timeID">Year:</label>
+                        <select class="form-control" id="timeID" name="timeID">
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="current">Current</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="semester">Semester:</label>
+                        <select class="form-control" id="semester" name="semester">
+                            <option value="sem1">1st Semester</option>
+                            <option value="sem2">2nd Semester</option>
+                            <option value="sem3">Both Semesters</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="count">Population:</label>
+                        <input type="text" class="form-control" id="count" name="count" placeholder="Enter population number">
+                    </div>
+                    <button type="submit" class="btn btn-primary green border-0" name="add_event">Add</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="update_event">Update</button>
+                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_event">Delete</button>
+                </form>
+            </div>
+        </div>
+
+        </div>
+        <h6 class="admin_header m-5">Admin > Faculty Data</h6>
+    <div class="card-columns m-4">
+        <div class="p-3 chart-card m-2 card">
+            <div class="card-header">Update Research/Publications</div>
+            <div class="card-body">
+                <form action="admin_op.php" method="post">
+                    <div class="form-group">
+                        <label for="title">Research Name:</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Enter Research Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="timeID">Year-Semester:</label>
+                        <select class="form-control" id="timeID" name="timeID">
+                            <option value="2023-1">2023-1st Semester</option>
+                            <option value="2023-2">2023-2nd Semester</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="count">PARTICIPANTS:</label>
+                        <input type="number" class="form-control" id="count" name="count" placeholder="Enter Number of Participants">
                     </div>
                     <button type="submit" class="btn btn-primary green border-0" name="add_publication">Add</button>
                     <button type="submit" class="btn btn-primary green border-0" name="update_publication">Update</button>
@@ -227,10 +224,10 @@
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Faculty Information by Rank</div>
             <div class="card-body">
-                <form>
-                    <div class="form-group" id="degree">
-                        <label for="degree">RANK:</label>
-                        <select class="form-control" id="degree">
+                <form action="admin_op.php" method="post">
+                    <div class="form-group">
+                        <label for="rankID">Rank:</label>
+                        <select class="form-control" id="rankID" name="rankID">
                             <option value="prof1">Professor 1</option>
                             <option value="prof2">Professor 2</option>
                             <option value="prof3">Professor 3</option>
@@ -256,35 +253,29 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
+                        <label for="timeID">Year-Semester:</label>
+                        <select class="form-control" id="timeID" name="timeID">
+                            <option value="2023-1">2023-1st Semester</option>
+                            <option value="2023-2">2023-2nd Semester</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="degree">Semester:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
+                        <label for="count">Population:</label>
+                        <input type="number" class="form-control" id="count" name="count" placeholder="Enter Population Number">
                     </div>
-                    <div class="form-group">
-                        <label for="population">Population:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
-                    </div>
-                    <button type="submit" class="btn btn-primary green border-0">Update</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="add_faculty_rank">Add</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="update_faculty_rank">Update</button>
+                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_faculty_rank">Delete</button>
                 </form>
             </div>
         </div>
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Faculty Information by Educational Attainment</div>
             <div class="card-body">
-                <form>
-                    <div class="form-group" id="degree">
-                        <label for="degree">Educ. Attainment:</label>
-                        <select class="form-control" id="degree">
+                <form action="admin_op.php" method="post">
+                    <div class="form-group">
+                        <label for="educAttainmentID">Educational Attainment:</label>
+                        <select class="form-control" id="educAttainmentID" name="educAttainmentID">
                             <option value="phd">Ph.D.</option>
                             <option value="msc">M.Sc.</option>
                             <option value="mm">M.M.</option>
@@ -293,29 +284,22 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="year">Year:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">Current</option>
-                            <option value="sem2">2023-2024</option>
+                        <label for="timeID">Year-Semester:</label>
+                        <select class="form-control" id="timeID" name="timeID">
+                            <option value="2023-1">2023-1st Semester</option>
+                            <option value="2023-2">2023-2nd Semester</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="degree">Semester:</label>
-                        <select class="form-control" id="degree">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
+                        <label for="count">Population:</label>
+                        <input type="number" class="form-control" id="count" name="count" placeholder="Enter Population Number">
                     </div>
-                    <div class="form-group">
-                        <label for="population">Population:</label>
-                        <input type="text" class="form-control" id="population" placeholder="Enter population number">
-                    </div>
-                    <button type="submit" class="btn btn-primary green border-0">Update</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="add_faculty_educattainment">Add</button>
+                    <button type="submit" class="btn btn-primary green border-0" name="update_faculty_educattainment">Update</button>
+                    <button type="submit" class="btn btn-primary maroon border-0" name="delete_faculty_educattainment">Delete</button>
                 </form>
             </div>
-        </div>        
-    </div>
+        </div>
     </div>
     <footer class="maroon p-4">
         <p class="text-center text-white" style="font-family: 'Avenir Black';">© 2024 DMPCS</p>
