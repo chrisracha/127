@@ -54,24 +54,25 @@ if ($result->num_rows > 0) {
 
 
 // Fetch data for ranks
-$sql = "SELECT rankID, title FROM rank_title";
+$sql = "SELECT title FROM rank_title";
 $result = $conn->query($sql);
 $ranks = array();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $rank_title[$row['rankID']] = $row['title'];
+        $ranks[] = $row['title'];
     }
 }
 
 // Fetch data for educational attainments
-$sql = "SELECT educAttainmentID, attainment FROM educ_attainment";
+$sql = "SELECT attainment FROM educ_attainment";
 $result = $conn->query($sql);
 $educational_attainments = array();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $educ_attainment[$row['educAttainmentID']] = $row['attainment'];
+        $educational_attainments[] = $row['attainment'];
     }
 }
+
 
 // Close connection
 $conn->close();
