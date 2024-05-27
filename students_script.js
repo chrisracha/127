@@ -4,12 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function fetchChartData(localhost, callback) {
   fetch(localhost)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => callback(data))
     .catch((error) => console.error("Error fetching data:", error));
 }
