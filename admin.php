@@ -263,31 +263,14 @@
             <div class="card-body">
                 <form action="admin_op.php" method="post">
                     <div class="form-group">
-                        <label for="rankID">Rank:</label>
-                        <select class="form-control" id="rankID" name="rankID">
-                            <option value="prof1">Professor 1</option>
-                            <option value="prof2">Professor 2</option>
-                            <option value="prof3">Professor 3</option>
-                            <option value="prof4">Professor 4</option>
-                            <option value="prof5">Professor 5</option>
-                            <option value="prof6">Professor 6</option>
-                            <option value="assocProf1">Associate Professor 1</option>
-                            <option value="assocProf2">Associate Professor 2</option>
-                            <option value="assocProf3">Associate Professor 3</option>
-                            <option value="assocProf4">Associate Professor 4</option>
-                            <option value="assocProf5">Associate Professor 5</option>
-                            <option value="asstProf1">Assistant Professor 1</option>
-                            <option value="asstProf2">Assistant Professor 2</option>
-                            <option value="asstProf3">Assistant Professor 3</option>
-                            <option value="asstProf4">Assistant Professor 4</option>
-                            <option value="asstProf5">Assistant Professor 5</option>
-                            <option value="asstProf6">Assistant Professor 6</option>
-                            <option value="instr1">Instructor 1</option>
-                            <option value="instr2">Instructor 2</option>
-                            <option value="instr3">Instructor 3</option>
-                            <option value="lect">Lecturer</option>
-                            <option value="senLect">Senior Lecturer</option>
-                        </select>
+                    <label for="rank">Rank:</label>
+                    <select class="form-control" id="rank" name="rank">
+                        <?php
+                        foreach ($ranks as $rank) {
+                            echo "<option value='$rank'>$rank</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
                     <label for="SchoolYear">Year:</label>
@@ -324,29 +307,34 @@
             <div class="card-body">
                 <form action="admin_op.php" method="post">
                     <div class="form-group">
-                        <label for="educAttainmentID">Educational Attainment:</label>
-                        <select class="form-control" id="educAttainmentID" name="educAttainmentID">
-                            <option value="phd">Ph.D.</option>
-                            <option value="msc">M.Sc.</option>
-                            <option value="mm">M.M.</option>
-                            <option value="mscs">MSCS</option>
-                            <option value="mict">MICT</option>
-                        </select>
+                    <label for="educAttainment">Educational Attainment:</label>
+                    <select class="form-control" id="educAttainment" name="educAttainment">
+                        <?php
+                        foreach ($educational_attainments as $attainment) {
+                            echo "<option value='$attainment'>$attainment</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
-                        <label for="timeID">Year:</label>
-                        <select class="form-control" id="timeID" name="timeID">
-                            <option value="2023-2024">2023-2024</option>
-                            <option value="current">Current</option>
-                        </select>
+                    <label for="SchoolYear">Year:</label>
+                    <select class="form-control" id="SchoolYear" name="SchoolYear">
+                        <?php
+                        foreach ($academic_years as $year) {
+                            echo "<option value='$year'>$year</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
-                        <label for="semester">Semester:</label>
-                        <select class="form-control" id="semester" name="semester">
-                            <option value="sem1">1st Semester</option>
-                            <option value="sem2">2nd Semester</option>
-                            <option value="sem3">Both Semesters</option>
-                        </select>
+                    <label for="semester">Semester:</label>
+                    <select class="form-control" id="semester" name="semester">
+                        <?php
+                        foreach ($semesters as $semester) {
+                            echo "<option value='$semester'>$semester</option>";
+                        }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
                         <label for="count">Population:</label>
