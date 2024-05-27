@@ -23,38 +23,41 @@
     <div class="m-4">
     <main class="p-5">
         <section>
-            <a><i class="fas fa-bars" onclick="openNav()" style="cursor:pointer">&nbsp;</i>Analytics > <strong>Faculty</strong></a>
+            <a><i class="fas fa-bars" onclick="openNav()" style="cursor:pointer">&nbsp;</i>Analytics > <strong>Students</strong></a>
         </section>
         <hr>
-        <div class="d-flex w-100 form-inline align-items-center">
-            <label class="indicator mr-2">From:</label>
-            <label for="year">Year</label>
-            <select id="year" class="ml-2">
-              <option value="option1">Current</option>
-              <option value="option2">2022-2023</option>
-            </select>
-            <label for="semester">Semester</label>
-            <select id="semester" class="ml-2">
-              <option value="option">Current</option>
-              <option value="option1">1st Semester</option>
-              <option value="option2">2nd Semester</option>
-            </select>
-          </div>
-        <div class="d-flex w-100 form-inline align-items-center">
-          <label class="indicator mr-2">To:</label>
-          <label for="year">Year</label>
-          <select id="year" class="ml-2">
-            <option value="option1">Current</option>
-            <option value="option2">2022-2023</option>
-          </select>
-          <label for="semester">Semester</label>
-          <select id="semester" class="ml-2">
-            <option value="option">Current</option>
-            <option value="option1">1st Semester</option>
-            <option value="option2">2nd Semester</option>
-          </select>
-        </div>
-        <button class="btn btn-primary border-0 mt-2 ml-2 maroon">Filter</button>
+        <?php include 'getyears.php'; ?>
+        <form method="POST" action="getchartdata.php">
+            <div class="d-flex w-100 ml-4 form-inline align-items-center">
+                <label class="indicator mr-2">From:</label>
+                <label for="fromYear">Year</label>
+                <select id="fromYear" class="ml-2" name="fromYear">
+                  <?php foreach ($data['years'] as $year): ?>
+                  <option value="<?php echo $year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+                <label for="fromSemester">Semester</label>
+                <select id="fromSemester" class="ml-2" name="fromSemester">
+                  <option value="1">1st Semester</option>
+                  <option value="2">2nd Semester</option>
+                </select>
+            </div>
+            <div class="d-flex w-100 ml-4 form-inline align-items-center">
+              <label class="indicator mr-2">To:</label>
+              <label for="toYear">Year</label>
+              <select id="toYear" class="ml-2" name="toYear">
+                <?php foreach ($data['years'] as $year): ?>
+                  <option value="<?php echo $year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
+                <?php endforeach; ?>
+              </select>
+              <label for="toSemester">Semester</label>
+              <select id="toSemester" class="ml-2" name="toSemester">
+                <option value="1">1st Semester</option>
+                <option value="2">2nd Semester</option>
+              </select>
+            </div>
+            <button class="btn btn-primary border-0 ml-2 mt-2 maroon" name="filter">Filter</button>
+        </form>
     </main>
       <div class="card-columns m-4">
         <div class="p-3 chart-card m-2 card">

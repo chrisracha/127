@@ -27,35 +27,37 @@
         </section>
         <hr>
         <?php include 'getyears.php'; ?>
-        <div class="d-flex w-100 ml-4 form-inline align-items-center">
-            <label class="indicator mr-2">From:</label>
-            <label for="fromYear">Year</label>
-            <select id="fromYear" class="ml-2">
-              <?php foreach ($data['years'] as $year): ?>
-              <option value="<?php echo 'from',$year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
-              <?php endforeach; ?>
-            </select>
-            <label for="semester">Semester</label>
-            <select id="semester" class="ml-2">
-              <option value="from1">1st Semester</option>
-              <option value="from2">2nd Semester</option>
-            </select>
-        </div>
-        <div class="d-flex w-100 ml-4 form-inline align-items-center">
-          <label class="indicator mr-2">To:</label>
-          <label for="toYear">Year</label>
-          <select id="toYear" class="ml-2">
-            <?php foreach ($data['years'] as $year): ?>
-              <option value="<?php echo 'to',$year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
-            <?php endforeach; ?>
-          </select>
-          <label for="semester">Semester</label>
-          <select id="semester" class="ml-2">
-            <option value="to1">1st Semester</option>
-            <option value="to2">2nd Semester</option>
-          </select>
-        </div>
-        <button class="btn btn-primary border-0 ml-2 mt-2 maroon">Filter</button>
+        <form method="POST" action="getchartdata.php">
+            <div class="d-flex w-100 ml-4 form-inline align-items-center">
+                <label class="indicator mr-2">From:</label>
+                <label for="fromYear">Year</label>
+                <select id="fromYear" class="ml-2" name="fromYear">
+                  <?php foreach ($data['years'] as $year): ?>
+                  <option value="<?php echo $year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+                <label for="fromSemester">Semester</label>
+                <select id="fromSemester" class="ml-2" name="fromSemester">
+                  <option value="1">1st Semester</option>
+                  <option value="2">2nd Semester</option>
+                </select>
+            </div>
+            <div class="d-flex w-100 ml-4 form-inline align-items-center">
+              <label class="indicator mr-2">To:</label>
+              <label for="toYear">Year</label>
+              <select id="toYear" class="ml-2" name="toYear">
+                <?php foreach ($data['years'] as $year): ?>
+                  <option value="<?php echo $year['SchoolYear']; ?>"><?php echo $year['SchoolYear']; ?></option>
+                <?php endforeach; ?>
+              </select>
+              <label for="toSemester">Semester</label>
+              <select id="toSemester" class="ml-2" name="toSemester">
+                <option value="1">1st Semester</option>
+                <option value="2">2nd Semester</option>
+              </select>
+            </div>
+            <button class="btn btn-primary border-0 ml-2 mt-2 maroon" name="filter">Filter</button>
+        </form>
     </main>
       <div class="card-columns m-4">
           <div class="p-3 chart-card m-2 card">
