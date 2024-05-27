@@ -22,14 +22,18 @@ function redirectToFacultyPage() {
     exit();
 }
 
-// Handle add academic year
+// Handle add academic year 
 if (isset($_POST['add_acadYear'])) {
-    $SchoolYear = $_POST['SchoolYear'];
-    $semester = $_POST['semester'];
+    $SchoolYear = $_POST['SchoolYear']; 
+    $semester = $_POST['semester']; 
 
-    $sql = "INSERT INTO time_period (SchoolYear, semester) VALUES (?, ?)";
+    $parts = explode("-", $SchoolYear);
+    $endYear = substr($parts[1], -2); 
+    $timeID = $endYear . '-' . $semester; 
+
+    $sql = "INSERT INTO time_period (timeID, SchoolYear, semester) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $SchoolYear, $semester);
+    $stmt->bind_param("ssi", $timeID, $SchoolYear, $semester);
 
     if ($stmt->execute()) {
         redirectToStudentsPage();
