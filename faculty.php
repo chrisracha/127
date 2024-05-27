@@ -27,7 +27,7 @@
         </section>
         <hr>
         <?php include 'getyears.php'; ?>
-        <form method="POST" action="getchartdata.php">
+        <form method="POST" action="getchart_faculty.php">
             <div class="d-flex w-100 ml-4 form-inline align-items-center">
                 <label class="indicator mr-2">From:</label>
                 <label for="fromYear">Year</label>
