@@ -27,7 +27,7 @@
         </section>
         <hr>
         <?php include 'getyears.php'; ?>
-        <form method="POST" action="getchartdata.php">
+        <form method="POST" action="getchartdata.php" id="filterButton">
             <div class="d-flex w-100 ml-4 form-inline align-items-center">
                 <label class="indicator mr-2">From:</label>
                 <label for="fromYear">Year</label>
@@ -138,5 +138,6 @@
 </body>
 <script src="script.js"></script>
 <script src="students_script.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </html>
