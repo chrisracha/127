@@ -1,4 +1,15 @@
 <?php
+
+$fromYear = '2022-2023';
+$fromSemester = 1;
+$toYear = '2022-2023';
+$toSemester = 1;
+
+$fromYear = isset($_POST['fromYear']) ? $_POST['fromYear'] : '2022-2023';
+$fromSemester = isset($_POST['fromSemester']) ? $_POST['fromSemester'] : 1;
+$toYear = isset($_POST['toYear']) ? $_POST['toYear'] : '2022-2023';
+$toSemester = isset($_POST['toSemester']) ? $_POST['toSemester'] : 1;
+
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -28,62 +39,85 @@ function fetchQueryResults($conn, $sql) {
 }
 
 // Query to get data for the total no. of enrollees per degree program
-$sql1 = "SELECT deg_prog.name AS degprogName, SUM(college_degree.count) AS totalEnrollees
+$sql2 = "SELECT deg_prog.name AS degprogName, SUM(college_degree.count) AS totalEnrollees
          FROM college_degree
          JOIN deg_prog ON college_degree.degprogID = deg_prog.degprogID
+         WHERE college_degree.timeID IN (
+            SELECT timeID
+            FROM time_period
+            WHERE CAST(SUBSTRING_INDEX(SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+            AND semester BETWEEN $fromSemester AND $toSemester
+         )
          GROUP BY college_degree.degprogID";
 
-$charts['enrolleesCourseChart'] = fetchQueryResults($conn, $sql1);
+$charts['enrolleesCourseChart'] = fetchQueryResults($conn, $sql2);
 
 // Execute SQL query to get data for the total no. of enrollees per year
-$sql2 = "SELECT time_period.SchoolYear, SUM(college_degree.count) AS totalEnrollees
+$sql3 = "SELECT time_period.SchoolYear, SUM(college_degree.count) AS totalEnrollees
          FROM college_degree
          JOIN time_period ON college_degree.timeID = time_period.timeID
+         WHERE CAST(SUBSTRING_INDEX(SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+         AND semester BETWEEN $fromSemester AND $toSemester
          GROUP BY time_period.SchoolYear";
 
-$charts['enrolleesYearChart'] = fetchQueryResults($conn, $sql2);
+$charts['enrolleesYearChart'] = fetchQueryResults($conn, $sql3);
 
 // Execute SQL query to get data for the total no. of students per year level per degree program
-$sql3 = "SELECT deg_prog.name AS degprogName, college_degree.yearLevel, SUM(college_degree.count) AS totalStudents
+$sql4 = "SELECT deg_prog.name AS degprogName, college_degree.yearLevel, SUM(college_degree.count) AS totalStudents
          FROM college_degree
          JOIN deg_prog ON college_degree.degprogID = deg_prog.degprogID
+         WHERE college_degree.timeID IN (
+            SELECT timeID
+            FROM time_period
+            WHERE CAST(SUBSTRING_INDEX(SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+            AND semester BETWEEN $fromSemester AND $toSemester
+         )
          GROUP BY deg_prog.name, college_degree.yearLevel";
 
-$charts['studentsPerYear'] = fetchQueryResults($conn, $sql3);
+$charts['studentsPerYear'] = fetchQueryResults($conn, $sql4);
 
 // Execute SQL query to get data for the total number of scholars per semester
-$sql4 = "SELECT time_period.SchoolYear, time_period.semester, award_type.awardType, SUM(student_awards.count) AS totalScholars
+$sql5 = "SELECT time_period.SchoolYear, time_period.semester, award_type.awardType, SUM(student_awards.count) AS totalScholars
          FROM student_awards
          JOIN award_type ON student_awards.awardTypeID = award_type.awardTypeID
          JOIN college_degree ON student_awards.degID = college_degree.degID
          JOIN time_period ON college_degree.timeID = time_period.timeID
          WHERE award_type.awardTypeID IN ('US', 'CS')
+         AND CAST(SUBSTRING_INDEX(time_period.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+         AND time_period.semester BETWEEN $fromSemester AND $toSemester
          GROUP BY time_period.SchoolYear, time_period.semester, award_type.awardType";
 
-$charts['scholarsChart'] = fetchQueryResults($conn, $sql4);
+$charts['scholarsChart'] = fetchQueryResults($conn, $sql5);
 
 // Execute SQL query to get data for the ratio of university scholars between degree programs
-$sql5 = "SELECT 
+$sql6 = "SELECT 
             deg_prog.name, 
             COALESCE(SUM(CASE WHEN award_type.awardType = 'University Scholar' THEN student_awards.count ELSE 0 END), 0) AS UniversityScholars,
             SUM(college_degree.count) AS totalStudents
-            FROM 
+         FROM 
             college_degree
-            JOIN 
+         JOIN 
             deg_prog ON college_degree.degprogID = deg_prog.degprogID
-            LEFT JOIN 
+         LEFT JOIN 
             student_awards ON college_degree.degID = student_awards.degID
-            LEFT JOIN 
+         LEFT JOIN 
             award_type ON student_awards.awardTypeID = award_type.awardTypeID AND award_type.awardType = 'University Scholar'
-            GROUP BY 
+         WHERE 
+            college_degree.timeID IN (
+                SELECT timeID
+                FROM time_period
+                WHERE CAST(SUBSTRING_INDEX(SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+                AND semester BETWEEN $fromSemester AND $toSemester
+         )
+         GROUP BY 
             deg_prog.name
-            ORDER BY 
+         ORDER BY 
             UniversityScholars DESC";
 
-$charts['USperDegProg'] = fetchQueryResults($conn, $sql5);
+$charts['USperDegProg'] = fetchQueryResults($conn, $sql6);
 
 // Execute SQL query to get data for the ratio of college scholars between degree programs
-$sql6 = "SELECT 
+$sql7 = "SELECT 
             deg_prog.name, 
             COALESCE(SUM(CASE WHEN award_type.awardType = 'College Scholar' THEN student_awards.count ELSE 0 END), 0) AS CollegeScholars,
             SUM(college_degree.count) AS totalStudents
@@ -95,36 +129,46 @@ $sql6 = "SELECT
             student_awards ON college_degree.degID = student_awards.degID
          LEFT JOIN 
             award_type ON student_awards.awardTypeID = award_type.awardTypeID AND award_type.awardType = 'College Scholar'
+         WHERE 
+            college_degree.timeID IN (
+                SELECT timeID
+                FROM time_period
+                WHERE CAST(SUBSTRING_INDEX(SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+                AND semester BETWEEN $fromSemester AND $toSemester
+         )
          GROUP BY 
             deg_prog.name
          ORDER BY 
             CollegeScholars DESC";
 
-$charts['CSperDegProg'] = fetchQueryResults($conn, $sql6);
+$charts['CSperDegProg'] = fetchQueryResults($conn, $sql7);
 
 // Execute SQL query to get data for the total number of students who receive Latin honors
-$sql7 = "SELECT time_period.SchoolYear, award_type.awardType, SUM(student_awards.count) AS totalRecipients
+$sql8 = "SELECT time_period.SchoolYear, award_type.awardType, SUM(student_awards.count) AS totalRecipients
          FROM student_awards
          JOIN award_type ON student_awards.awardTypeID = award_type.awardTypeID
          JOIN college_degree ON student_awards.degID = college_degree.degID
          JOIN time_period ON college_degree.timeID = time_period.timeID
          WHERE award_type.awardTypeID IN ('SCL', 'MCL', 'CL')
+         AND CAST(SUBSTRING_INDEX(time_period.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+         AND time_period.semester BETWEEN $fromSemester AND $toSemester
          GROUP BY time_period.SchoolYear, award_type.awardType";
 
-$charts['PopulationLaudes'] = fetchQueryResults($conn, $sql7);
+$charts['PopulationLaudes'] = fetchQueryResults($conn, $sql8);
 
 
 // Execute SQL query to get data for the total number of enrollees per degree program per semester
-$sql8 = "SELECT dp.name as DegreeProgram, tp.SchoolYear, tp.semester, SUM(cd.count) as totalEnrollees
+$sql9 = "SELECT dp.name as DegreeProgram, tp.SchoolYear, tp.semester, SUM(cd.count) as totalEnrollees
          FROM college_degree cd
          JOIN deg_prog dp ON cd.degprogID = dp.degprogID
          JOIN time_period tp ON cd.timeID = tp.timeID
+         WHERE CAST(SUBSTRING_INDEX(tp.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+         AND tp.semester BETWEEN $fromSemester AND $toSemester
          GROUP BY dp.name, tp.SchoolYear, tp.semester
          ORDER BY tp.SchoolYear, tp.semester, dp.name";
 
-$charts['enrollmentData'] = fetchQueryResults($conn, $sql8);
+$charts['enrollmentChartData'] = fetchQueryResults($conn, $sql9);
 
 $conn->close();
 
 echo json_encode($charts);
-?>

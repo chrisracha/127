@@ -108,11 +108,10 @@
                 <canvas id="enrollmentData" class="w-100"></canvas>
               </div>
             </div>
-            <?php include 'getevent.php'; ?>
             <div class="p-3 chart-card m-2 card">
               <div class="card-header">Student Participation in Events</div>
               <div class="card-body">
-                <table class="table">
+                <table class="table" id="eventTable">
                   <thead>
                     <tr>
                       <th>Event</th>
@@ -120,13 +119,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($data['events'] as $event): ?>
-                      <tr>
-                        <td><?php echo $event['eventName']; ?></td>
-                        <td><?php echo $event['count']; ?></td>
-                      </tr>
-                    <?php endforeach; ?>
-            </tbody>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -136,8 +129,8 @@
           <p class="text-center text-white" style="font-family: 'Avenir';">© 2024 DMPCS</p>
       </footer>    
 </body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="script.js"></script>
 <script src="students_script.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </html>

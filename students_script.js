@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   fetchChartData("getchartdata.php", renderCharts);
+  fetchChartData("getevent.php", renderEvents);
 });
 
 function fetchChartData(localhost, callback) {
@@ -22,15 +23,18 @@ function renderCharts(data) {
   renderUSperDegProg(data.USperDegProg);
   renderCSperDegProg(data.CSperDegProg);
   renderPopulationLaudes(data.PopulationLaudes);
-  renderenrollmentData(data.enrollmentData);
+  renderenrollmentData(data.enrollmentChartData);
 }
 
+let enrolleesCourseChart;
+
 function renderEnrolleesCourseChart(chartData) {
+ 
   var labels = chartData.map((item) => item.degprogName);
   var counts = chartData.map((item) => item.totalEnrollees);
 
   var ctx = document.getElementById("enrolleesCourseChart").getContext("2d");
-  var myChart = new Chart(ctx, {
+  enrolleesCourseChart = new Chart(ctx, {
     type: "doughnut",
     data: {
       labels: labels,
@@ -54,12 +58,14 @@ function renderEnrolleesCourseChart(chartData) {
   });
 }
 
+let enrolleesYearChart;
+
 function renderEnrolleesYearChart(chartData) {
   var labels = chartData.map((item) => item.SchoolYear);
   var counts = chartData.map((item) => item.totalEnrollees);
 
   var ctx = document.getElementById("enrolleesYearChart").getContext("2d");
-  var myChart = new Chart(ctx, {
+  enrolleesYearChart = new Chart(ctx, {
     type: "line",
     data: {
       labels: labels,
@@ -83,6 +89,8 @@ function renderEnrolleesYearChart(chartData) {
     },
   });
 }
+
+let studentsPerYear;
 
 function renderstudentsPerYear(chartData) {
   // Extract unique year levels and degree programs from the chartData
@@ -123,7 +131,7 @@ function renderstudentsPerYear(chartData) {
 
   // Create the chart
   var ctx = document.getElementById("studentsPerYear").getContext("2d");
-  new Chart(ctx, {
+  studentsPerYear = new Chart(ctx, {
     type: "bar",
     data: {
       labels: yearLevels,
@@ -141,6 +149,7 @@ function renderstudentsPerYear(chartData) {
   });
 }
 
+let scholarsChart;
 
 function renderScholarsChart(chartData) {
 
@@ -172,7 +181,7 @@ function renderScholarsChart(chartData) {
   console.log("University Scholars Data:", universityScholarsData);
 
   var ctx = document.getElementById("scholarsChart").getContext("2d");
-  new Chart(ctx, {
+  scholarsChart = new Chart(ctx, {
     type: "line",
     data: {
       labels: labels,
@@ -220,6 +229,7 @@ function renderScholarsChart(chartData) {
   });
 }
 
+let USperDegProg;
 
 function renderUSperDegProg(chartData) {
   // Define colors for each program
@@ -238,7 +248,7 @@ function renderUSperDegProg(chartData) {
   var backgroundColors = labels.map(label => colors[label] || "#000000"); 
 
   var ctx = document.getElementById("USperDegProg").getContext("2d");
-  var myChart = new Chart(ctx, {
+  USperDegProg = new Chart(ctx, {
     type: "doughnut",
     data: {
       labels: labels,
@@ -271,6 +281,7 @@ function renderUSperDegProg(chartData) {
   });
 }
 
+let CSperDegProg;
 
 function renderCSperDegProg(chartData) {
   // Define colors for each program
@@ -287,7 +298,7 @@ function renderCSperDegProg(chartData) {
   var backgroundColors = labels.map(label => colors[label] || "#000000"); // Default to black if label not found
   
   var ctx = document.getElementById("CSperDegProg").getContext("2d");
-  var myChart = new Chart(ctx, {
+  CSperDegProg = new Chart(ctx, {
     type: "doughnut",
     data: {
       labels: labels,
@@ -320,6 +331,7 @@ function renderCSperDegProg(chartData) {
   });
 }
 
+let PopulationLaudes;
 
 function renderPopulationLaudes(chartData) {
   var labels = chartData.map((item) => item.SchoolYear);
@@ -328,7 +340,7 @@ function renderPopulationLaudes(chartData) {
   var summaCumLaudeCounts = chartData.filter((item) => item.awardType === "Summa cum Laude").map((item) => item.totalRecipients);
 
   var ctx = document.getElementById("PopulationLaudes").getContext("2d");
-  var myChart = new Chart(ctx, {
+  PopulationLaudes = new Chart(ctx, {
     type: "line",
     data: {
       labels: labels,
@@ -384,6 +396,8 @@ function renderPopulationLaudes(chartData) {
   });
 }
 
+let enrollmentChartData;
+
 function renderenrollmentData(enrollmentData) {
   // Extract degree programs and their respective data
   const degreePrograms = enrollmentData.reduce((programs, item) => {
@@ -407,7 +421,7 @@ function renderenrollmentData(enrollmentData) {
   });
 
   var ctx = document.getElementById('enrollmentData').getContext('2d');
-  var myChart = new Chart(ctx, {
+  enrollmentChartData = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: labels,
@@ -425,6 +439,15 @@ function renderenrollmentData(enrollmentData) {
   });
 }
 
+function renderEvents(data) {
+  var tableBody = '';
+  data.events.forEach(function(event) {
+    tableBody += '<tr><td>' + event.eventName + '</td><td>' + event.count + '</td></tr>';
+  });
+
+  $('#eventTable tbody').html(tableBody);
+}
+
 // Helper function to dynamically assign background color based on degree program
 function getBackgroundColor(program) {
   switch (program) {
@@ -438,3 +461,83 @@ function getBackgroundColor(program) {
       return "#000000"; // Default color if program not matched
   }
 }
+
+$(document).ready(function() {
+  $('#filterButton').on('submit', function(e) {
+      e.preventDefault();
+
+      var fromYear = $('#fromYear').val();
+      var toYear = $('#toYear').val();
+      var fromSemester = $('#fromSemester').val();
+      var toSemester = $('#toSemester').val();
+
+      console.log("Inputted in Form", fromYear, toYear, fromSemester, toSemester);
+
+      $.ajax({
+          url: 'getchartdata.php',
+          method: 'POST',
+          data: {
+              fromYear: fromYear,
+              toYear: toYear,
+              fromSemester: fromSemester,
+              toSemester: toSemester
+          },
+          success: function(response) {
+              var data = JSON.parse(response);
+              console.log(data.enrolleesCourseChart);
+              console.log(data.enrolleesYearChart);
+              console.log(data.studentsPerYear);
+              console.log(data.scholarsChart);
+              console.log(data.USperDegProg);
+              console.log(data.CSperDegProg);
+              console.log(data.PopulationLaudes);
+              console.log(data.enrollmentChartData);
+              rerenderCharts(data);
+          }
+      });
+
+      $.ajax({
+        url: 'getevent.php',
+        method: 'POST',
+        data: {
+            fromYear: fromYear,
+            toYear: toYear,
+            fromSemester: fromSemester,
+            toSemester: toSemester
+        },
+        success: function(data) {
+            var data = JSON.parse(data);
+            console.log(data);
+
+            var tableBody = '';
+            data.events.forEach(function(event) {
+            tableBody += '<tr><td>' + event.eventName + '</td><td>' + event.count + '</td></tr>';
+            });
+
+            $('#eventTable tbody').html(tableBody);
+        }
+      })
+});
+
+function destroyCharts() {
+  enrolleesCourseChart.destroy();
+  enrolleesYearChart.destroy();
+  studentsPerYear.destroy();
+  scholarsChart.destroy();
+  USperDegProg.destroy();
+  CSperDegProg.destroy();
+  PopulationLaudes.destroy();
+  enrollmentChartData.destroy();
+}
+
+function rerenderCharts(data) {
+  destroyCharts();
+  renderEnrolleesCourseChart(data.enrolleesCourseChart);
+  renderEnrolleesYearChart(data.enrolleesYearChart);
+  renderstudentsPerYear(data.studentsPerYear);
+  renderScholarsChart(data.scholarsChart);
+  renderUSperDegProg(data.USperDegProg);
+  renderCSperDegProg(data.CSperDegProg);
+  renderPopulationLaudes(data.PopulationLaudes);
+  renderenrollmentData(data.enrollmentChartData);
+}});
