@@ -1,4 +1,16 @@
 <?php
+if(isset($_POST ['filter'])) {
+   $fromYear = $_POST['fromYear'];
+   $fromSemester = $_POST['fromSemester'];
+   $toYear = $_POST['toYear'];
+   $toSemester = $_POST['toSemester'];
+} else {
+   $fromYear = '2022-2023';
+   $fromSemester = 1;
+   $toYear = '2022-2023';
+   $toSemester = 1;
+}
+
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -31,6 +43,12 @@ function fetchQueryResults($conn, $sql) {
 $sql2 = "SELECT deg_prog.name AS degprogName, SUM(college_degree.count) AS totalEnrollees
          FROM college_degree
          JOIN deg_prog ON college_degree.degprogID = deg_prog.degprogID
+         WHERE college_degree.timeID IN (
+            SELECT timeID
+            FROM time_period
+            WHERE SchoolYear BETWEEN '$fromYear' AND '$toYear'
+            AND semester BETWEEN '$fromSemester' AND '$toSemester'
+         )
          GROUP BY college_degree.degprogID";
 
 $charts['enrolleesCourseChart'] = fetchQueryResults($conn, $sql2);
@@ -57,7 +75,7 @@ $sql5 = "SELECT time_period.SchoolYear, time_period.semester, award_type.awardTy
          JOIN award_type ON student_awards.awardTypeID = award_type.awardTypeID
          JOIN college_degree ON student_awards.degID = college_degree.degID
          JOIN time_period ON college_degree.timeID = time_period.timeID
-         WHERE award_type.awardTypeID IN ('US', 'CS')
+         WHERE award_type.awardTypeID IN (4, 5)
          GROUP BY time_period.SchoolYear, time_period.semester, award_type.awardType";
 
 $charts['scholarsChart'] = fetchQueryResults($conn, $sql5);
@@ -110,7 +128,7 @@ $sql8 = "SELECT time_period.SchoolYear, award_type.awardType, SUM(student_awards
          JOIN award_type ON student_awards.awardTypeID = award_type.awardTypeID
          JOIN college_degree ON student_awards.degID = college_degree.degID
          JOIN time_period ON college_degree.timeID = time_period.timeID
-         WHERE award_type.awardTypeID IN ('SCL', 'MCL', 'CL')
+         WHERE award_type.awardTypeID IN ('1', '2', '3')
          GROUP BY time_period.SchoolYear, award_type.awardType";
 
 $charts['PopulationLaudes'] = fetchQueryResults($conn, $sql8);

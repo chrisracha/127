@@ -143,6 +143,9 @@ function renderstudentsPerYear(chartData) {
 
 
 function renderScholarsChart(chartData) {
+
+  console.log("Scholars Chart Data:", chartData);
+
   // Extract unique labels (SchoolYear - semester) from the chartData
   var labels = [...new Set(chartData.map((item) => item.SchoolYear + " - " + item.semester))];
 
@@ -155,10 +158,10 @@ function renderScholarsChart(chartData) {
     var label = item.SchoolYear + " - " + item.semester;
     var index = labels.indexOf(label);
     if (index !== -1) {
-      if (item.awardType === "CS") {
-        collegeScholarsData[index] = item.totalScholars;
-      } else if (item.awardType === "US") {
-        universityScholarsData[index] = item.totalScholars;
+      if (item.awardType == "College Scholar") {
+        collegeScholarsData[index] = Number(item.totalScholars);
+      } else if (item.awardType == "University Scholar") {
+        universityScholarsData[index] = Number(item.totalScholars);
       }
     }
   });
