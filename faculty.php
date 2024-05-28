@@ -23,11 +23,11 @@
     <div class="m-4">
     <main class="p-5">
         <section>
-            <a><i class="fas fa-bars" onclick="openNav()" style="cursor:pointer">&nbsp;</i>Analytics > <strong>Students</strong></a>
+            <a><i class="fas fa-bars" onclick="openNav()" style="cursor:pointer">&nbsp;</i>Analytics > <strong>Faculty</strong></a>
         </section>
         <hr>
         <?php include 'getyears.php'; ?>
-        <form method="POST" action="getchart_faculty.php">
+        <form method="POST" id="filterButton">
             <div class="d-flex w-100 ml-4 form-inline align-items-center">
                 <label class="indicator mr-2">From:</label>
                 <label for="fromYear">Year</label>
@@ -85,13 +85,13 @@
           </div>
         </div>
         <div class="p-3 chart-card m-2 card">
-          <div class="card-header">Number of Total Faculty</div>
+          <div class="card-header">Number of Total Faculty per Semester</div>
           <div class="card-body">
             <canvas id="numberOfTotalFaculty" class="w-100"></canvas>
           </div>
         </div>
         <div class="p-3 chart-card m-2 card">
-          <div class="card-header">Number of Publications</div>
+          <div class="card-header">Number of Publications per Semester</div>
           <div class="card-body">
             <canvas id="numberOfPublications" class="w-100"></canvas>
           </div>
@@ -108,7 +108,8 @@
           <p class="text-center text-white" style="font-family: 'Avenir Black';">© 2024 DMPCS</p>
       </footer>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="script.js"></script>
 <script src="faculty_script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </html>

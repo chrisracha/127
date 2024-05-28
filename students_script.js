@@ -484,14 +484,14 @@ $(document).ready(function() {
           },
           success: function(response) {
               var data = JSON.parse(response);
-              console.log(data.enrolleesCourseChart);
-              console.log(data.enrolleesYearChart);
-              console.log(data.studentsPerYear);
-              console.log(data.scholarsChart);
-              console.log(data.USperDegProg);
-              console.log(data.CSperDegProg);
-              console.log(data.PopulationLaudes);
-              console.log(data.enrollmentChartData);
+              // console.log(data.enrolleesCourseChart);
+              // console.log(data.enrolleesYearChart);
+              // console.log(data.studentsPerYear);
+              // console.log(data.scholarsChart);
+              // console.log(data.USperDegProg);
+              // console.log(data.CSperDegProg);
+              // console.log(data.PopulationLaudes);
+              // console.log(data.enrollmentChartData);
               rerenderCharts(data);
           }
       });
@@ -532,12 +532,5 @@ function destroyCharts() {
 
 function rerenderCharts(data) {
   destroyCharts();
-  renderEnrolleesCourseChart(data.enrolleesCourseChart);
-  renderEnrolleesYearChart(data.enrolleesYearChart);
-  renderstudentsPerYear(data.studentsPerYear);
-  renderScholarsChart(data.scholarsChart);
-  renderUSperDegProg(data.USperDegProg);
-  renderCSperDegProg(data.CSperDegProg);
-  renderPopulationLaudes(data.PopulationLaudes);
-  renderenrollmentData(data.enrollmentChartData);
+  renderCharts(data);
 }});

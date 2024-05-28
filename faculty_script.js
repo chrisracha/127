@@ -16,7 +16,6 @@ function fetchChartData(localhost, callback) {
 
 
 function renderCharts(data) {
-  console.log(data);
   renderRatioByRank(data.ratioByRank);
   renderRatioByEduc(data.ratioByEduc);
   renderNumberOfTotalFaculty(data.numberOfTotalFaculty);
@@ -84,6 +83,7 @@ function renderRatioByEduc(chartData) {
   });
 }
 
+let totalFacultyChart;
 
 function renderNumberOfTotalFaculty(chartData) {
   var labels = chartData.map((item) => item.SchoolYear + " " + item.semester);
@@ -91,7 +91,7 @@ function renderNumberOfTotalFaculty(chartData) {
   var customColors = ['#8E1537', '#FFB81D', '#005740', '#808080'];
 
   var ctx = document.getElementById('numberOfTotalFaculty').getContext("2d");
-  var myChart = new Chart(ctx, {
+  totalFacultyChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
@@ -114,16 +114,18 @@ function renderNumberOfTotalFaculty(chartData) {
   });
 }
 
+let numberOfPublicationsChart;
+
 function renderNumberOfPublications(chartData) {
-  var years = chartData.map((item) => item.SchoolYear);
+  var labels = chartData.map((item) => item.SchoolYear + ' Semester ' + item.semester);
   var counts = chartData.map((item) => item.totalPublications);
   var customColors = ['#8E1537', '#FFB81D', '#005740', '#808080'];
 
   var ctx = document.getElementById('numberOfPublications').getContext("2d");
-  var myChart = new Chart(ctx, {
+  numberOfPublicationsChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: years,
+      labels: labels,
       datasets: [{
         label: 'Publications',
         data: counts,
@@ -143,13 +145,15 @@ function renderNumberOfPublications(chartData) {
   });
 }
 
+let researchInvolvementChart;
+
 function renderResearchInvolvement(chartData) {
   var publicationTitles = chartData.map((item) => item.publicationTitle);
   var totalFacultyParticipation = chartData.map((item) => item.totalFacultyParticipation);
   var customColors = ['#8E1537', '#FFB81D', '#005740', '#808080', '000000'];
 
   var ctx = document.getElementById('researchInvolvement').getContext("2d");
-  var myChart = new Chart(ctx, {
+  researchInvolvementChart = new Chart(ctx, {
     type: 'bar',
     data: {
         labels: publicationTitles,
@@ -171,6 +175,8 @@ function renderResearchInvolvement(chartData) {
     }
   });
 }
+
+let facultySembyRankChart;
 
 function renderFacultySembyRank(chartData) {
   // Create a set to hold unique semester labels
@@ -216,7 +222,7 @@ function renderFacultySembyRank(chartData) {
   var datasetsArray = Object.values(datasets);
 
   var ctx = document.getElementById('facultySembyRank').getContext("2d");
-  var myChart = new Chart(ctx, {
+  facultySembyRankChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
@@ -246,6 +252,8 @@ function renderFacultySembyRank(chartData) {
     }
   });
 }
+
+let facultyByEducAttainmentChart;
 
 function renderFacultyByEducAttainment(chartData) {
   // Extract unique labels for semesters
@@ -278,7 +286,7 @@ function renderFacultyByEducAttainment(chartData) {
   var datasetsArray = Object.values(datasets);
 
   var ctx = document.getElementById('facultyByEducAttainment').getContext("2d");
-  var myChart = new Chart(ctx, {
+  facultyByEducAttainmentChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: labels,
@@ -293,4 +301,47 @@ function renderFacultyByEducAttainment(chartData) {
       }
     }
   });
+}
+
+$(document).ready(function() {
+  $('#filterButton').on('submit', function(e) {
+      e.preventDefault();
+
+      var fromYear = $('#fromYear').val();
+      var toYear = $('#toYear').val();
+      var fromSemester = $('#fromSemester').val();
+      var toSemester = $('#toSemester').val();
+
+      console.log("Inputted in Form", fromYear, toYear, fromSemester, toSemester);
+
+      $.ajax({
+          url: 'getchart_faculty.php',
+          method: 'POST',
+          data: {
+              fromYear: fromYear,
+              toYear: toYear,
+              fromSemester: fromSemester,
+              toSemester: toSemester
+          },
+          success: function(response) {
+              var data = JSON.parse(response);
+              rerenderCharts(data);
+          }
+      });})});
+
+function rerenderCharts(data) {
+  totalFacultyChart.destroy();
+  renderNumberOfTotalFaculty(data.numberOfTotalFaculty);
+
+  numberOfPublicationsChart.destroy();
+  renderNumberOfPublications(data.numberOfPublications);
+
+  researchInvolvementChart.destroy();
+  renderResearchInvolvement(data.researchInvolvement);
+
+  facultySembyRankChart.destroy();
+  renderFacultySembyRank(data.facultySembyRank);
+
+  facultyByEducAttainmentChart.destroy();
+  renderFacultyByEducAttainment(data.facultyByEducAttainment);
 }
