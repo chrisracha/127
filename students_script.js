@@ -233,10 +233,9 @@ function renderUSperDegProg(chartData) {
   var labels = chartData.map((item) => item.name);
   var universityScholarsData = chartData.map((item) => item.UniversityScholars);
   var totalStudentsData = chartData.map((item) => item.totalStudents);
-  var percentageUSData = chartData.map((item) => item.PercentageUS);
 
   // Assign colors based on the labels
-  var backgroundColors = labels.map(label => colors[label] || "#000000"); // Default to black if label not found
+  var backgroundColors = labels.map(label => colors[label] || "#000000"); 
 
   var ctx = document.getElementById("USperDegProg").getContext("2d");
   var myChart = new Chart(ctx, {
@@ -245,12 +244,20 @@ function renderUSperDegProg(chartData) {
       labels: labels,
       datasets: [
         {
-          label: "Percentage of University Scholars",
-          data: percentageUSData,
+          label: "University Scholars",
+          data: universityScholarsData,
           backgroundColor: backgroundColors,
           borderColor: "#ffffff",
           borderWidth: 5,
         },
+        {
+          label: "Total Students",
+          data: totalStudentsData,
+          backgroundColor: backgroundColors.map(color => color + "80"), 
+          borderColor: "#ffffff",
+          borderWidth: 2,
+          hidden: true 
+        }
       ],
     },
     options: {
@@ -276,7 +283,6 @@ function renderCSperDegProg(chartData) {
   var labels = chartData.map((item) => item.name);
   var collegeScholarsData = chartData.map((item) => item.CollegeScholars);
   var totalStudentsData = chartData.map((item) => item.totalStudents);
-  var percentageCSData = chartData.map((item) => item.PercentageCS);
 
   var backgroundColors = labels.map(label => colors[label] || "#000000"); // Default to black if label not found
   
@@ -287,16 +293,23 @@ function renderCSperDegProg(chartData) {
       labels: labels,
       datasets: [
         {
-          label: "Percentage of College Scholars",
-          data: percentageCSData,
+          label: "College Scholars",
+          data: collegeScholarsData,
           backgroundColor: backgroundColors,
           borderColor: "#ffffff",
           borderWidth: 5,
         },
+        {
+          label: "Total Students",
+          data: totalStudentsData,
+          backgroundColor: backgroundColors.map(color => color + "80"), // Adding alpha channel for transparency
+          borderColor: "#ffffff",
+          borderWidth: 2,
+          hidden: true // Hide the total students data initially
+        }
       ],
     },
     options: {
-      //cutoutPercentage: 40,
       responsive: true,
       plugins: {
         legend: {
@@ -306,6 +319,7 @@ function renderCSperDegProg(chartData) {
     },
   });
 }
+
 
 function renderPopulationLaudes(chartData) {
   var labels = chartData.map((item) => item.SchoolYear);
