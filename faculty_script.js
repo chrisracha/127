@@ -25,18 +25,20 @@ function renderCharts(data) {
   renderFacultyByEducAttainment(data.facultyByEducAttainment)
 }
 
-function renderRatioByRank(chartData) {
+let ratioByRankChart;
+
+function renderRatioByRank(chartData){
   var labels = chartData.map((item) => item.facultyRank);
   var counts = chartData.map((item) => item.rankCount);
   var customColors = ['#8E1537', '#FFB81D', '#005740', '#8E1537', '#C70039']; // Example custom colors
 
-  var ctx = document.getElementById("ratioByEduc");
-  var myChart = new Chart(ctx, {
+  var ctx = document.getElementById("ratioByRank");
+  ratioByRankChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
         labels: labels,
         datasets: [{
-            label: 'Total by Rank',
+            label: 'Ratio by Rank',
             data: counts,
             backgroundColor: customColors,
             borderWidth: 5
@@ -53,6 +55,7 @@ function renderRatioByRank(chartData) {
   });
 }
 
+let ratioByEducChart;
 
 function renderRatioByEduc(chartData) {
   var labels = chartData.map((item) => item.educationalAttainment);
@@ -61,13 +64,13 @@ function renderRatioByEduc(chartData) {
   // Define your custom color palette
   var customColors = ['#8E1537', '#FFB81D', '#005740', '#808080'];
 
-  var ctx = document.getElementById("ratioByEduc");  // Use the existing ID if needed
-  var myChart = new Chart(ctx, {
+  var ctx = document.getElementById("ratioByEduc");
+  ratioByEducChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
         labels: labels,
         datasets: [{
-            label: 'Total by Educational Attainment',
+            label: 'Educational Attainment',
             data: counts,
             backgroundColor: customColors,
             borderWidth: 5
@@ -83,7 +86,6 @@ function renderRatioByEduc(chartData) {
     }
   });
 }
-
 
 let totalFacultyChart;
 
@@ -346,4 +348,10 @@ function rerenderCharts(data) {
 
   facultyByEducAttainmentChart.destroy();
   renderFacultyByEducAttainment(data.facultyByEducAttainment);
+
+  ratioByRankChart.destroy();
+  renderRatioByRank(data.ratioByRank);
+
+  ratioByEducChart.destroy();
+  renderRatioByEduc(data.ratioByEduc);
 }

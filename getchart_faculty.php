@@ -45,6 +45,11 @@ $sql1 = "SELECT
             faculty
          JOIN 
             rank_title ON faculty.rankID = rank_title.rankID
+         JOIN
+            time_period ON faculty.timeID = time_period.timeID
+         WHERE
+            CAST(SUBSTRING_INDEX(time_period.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+            AND time_period.semester BETWEEN $fromSemester AND $toSemester
          GROUP BY 
             rank_title.title
          ORDER BY 
@@ -62,6 +67,12 @@ $sql2 = "SELECT
             faculty
          JOIN 
             educ_attainment ON faculty.educAttainmentID = educ_attainment.educAttainmentID
+         JOIN
+            time_period ON faculty.timeID = time_period.timeID
+         WHERE
+            CAST(SUBSTRING_INDEX(time_period.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+            AND time_period.semester BETWEEN $fromSemester AND $toSemester
+
          GROUP BY 
             educ_attainment.attainment
          ORDER BY 
