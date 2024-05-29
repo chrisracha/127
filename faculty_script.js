@@ -30,7 +30,7 @@ function renderRatioByRank(chartData) {
   var counts = chartData.map((item) => item.rankCount);
   var customColors = ['#8E1537', '#FFB81D', '#005740', '#8E1537', '#C70039']; // Example custom colors
 
-  var ctx = document.getElementById("totalByRank");
+  var ctx = document.getElementById("ratioByEduc");
   var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
