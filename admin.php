@@ -32,7 +32,7 @@
             <hr>
     </div> 
     </main>
-    <h6 class="admin_header m-5">Admin > Time Data</h6>
+    <h6 class="admin_header m-5 indicator">Admin > Time Data</h6>
     <div class="card-columns m-4">
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Academic Year & Semester</div>

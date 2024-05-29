@@ -40,6 +40,14 @@
     src: url("fonts/Inter-Black.woff2") format("woff2");
 }
 
+.admin_header {
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
 .indicator {
     font-weight: bold;
     font-family: 'Inter Bold', Arial Bold, sans-serif !important;
