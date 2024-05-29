@@ -17,58 +17,99 @@ function redirectToStudentsPage() {
     exit();
 }
 
-function redirectToFacultyPage() {
-    header("Location: faculty.php");
-    exit();
-}
+// Remove the redundant declaration of redirectToFacultyPage()
 
-// Handle add academic year 
-if (isset($_POST['add_acadYear'])) {
-    $SchoolYear = $_POST['SchoolYear']; 
-    $semester = $_POST['semester']; 
-
-    $parts = explode("-", $SchoolYear);
-    $endYear = substr($parts[1], -2); 
-    $timeID = $endYear . '-' . $semester; 
-
-    $sql = "INSERT INTO time_period (timeID, SchoolYear, semester) VALUES (?, ?, ?)";
+function fetchTimeID($schoolYear, $semester) {
+    global $conn;
+    $sql = "SELECT timeID FROM time_period WHERE schoolYear = ? AND semester = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $timeID, $SchoolYear, $semester);
-
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
+    $stmt->bind_param("ss", $schoolYear, $semester);
+    $stmt->execute();
+    $stmt->bind_result($timeID);
+    $stmt->fetch();
     $stmt->close();
+    return $timeID;
 }
 
-// Handle update academic year
-if (isset($_POST['update_acadYear'])) {
-    $timeID = $_POST['timeID'];
-    $SchoolYear = $_POST['SchoolYear'];
+function generateNewEventID($eventName) {
+    global $conn;
+    
+    // Extract the numeric part from the event name
+    preg_match('/\d+/', $eventName, $matches);
+    $numericPart = isset($matches[0]) ? intval($matches[0]) : ''; // Get the numeric part, if any
+
+    // If numeric part exists, use it as the event ID, otherwise use the event name as is
+    $newID = $numericPart ? 'E' . $numericPart : $eventName;
+
+    // Check if the event ID already exists in the database
+    $sql = "SELECT eventID FROM event WHERE eventID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $newID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // If the event ID already exists, increment the numeric part until a unique ID is found
+    while ($result->num_rows > 0) {
+        $numericPart++; // Increment numeric part
+        $newID = 'E' . $numericPart; // Generate new event ID
+        $stmt->bind_param("s", $newID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    }
+
+    return $newID;
+}
+
+// Function to generate new publication ID
+function generateNewPublicationID($publicationNumber) {
+    // Prefix 'PR' to the publication number
+    $newID = 'PR' . $publicationNumber;
+    return $newID;
+}
+
+// Handle add acad year and sem
+if (isset($_POST['add_acad'])) {
+    $newSchoolYear = $_POST['newSchoolYear'];
     $semester = $_POST['semester'];
 
-    $sql = "UPDATE time_period SET SchoolYear = ?, semester = ? WHERE timeID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sii", $SchoolYear, $semester, $timeID);
+    // Split the school year and create timeID from the last two digits of the end year and the semester.
+    $parts = explode("-", $newSchoolYear);
+    $endYear = substr($parts[1], -2); // Get last two digits of the ending year
+    $timeID = $endYear . '-' . $semester; // Concatenate to form timeID
 
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
+    // Check if the timeID already exists in the time_period table
+    $checkSql = "SELECT 1 FROM time_period WHERE timeID = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("s", $timeID);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();
+
+    if ($checkResult->num_rows === 0) {
+        // If timeID does not exist, proceed with insertion
+        $sql = "INSERT INTO time_period (timeID, SchoolYear, semester) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sss", $timeID, $newSchoolYear, $semester);
+
+        if ($stmt->execute()) {
+            redirectToStudentsPage();
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+        $stmt->close();
     } else {
-        echo "Error: " . $stmt->error;
+        echo "The academic year and semester with ID '$timeID' already exist. Please try a different year or semester.";
     }
-    $stmt->close();
+
+    $checkStmt->close();
 }
 
-// Handle delete academic year
-if (isset($_POST['delete_acadYear'])) {
-    $timeID = $_POST['timeID'];
-    
-    $sql = "DELETE FROM time_period WHERE timeID = ?";
+// Delete operation
+if (isset($_POST['delete_acad'])) {
+    $oldSchoolYear = $_POST['oldSchoolYear'];
+
+    $sql = "DELETE FROM time_period WHERE SchoolYear=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $timeID);
-    
+    $stmt->bind_param("s", $oldSchoolYear);
     if ($stmt->execute()) {
         redirectToStudentsPage();
     } else {
@@ -81,11 +122,11 @@ if (isset($_POST['delete_acadYear'])) {
 if (isset($_POST['add_degree'])) {
     $degprogID = $_POST['degprogID'];
     $name = $_POST['name'];
-    
+
     $sql = "INSERT INTO deg_prog (degprogID, name) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $degprogID, $name);
-    
+
     if ($stmt->execute()) {
         redirectToStudentsPage();
     } else {
@@ -98,11 +139,11 @@ if (isset($_POST['add_degree'])) {
 if (isset($_POST['update_degree'])) {
     $degprogID = $_POST['degprogID'];
     $name = $_POST['name'];
-    
+
     $sql = "UPDATE deg_prog SET name = ? WHERE degprogID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $name, $degprogID);
-    
+
     if ($stmt->execute()) {
         redirectToStudentsPage();
     } else {
@@ -114,57 +155,11 @@ if (isset($_POST['update_degree'])) {
 // Handle delete degree program
 if (isset($_POST['delete_degree'])) {
     $degprogID = $_POST['degprogID'];
-    
+
     $sql = "DELETE FROM deg_prog WHERE degprogID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $degprogID);
-    
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-}
 
-// Handle add degree information
-if (isset($_POST['add_degree_info'])) {
-    $degID = $_POST['degID'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
-
-    $sql = "INSERT INTO college_degree (degID, timeID, count) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $degID, $timeID, $count);
-    
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['update_degree_info'])) {
-    $degID = $_POST['degID'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
-
-    $sql = "UPDATE college_degree SET timeID=?, count=? WHERE degID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $timeID, $count, $degID);
-    
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['delete_degree_info'])) {
-    $degID = $_POST['degID'];
-
-    $sql = "DELETE FROM college_degree WHERE degID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $degID);
-    
     if ($stmt->execute()) {
         redirectToStudentsPage();
     } else {
@@ -175,43 +170,13 @@ if (isset($_POST['add_degree_info'])) {
 
 // Handle add achievement
 if (isset($_POST['add_achievement'])) {
-    $awardTypeID = $_POST['awardTypeID'];
-    $degID = $_POST['degID'];
+    $awardTypeID = $_POST['awardType'];
+    $degID = $_POST['degprogID'];
     $count = $_POST['count'];
 
     $sql = "INSERT INTO student_awards (awardTypeID, degID, count) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssi", $awardTypeID, $degID, $count);
-
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['update_achievement'])) {
-    $achievement = $_POST['awardID'];
-    $awardTypeID = $_POST['awardTypeID'];
-    $degID = $_POST['degID'];
-    $count = $_POST['count'];
-
-    $sql = "UPDATE student_awards SET awardTypeID=?, degID=?, count=? WHERE awardID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssis", $awardTypeID, $degID, $count, $awardID);
-    
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['delete_achievement'])) {
-    $achievement = $_POST['awardID'];
-
-    $sql = "DELETE FROM student_awards WHERE awardID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $awardID);
-    
     if ($stmt->execute()) {
         redirectToStudentsPage();
     } else {
@@ -220,191 +185,186 @@ if (isset($_POST['add_achievement'])) {
     $stmt->close();
 }
 
-// Handle add event
-if (isset($_POST['add_event'])) {
-    $eventName = $_POST['eventName'];
-    $timeID = $_POST['timeID'];
+// Handle update achievement
+if (isset($_POST['update_achievement'])) {
+    $awardTypeID = $_POST['awardType'];
+    $degID = $_POST['degprogID'];
     $count = $_POST['count'];
 
-    $sql = "INSERT INTO event (eventName, timeID, count) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $eventName, $timeID, $count);
-    
+    $sql = "UPDATE student_awards SET count = ? WHERE awardTypeID = ? AND degID = ?";
+    $stmt = $conn = $conn->prepare($sql);
+    $stmt->bind_param("iss", $count, $awardTypeID, $degID);
     if ($stmt->execute()) {
-        redirectToStudentsPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['update_event'])) {
-    $eventName = $_POST['eventName'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
-
-    $sql = "UPDATE event SET timeID=?, count=? WHERE eventName=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $timeID, $count, $eventName);
-    
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['delete_event'])) {
-    $eventName = $_POST['eventName'];
-
-    $sql = "DELETE FROM event WHERE eventName=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $eventName);
-    
-    if ($stmt->execute()) {
-        redirectToStudentsPage();
+        redirectToStudentsPage(); 
     } else {
         echo "Error: " . $stmt->error;
     }
     $stmt->close();
 }
 
-// Handle add publication
-if (isset($_POST['add_publication'])) {
-    $title = $_POST['title'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
+// Handle delete achievement
+if (isset($_POST['delete_achievement'])) {
+    $awardTypeID = $_POST['awardType'];
+    $degID = $_POST['degprogID'];
 
-    $sql = "INSERT INTO publication (title, timeID, count) VALUES (?, ?, ?)";
+    $sql = "DELETE FROM student_awards WHERE awardTypeID = ? AND degID = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $title, $timeID, $count);
-    
+    $stmt->bind_param("ss", $awardTypeID, $degID);
     if ($stmt->execute()) {
-        redirectToFacultyPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['update_publication'])) {
-    $title = $_POST['title'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
-
-    $sql = "UPDATE publication SET timeID=?, count=? WHERE title=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $timeID, $count, $title);
-    
-    if ($stmt->execute()) {
-        redirectToFacultyPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['delete_publication'])) {
-    $title = $_POST['title'];
-
-    $sql = "DELETE FROM publication WHERE title=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $title);
-    
-    if ($stmt->execute()) {
-        redirectToFacultyPage();
+        redirectToStudentsPage(); 
     } else {
         echo "Error: " . $stmt->error;
     }
     $stmt->close();
 }
 
-// Handle add faculty by rank
-if (isset($_POST['add_faculty_rank'])) {
-    $rankID = $_POST['rankID'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
+// Handle add/update/delete event
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $action = isset($_POST['action']) ? $_POST['action'] : '';
+    $eventName = isset($_POST['eventName']) ? $_POST['eventName'] : '';
+    $schoolYear = isset($_POST['SchoolYear']) ? $_POST['SchoolYear'] : '';
+    $semester = isset($_POST['semester']) ? $_POST['semester'] : '';
+    $count = isset($_POST['count']) ? $_POST['count'] : 0;
+    $eventID = isset($_POST['eventID']) ? $_POST['eventID'] : '';
 
-    $sql = "INSERT INTO faculty (rankID, timeID, count) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $rankID, $timeID, $count);
-    
-    if ($stmt->execute()) {
-        redirectToFacultyPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['update_faculty_rank'])) {
-    $rankID = $_POST['rankID'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
+    $timeID = fetchTimeID($schoolYear, $semester);
 
-    $sql = "UPDATE faculty SET timeID=?, count=? WHERE rankID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isi", $timeID, $count, $rankID);
-    
-    if ($stmt->execute()) {
-        redirectToFacultyPage();
+    if ($timeID) {
+        echo "Fetched timeID: " . $timeID . "<br>";
     } else {
-        echo "Error: " . $stmt->error;
+        die("Error: Invalid timeID for the provided school year and semester.");
     }
-    $stmt->close();
-} elseif (isset($_POST['delete_faculty_rank'])) {
-    $rankID = $_POST['rankID'];
 
-    $sql = "DELETE FROM faculty WHERE rankID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $rankID);
-    
-    if ($stmt->execute()) {
-        redirectToFacultyPage();
-    } else {
-        echo "Error: " . $stmt->error;
+    $stmt = null;
+
+    switch ($action) {
+        case 'add_event':
+            $eventID = generateNewEventID($eventName);
+            $sql = "INSERT INTO event (eventID, eventName, timeID, count) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssi", $eventID, $eventName, $timeID, $count);
+            break;
+
+        case 'update_event':
+            $checkSql = "SELECT eventID FROM event WHERE eventName = ? AND timeID = ?";
+            $checkStmt = $conn->prepare($checkSql);
+            $checkStmt->bind_param("si", $eventName, $timeID);
+            $checkStmt->execute();
+            $checkStmt->store_result();
+
+            if ($checkStmt->num_rows > 0) {
+                $sql = "UPDATE event SET count = ? WHERE eventName = ? AND timeID = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("isi", $count, $eventName, $timeID);
+            } else {
+                echo "Error: Event does not exist for the provided school year and semester.";
+                exit();
+            }
+            $checkStmt->close();
+            break;
+
+        case 'delete_event':
+            $checkSql = "SELECT eventID FROM event WHERE eventName = ? AND timeID = ?";
+            $checkStmt = $conn->prepare($checkSql);
+            $checkStmt->bind_param("si", $eventName, $timeID);
+            $checkStmt->execute();
+            $checkStmt->store_result();
+
+            if ($checkStmt->num_rows > 0) {
+                $sql = "DELETE FROM event WHERE eventName = ? AND timeID = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("si", $eventName, $timeID);
+            } else {
+                echo "Error: Event does not exist for the provided school year and semester.";
+                exit();
+            }
+            $checkStmt->close();
+            break;
     }
-    $stmt->close();
+
+    if ($stmt && $stmt->execute()) {
+        echo "Operation successful.";
+    } else {
+        echo "Error: " . ($stmt ? $stmt->error : 'Invalid operation');
+    }
+
+    if ($stmt) {
+        $stmt->close();
+    }
+    $conn->close();
 }
 
-// Handle add faculty by educational attainment
-if (isset($_POST['add_faculty_educattainment'])) {
-    $educAttainmentID = $_POST['educAttainmentID'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
+// Handle add/update/delete publication
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if action parameter is set
+    if (isset($_POST['action'])) {
+        $action = $_POST['action'];
+        $title = isset($_POST['title']) ? $_POST['title'] : '';
+        $timeID = isset($_POST['timeID']) ? $_POST['timeID'] : '';
+        $count = isset($_POST['count']) ? $_POST['count'] : 0;
 
-    $sql = "INSERT INTO faculty (educAttainmentID, timeID, count) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $educAttainmentID, $timeID, $count);
-    
-    if ($stmt->execute()) {
-        redirectToFacultyPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['update_faculty_educattainment'])) {
-    $educAttainmentID = $_POST['educAttainmentID'];
-    $timeID = $_POST['timeID'];
-    $count = $_POST['count'];
+        // Create a new MySQLi connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
 
-    $sql = "UPDATE faculty SET timeID=?, count=? WHERE educAttainmentID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isi", $timeID, $count, $educAttainmentID);
-    
-    if ($stmt->execute()) {
-        redirectToFacultyPage();
-    } else {
-        echo "Error: " . $stmt->error;
-    }
-    $stmt->close();
-} elseif (isset($_POST['delete_faculty_educattainment'])) {
-    $educAttainmentID = $_POST['educAttainmentID'];
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
 
-    $sql = "DELETE FROM faculty WHERE educAttainmentID=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $educAttainmentID);
-    
-    if ($stmt->execute()) {
-        redirectToFacultyPage();
+        // Initialize statement variable
+        $stmt = null;
+
+        switch ($action) {
+            case 'add_publication':
+                // Generate publicationID based on title
+                $publicationID = generateNewPublicationID($title);
+                $sql = "INSERT INTO publication (publicationID, title, timeID, count) VALUES (?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                if (!$stmt) {
+                    die("Error preparing statement: " . $conn->error);
+                }
+                $stmt->bind_param("sssi", $publicationID, $title, $timeID, $count);
+                break;
+
+            case 'update_publication':
+                $sql = "UPDATE publication SET count = ? WHERE title = ? AND timeID = ?";
+                $stmt = $conn->prepare($sql);
+                if (!$stmt) {
+                    die("Error preparing statement: " . $conn->error);
+                }
+                $stmt->bind_param("iss", $count, $title, $timeID);
+                break;
+
+            case 'delete_publication':
+                $sql = "DELETE FROM publication WHERE title = ? AND timeID = ?";
+                $stmt = $conn->prepare($sql);
+                if (!$stmt) {
+                    die("Error preparing statement: " . $conn->error);
+                }
+                $stmt->bind_param("ss", $title, $timeID);
+                break;
+
+            default:
+                die("Error: Invalid action.");
+        }
+
+        if ($stmt && $stmt->execute()) {
+            echo "Operation successful.";
+            redirectToFacultyPage(); // Assuming successful operation, redirect to faculty page
+        } else {
+            echo "Error: " . ($stmt ? $stmt->error : 'Invalid operation');
+        }
+
+        // Close statement
+        if ($stmt) {
+            $stmt->close();
+        }
+
+        // Close connection
+        $conn->close();
     } else {
-        echo "Error: " . $stmt->error;
+        die("Error: Action parameter is missing.");
     }
-    $stmt->close();
 }
 
-
-// Close connection
-$conn->close();
 ?>
