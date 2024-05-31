@@ -114,9 +114,7 @@ $sql6 = "SELECT
                 AND semester BETWEEN $fromSemester AND $toSemester
          )
          GROUP BY 
-            deg_prog.name, 
-            time_period.SchoolYear,
-            time_period.semester
+            deg_prog.name
          ORDER BY 
             time_period.SchoolYear ASC, time_period.semester ASC,
             UniversityScholars DESC";
@@ -148,9 +146,7 @@ $sql7 = "SELECT
                 AND semester BETWEEN $fromSemester AND $toSemester
          )
          GROUP BY 
-            deg_prog.name, 
-            time_period.SchoolYear,
-            time_period.semester
+            deg_prog.name
          ORDER BY 
             time_period.SchoolYear ASC,
             time_period.semester ASC,

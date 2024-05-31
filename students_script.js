@@ -237,19 +237,20 @@ function renderUSperDegProg(chartData) {
     "Bachelor of Science in  Applied Mathematics": "#005740"
   };
 
-  // Get unique degree programs and time periods
+  // Get unique degree programs
   var degreePrograms = [...new Set(chartData.map((item) => item.name))];
-  var timePeriods = [...new Set(chartData.map((item) => 'School Year ' + item.SchoolYear + ', Semester ' + item.semester))];
 
   // Create a dataset for each degree program
   var datasets = degreePrograms.map((program) => {
-    var data = timePeriods.map((period) => {
-      var item = chartData.find((item) => item.name === program && 'School Year ' + item.SchoolYear + ', Semester ' + item.semester === period);
-      return item ? item.UniversityScholars : 0;
-    });
+    var data = chartData.reduce((total, item) => {
+      if (item.name === program) {
+        total += item.UniversityScholars;
+      }
+      return total;
+    }, 0);
     return {
       label: program,
-      data: data,
+      data: [data], // Wrap data in an array because Chart.js expects an array
       backgroundColor: colors[program] || "#000000",
       borderColor: "#ffffff",
       borderWidth: 5,
@@ -260,7 +261,7 @@ function renderUSperDegProg(chartData) {
   USperDegProg = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: timePeriods,
+      labels: ['University Scholars'], // Use a static label because there's only one data point per dataset
       datasets: datasets,
     },
     options: {
@@ -273,7 +274,6 @@ function renderUSperDegProg(chartData) {
       scales: {
         x: {
           beginAtZero: true,
-          grouped: true,
         },
         y: {
           beginAtZero: true
@@ -282,7 +282,6 @@ function renderUSperDegProg(chartData) {
     },
   });
 }
-
 let CSperDegProg;
 
 function renderCSperDegProg(chartData) {
@@ -293,19 +292,20 @@ function renderCSperDegProg(chartData) {
     "Bachelor of Science in  Applied Mathematics": "#005740"
   };
 
-  // Get unique degree programs and time periods
+  // Get unique degree programs
   var degreePrograms = [...new Set(chartData.map((item) => item.name))];
-  var timePeriods = [...new Set(chartData.map((item) => 'School Year ' + item.SchoolYear + ', Semester ' + item.semester))];
 
   // Create a dataset for each degree program
   var datasets = degreePrograms.map((program) => {
-    var data = timePeriods.map((period) => {
-      var item = chartData.find((item) => item.name === program && 'School Year ' + item.SchoolYear + ', Semester ' + item.semester === period);
-      return item ? item.CollegeScholars : 0;
-    });
+    var data = chartData.reduce((total, item) => {
+      if (item.name === program) {
+        total += item.CollegeScholars;
+      }
+      return total;
+    }, 0);
     return {
       label: program,
-      data: data,
+      data: [data], // Wrap data in an array because Chart.js expects an array
       backgroundColor: colors[program] || "#000000",
       borderColor: "#ffffff",
       borderWidth: 5,
@@ -316,7 +316,7 @@ function renderCSperDegProg(chartData) {
   CSperDegProg = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: timePeriods,
+      labels: ['College Scholars'], // Use a static label because there's only one data point per dataset
       datasets: datasets,
     },
     options: {
@@ -329,7 +329,6 @@ function renderCSperDegProg(chartData) {
       scales: {
         x: {
           beginAtZero: true,
-          grouped: true,
         },
         y: {
           beginAtZero: true
