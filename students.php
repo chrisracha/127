@@ -67,13 +67,13 @@
             </div>
           </div>
           <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Ratio of University Scholars between Degree Programs</div>
+            <div class="card-header">Population of University Scholars between Degree Programs</div>
             <div class="card-body">
               <canvas id="USperDegProg" class="w-100"></canvas>
             </div>
           </div>
           <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Ratio of College Scholars between Degree Programs</div>
+            <div class="card-header">Population of College Scholars between Degree Programs</div>
             <div class="card-body">
               <canvas id="CSperDegProg" class="w-100"></canvas>
             </div>

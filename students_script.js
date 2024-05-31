@@ -29,23 +29,21 @@ function renderCharts(data) {
 let enrolleesCourseChart;
 
 function renderEnrolleesCourseChart(chartData) {
- 
-  var labels = chartData.map((item) => item.degprogName);
-  var counts = chartData.map((item) => item.totalEnrollees);
-
   var ctx = document.getElementById("enrolleesCourseChart").getContext("2d");
+
+  var datasets = chartData.map((item, index) => {
+    return {
+      label: item.degprogName,
+      data: [item.totalEnrollees],
+      backgroundColor: ["#8E1537", "#FFB81D", "#005740"][index % 3],
+    };
+  });
+
   enrolleesCourseChart = new Chart(ctx, {
-    type: "doughnut",
+    type: "bar",
     data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "Number of Enrollees",
-          data: counts,
-          backgroundColor: ["#8E1537", "#FFB81D", "#005740"],
-          borderWidth: 5,
-        },
-      ],
+      labels: ['Enrollees'],
+      datasets: datasets,
     },
     options: {
       responsive: true,
@@ -239,42 +237,46 @@ function renderUSperDegProg(chartData) {
     "Bachelor of Science in  Applied Mathematics": "#005740"
   };
 
-  // Extract the data from chartData
-  var labels = chartData.map((item) => item.name);
-  var universityScholarsData = chartData.map((item) => item.UniversityScholars);
-  var totalStudentsData = chartData.map((item) => item.totalStudents);
+  // Get unique degree programs and time periods
+  var degreePrograms = [...new Set(chartData.map((item) => item.name))];
+  var timePeriods = [...new Set(chartData.map((item) => 'School Year ' + item.SchoolYear + ', Semester ' + item.semester))];
 
-  // Assign colors based on the labels
-  var backgroundColors = labels.map(label => colors[label] || "#000000"); 
+  // Create a dataset for each degree program
+  var datasets = degreePrograms.map((program) => {
+    var data = timePeriods.map((period) => {
+      var item = chartData.find((item) => item.name === program && 'School Year ' + item.SchoolYear + ', Semester ' + item.semester === period);
+      return item ? item.UniversityScholars : 0;
+    });
+    return {
+      label: program,
+      data: data,
+      backgroundColor: colors[program] || "#000000",
+      borderColor: "#ffffff",
+      borderWidth: 5,
+    };
+  });
 
   var ctx = document.getElementById("USperDegProg").getContext("2d");
   USperDegProg = new Chart(ctx, {
-    type: "doughnut",
+    type: "bar",
     data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "University Scholars",
-          data: universityScholarsData,
-          backgroundColor: backgroundColors,
-          borderColor: "#ffffff",
-          borderWidth: 5,
-        },
-        {
-          label: "Total Students",
-          data: totalStudentsData,
-          backgroundColor: backgroundColors.map(color => color + "80"), 
-          borderColor: "#ffffff",
-          borderWidth: 2,
-          hidden: true 
-        }
-      ],
+      labels: timePeriods,
+      datasets: datasets,
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
           position: 'bottom'
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          grouped: true,
+        },
+        y: {
+          beginAtZero: true
         }
       }
     },
@@ -291,40 +293,46 @@ function renderCSperDegProg(chartData) {
     "Bachelor of Science in  Applied Mathematics": "#005740"
   };
 
-  var labels = chartData.map((item) => item.name);
-  var collegeScholarsData = chartData.map((item) => item.CollegeScholars);
-  var totalStudentsData = chartData.map((item) => item.totalStudents);
+  // Get unique degree programs and time periods
+  var degreePrograms = [...new Set(chartData.map((item) => item.name))];
+  var timePeriods = [...new Set(chartData.map((item) => 'School Year ' + item.SchoolYear + ', Semester ' + item.semester))];
 
-  var backgroundColors = labels.map(label => colors[label] || "#000000"); // Default to black if label not found
-  
+  // Create a dataset for each degree program
+  var datasets = degreePrograms.map((program) => {
+    var data = timePeriods.map((period) => {
+      var item = chartData.find((item) => item.name === program && 'School Year ' + item.SchoolYear + ', Semester ' + item.semester === period);
+      return item ? item.CollegeScholars : 0;
+    });
+    return {
+      label: program,
+      data: data,
+      backgroundColor: colors[program] || "#000000",
+      borderColor: "#ffffff",
+      borderWidth: 5,
+    };
+  });
+
   var ctx = document.getElementById("CSperDegProg").getContext("2d");
   CSperDegProg = new Chart(ctx, {
-    type: "doughnut",
+    type: "bar",
     data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "College Scholars",
-          data: collegeScholarsData,
-          backgroundColor: backgroundColors,
-          borderColor: "#ffffff",
-          borderWidth: 5,
-        },
-        {
-          label: "Total Students",
-          data: totalStudentsData,
-          backgroundColor: backgroundColors.map(color => color + "80"), // Adding alpha channel for transparency
-          borderColor: "#ffffff",
-          borderWidth: 2,
-          hidden: true // Hide the total students data initially
-        }
-      ],
+      labels: timePeriods,
+      datasets: datasets,
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
           position: 'bottom'
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          grouped: true,
+        },
+        y: {
+          beginAtZero: true
         }
       }
     },
@@ -334,10 +342,21 @@ function renderCSperDegProg(chartData) {
 let PopulationLaudes;
 
 function renderPopulationLaudes(chartData) {
-  var labels = chartData.map((item) => item.SchoolYear);
-  var cumLaudeCounts = chartData.filter((item) => item.awardType === "Cum Laude").map((item) => item.totalRecipients);
-  var magnaCumLaudeCounts = chartData.filter((item) => item.awardType === "Magna cum Laude").map((item) => item.totalRecipients);
-  var summaCumLaudeCounts = chartData.filter((item) => item.awardType === "Summa cum Laude").map((item) => item.totalRecipients);
+  var labels = [...new Set(chartData.map((item) => item.SchoolYear))];
+
+  var datasets = labels.map((label) => {
+    var dataForLabel = chartData.filter((item) => item.SchoolYear === label);
+    return {
+      label: label,
+      cumLaude: dataForLabel.find((item) => item.awardType === "Cum Laude")?.totalRecipients || 0,
+      magnaCumLaude: dataForLabel.find((item) => item.awardType === "Magna cum Laude")?.totalRecipients || 0,
+      summaCumLaude: dataForLabel.find((item) => item.awardType === "Summa cum Laude")?.totalRecipients || 0,
+    };
+  });
+
+  var cumLaudeCounts = datasets.map((item) => item.cumLaude);
+  var magnaCumLaudeCounts = datasets.map((item) => item.magnaCumLaude);
+  var summaCumLaudeCounts = datasets.map((item) => item.summaCumLaude);
 
   var ctx = document.getElementById("PopulationLaudes").getContext("2d");
   PopulationLaudes = new Chart(ctx, {
@@ -399,19 +418,15 @@ function renderPopulationLaudes(chartData) {
 let enrollmentChartData;
 
 function renderenrollmentData(enrollmentData) {
-  // Extract degree programs and their respective data
-  const degreePrograms = enrollmentData.reduce((programs, item) => {
-    if (!programs.includes(item.DegreeProgram)) {
-      programs.push(item.DegreeProgram);
-    }
-    return programs;
-  }, []);
+  const degreePrograms = [...new Set(enrollmentData.map(item => item.DegreeProgram))];
+  const labels = [...new Set(enrollmentData.map(item => 'School Year ' + item.SchoolYear + ', Semester ' + item.semester))];
 
-  const labels = ["1st Semester", "2nd Semester"];
   const datasets = degreePrograms.map(program => {
-    const data = enrollmentData
-      .filter(item => item.DegreeProgram === program)
-      .map(item => item.totalEnrollees);
+    const programData = enrollmentData.filter(item => item.DegreeProgram === program);
+    const data = labels.map(label => {
+      const item = programData.find(d => 'School Year ' + d.SchoolYear + ', Semester ' + d.semester === label);
+      return item ? item.totalEnrollees : null;
+    });
     const backgroundColor = getBackgroundColor(program); // Define color dynamically
     return {
       label: program,
@@ -484,14 +499,6 @@ $(document).ready(function() {
           },
           success: function(response) {
               var data = JSON.parse(response);
-              // console.log(data.enrolleesCourseChart);
-              // console.log(data.enrolleesYearChart);
-              // console.log(data.studentsPerYear);
-              // console.log(data.scholarsChart);
-              // console.log(data.USperDegProg);
-              // console.log(data.CSperDegProg);
-              // console.log(data.PopulationLaudes);
-              // console.log(data.enrollmentChartData);
               rerenderCharts(data);
           }
       });

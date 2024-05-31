@@ -92,6 +92,8 @@ $charts['scholarsChart'] = fetchQueryResults($conn, $sql5);
 // Execute SQL query to get data for the ratio of university scholars between degree programs
 $sql6 = "SELECT 
             deg_prog.name, 
+            time_period.SchoolYear,
+            time_period.semester,
             COALESCE(SUM(CASE WHEN award_type.awardType = 'University Scholar' THEN student_awards.count ELSE 0 END), 0) AS UniversityScholars,
             SUM(college_degree.count) AS totalStudents
          FROM 
@@ -102,6 +104,8 @@ $sql6 = "SELECT
             student_awards ON college_degree.degID = student_awards.degID
          LEFT JOIN 
             award_type ON student_awards.awardTypeID = award_type.awardTypeID AND award_type.awardType = 'University Scholar'
+         JOIN
+            time_period ON college_degree.timeID = time_period.timeID
          WHERE 
             college_degree.timeID IN (
                 SELECT timeID
@@ -110,8 +114,11 @@ $sql6 = "SELECT
                 AND semester BETWEEN $fromSemester AND $toSemester
          )
          GROUP BY 
-            deg_prog.name
+            deg_prog.name, 
+            time_period.SchoolYear,
+            time_period.semester
          ORDER BY 
+            time_period.SchoolYear ASC, time_period.semester ASC,
             UniversityScholars DESC";
 
 $charts['USperDegProg'] = fetchQueryResults($conn, $sql6);
@@ -119,6 +126,8 @@ $charts['USperDegProg'] = fetchQueryResults($conn, $sql6);
 // Execute SQL query to get data for the ratio of college scholars between degree programs
 $sql7 = "SELECT 
             deg_prog.name, 
+            time_period.SchoolYear,
+            time_period.semester,
             COALESCE(SUM(CASE WHEN award_type.awardType = 'College Scholar' THEN student_awards.count ELSE 0 END), 0) AS CollegeScholars,
             SUM(college_degree.count) AS totalStudents
          FROM 
@@ -129,6 +138,8 @@ $sql7 = "SELECT
             student_awards ON college_degree.degID = student_awards.degID
          LEFT JOIN 
             award_type ON student_awards.awardTypeID = award_type.awardTypeID AND award_type.awardType = 'College Scholar'
+         JOIN
+            time_period ON college_degree.timeID = time_period.timeID
          WHERE 
             college_degree.timeID IN (
                 SELECT timeID
@@ -137,8 +148,12 @@ $sql7 = "SELECT
                 AND semester BETWEEN $fromSemester AND $toSemester
          )
          GROUP BY 
-            deg_prog.name
+            deg_prog.name, 
+            time_period.SchoolYear,
+            time_period.semester
          ORDER BY 
+            time_period.SchoolYear ASC,
+            time_period.semester ASC,
             CollegeScholars DESC";
 
 $charts['CSperDegProg'] = fetchQueryResults($conn, $sql7);

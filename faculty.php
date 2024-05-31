@@ -61,13 +61,13 @@
     </main>
       <div class="card-columns m-4">
         <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Ratio of Faculty by Rank</div>
+            <div class="card-header">Population of Faculty by Rank</div>
             <div class="card-body">
               <canvas id="ratioByRank" class="w-100"></canvas>
             </div>
         </div>
         <div class="p-3 chart-card m-2 card">
-          <div class="card-header">Ratio of Faculty by Educational Attainment</div>
+          <div class="card-header">Population of Faculty by Educational Attainment</div>
           <div class="card-body">
             <canvas id="ratioByEduc" class="w-100"></canvas>
           </div>
