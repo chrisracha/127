@@ -27,71 +27,68 @@ function renderCharts(data) {
 
 let ratioByRankChart;
 
-function renderRatioByRank(chartData){
-  var labels = chartData.map((item) => item.facultyRank);
-  var counts = chartData.map((item) => item.rankCount);
-  var customColors = ['#8E1537', '#FFB81D', '#005740', '#8E1537', '#C70039']; // Example custom colors
+function renderRatioByRank(chartData) {
+  var ctx = document.getElementById("ratioByRank").getContext("2d");
 
-  var ctx = document.getElementById("ratioByRank");
-  
+  var datasets = chartData.map((item, index) => {
+    return {
+      label: item.facultyRank,
+      data: [item.rankCount],
+      backgroundColor: ["#8E1537", "#FFB81D", "#005740", "#8E1537", "#C70039"][index % 5],
+    };
+  });
+
   ratioByRankChart = new Chart(ctx, {
-    type: 'doughnut',
+    type: "bar",
     data: {
-        labels: labels,
-        datasets: [{
-            label: 'Ratio by Rank',
-            data: counts,
-            backgroundColor: customColors,
-            borderWidth: 5
-        }]
+      labels: ['Ratio by Rank'],
+      datasets: datasets,
     },
     options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom'
-          }
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
         }
-    }
+      }
+    },
   });
 }
 
 let ratioByEducChart;
 
 function renderRatioByEduc(chartData) {
-  var labels = chartData.map((item) => item.educationalAttainment);
-  var counts = chartData.map((item) => item.facultyCount);
-  
-  // Define your custom color palette
-  var customColors = ['#8E1537', '#FFB81D', '#005740', '#808080'];
+  var ctx = document.getElementById("ratioByEduc").getContext("2d");
 
-  var ctx = document.getElementById("ratioByEduc");
+  var datasets = chartData.map((item, index) => {
+    return {
+      label: item.educationalAttainment,
+      data: [item.facultyCount],
+      backgroundColor: ["#8E1537", "#FFB81D", "#005740", "#8E1537", "#C70039"][index % 5],
+    };
+  });
+
   ratioByEducChart = new Chart(ctx, {
-    type: 'doughnut',
+    type: "bar",
     data: {
-        labels: labels,
-        datasets: [{
-            label: 'Educational Attainment',
-            data: counts,
-            backgroundColor: customColors,
-            borderWidth: 5
-        }]
+      labels: ['Ratio by Education'],
+      datasets: datasets,
     },
     options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom'
-          }
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
         }
-    }
+      }
+    },
   });
 }
 
 let totalFacultyChart;
 
 function renderNumberOfTotalFaculty(chartData) {
-  var labels = chartData.map((item) => item.SchoolYear + " " + item.semester);
+  var labels = chartData.map((item) => item.SchoolYear + " Sesmester " + item.semester);
   var totalFaculty = chartData.map((item) => item.totalFaculty);
   var customColors = ['#8E1537', '#FFB81D', '#005740', '#808080'];
 
