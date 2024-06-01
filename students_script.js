@@ -224,8 +224,8 @@ function renderScholarsChart(chartData) {
   datasets.push({
     label: "Overall College Scholar",
     data: new Array(labels.length).fill(overallCS),
-    borderColor: '#000000',
-    backgroundColor: '#000000',
+    borderColor: '#ab9097',
+    backgroundColor: '#ab9097',
     borderWidth: 2,
     fill: false,
   });
@@ -233,8 +233,8 @@ function renderScholarsChart(chartData) {
   datasets.push({
     label: "Overall University Scholar",
     data: new Array(labels.length).fill(overallUS),
-    borderColor: '#3b3c3d',
-    backgroundColor: '#3b3c3d',
+    borderColor: '#8aaba2',
+    backgroundColor: '#8aaba2',
     borderWidth: 2,
     fill: false,
   });
