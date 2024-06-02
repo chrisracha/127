@@ -32,15 +32,47 @@ if ($result->num_rows > 0) {
     }
 }
 
+// Fetch data for yearLevel
+$sql = "SELECT DISTINCT yearLevel FROM college_degree";
+$result = $conn->query($sql);
+$yrLevel = array();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $yrLevel[] = $row['yearLevel'];
+    }
+}
+
+
+// Fetch data for degree programs, school year, and yearlevel
+$sql = "SELECT cd.yearLevel, cd.degprogID, tp.SchoolYear, tp.semester
+        FROM college_degree cd
+        JOIN time_period tp ON cd.timeID = tp.timeID";
+$result = $conn->query($sql);
+
+// Array to hold the degree programs data
+$degree_programs = [];
+
+// Check if there are any rows returned
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // Format the value as 'yearLevel, degprogID, SchoolYear, semester'
+        $value = "{$row['yearLevel']}, {$row['degprogID']}, {$row['SchoolYear']}, {$row['semester']}";
+        // Save it in the array
+        $degree_programs[] = $value;
+    }
+}
+
 // Fetch data for degree programs
 $sql = "SELECT degprogID FROM deg_prog";
 $result = $conn->query($sql);
-$degree_programs = array();
+$degree_prog = array();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $degree_programs[] = $row['degprogID'];
+        $degree_prog[] = $row['degprogID'];
     }
 }
+
+
 
 // Fetch data for award types
 $sql = "SELECT awardType FROM award_type";
@@ -73,7 +105,47 @@ if ($result->num_rows > 0) {
     }
 }
 
+// Fetch data for existing achievements
+$sql = "SELECT at.awardType, cd.yearLevel, cd.degprogID, tp.SchoolYear, tp.semester
+        FROM student_awards sa
+        JOIN award_type at ON sa.awardTypeID = at.awardTypeID
+        JOIN college_degree cd ON sa.degID = cd.degID
+        JOIN time_period tp ON cd.timeID = tp.timeID";
+$result = $conn->query($sql);
 
+// Array to hold the achievements data
+$achievements = [];
+
+// Check if there are any rows returned
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // Format the value as 'awardType, yearLevel, degprogID, SchoolYear, semester'
+        $achieve_op = "{$row['awardType']}, {$row['yearLevel']}, {$row['degprogID']}, {$row['SchoolYear']}, {$row['semester']}";
+        // Save it in the array
+        $achievements[] = $achieve_op;
+    }
+}
+
+// Fetch the existing faculty information
+$sql = "SELECT rt.title, ea.attainment, tp.SchoolYear, tp.semester
+        FROM faculty f
+        JOIN rank_title rt ON f.rankID = rt.rankID
+        JOIN educ_attainment ea ON f.educAttainmentID = ea.educAttainmentID
+        JOIN time_period tp ON f.timeID = tp.timeID";
+$result = $conn->query($sql);
+
+// Array to hold the faculty data
+$faculty_info = [];
+
+// Check if there are any rows returned
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // Format the value as 'title, attainment, SchoolYear, semester'
+        $faculty_op = "{$row['title']}, {$row['attainment']}, {$row['SchoolYear']}, {$row['semester']}";
+        // Save it in the array
+        $faculty_info[] = $faculty_op;
+    }
+}
 // Close connection
 $conn->close();
 ?>
