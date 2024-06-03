@@ -98,7 +98,6 @@
         </div>
         <h6 class="admin_header m-5">Admin > Student Data</h6>
     <div class="card-columns m-4">
-        
         <div class="p-3 chart-card m-2 card">
             <div class="card-header">Update Achievements</div>
             <div class="card-body">
@@ -118,10 +117,11 @@
                     <label for="degprogID">Degree Program:</label>
                     <select class="form-control" id="degprogID" name="degprogID">
                     <?php
-                    foreach ($degree_programs as $key => $name) {
-                        echo "<option value='$key'>$name</option>";
-                    }
-                    ?>
+                             // Loop through the degree_programs to create dropdown options
+                            foreach ($degree_programs as $value) {
+                                echo "<option value='$value'>$value</option>";
+                        }
+                            ?>
                     </select>
                     </div>
                     <div class="form-group">
@@ -201,7 +201,7 @@
                         <label for="existingDPI">Existing Degree Program Information:</label>
                         <select class="form-control" id="existingDPI" name="existingDPI">
                             <?php
-                             // Loop through the faculty_info array to create dropdown options
+                             // Loop through the degree_exist array to create dropdown options
                             foreach ($degree_exist as $value) {
                                 echo "<option value='$value'>$value</option>";
                             }
@@ -315,33 +315,34 @@
         </form>
     </div>
 </div>
-        <div class="p-3 chart-card m-2 card">
-            <div class="card-header">Update Faculty Information</div>
-            <div class="card-body">
-                <form action="admin_op.php" method="post">
-                    <div class="form-group">
-                    <label for="rankID">Rank:</label>
-                    <select class="form-control" id="rankID" name="rankID">
-                        <?php
-                        foreach ($ranks as $rankID => $title) {
-                            echo "<option value='$rankID'>$title</option>";
-                        }
-                        ?>
-                    </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="educAttainmentID">Educational Attainment:</label>
-                        <select class="form-control" id="educAttainmentID" name="educAttainmentID">
-                            <?php
-                            foreach ($educational_attainments as $educAttainmentID => $attainment) {
-                                echo "<option value='$educAttainmentID'>$attainment</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
+<div class="p-3 chart-card m-2 card">
+    <div class="card-header">Update Faculty Information</div>
+    <div class="card-body">
+        <!-- Form for adding faculty information -->
+        <form action="admin_op.php" method="post">
+            <div class="form-group">
+                <label for="rankTitle">Rank Title:</label>
+                <select class="form-control" id="rankTitle" name="rankTitle" required>
+                    <?php
+                    foreach ($ranks as $value) {
+                        echo "<option value='$value'>$value</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="educAttainmentDesc">Educational Attainment Description:</label>
+                <select class="form-control" id="educAttainmentDesc" name="educAttainmentDesc" required>
+                    <?php
+                    foreach ($educational_attainments as $value) {
+                        echo "<option value='$value'>$value</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="SchoolYear">Year:</label>
-                <select class="form-control" id="SchoolYear" name="SchoolYear">
+                <select class="form-control" id="SchoolYear" name="SchoolYear" required>
                     <?php
                     foreach ($academic_years as $year) {
                         echo "<option value='$year'>$year</option>";
@@ -351,7 +352,7 @@
             </div>
             <div class="form-group">
                 <label for="semester">Semester:</label>
-                <select class="form-control" id="semester" name="semester">
+                <select class="form-control" id="semester" name="semester" required>
                     <?php
                     foreach ($semesters as $semester) {
                         echo "<option value='$semester'>$semester</option>";
@@ -359,27 +360,29 @@
                     ?>
                 </select>
             </div>
-                    <div class="form-group">
-                        <label for="count">Population:</label>
-                        <input type="number" class="form-control" id="count" name="count" placeholder="Enter Population Number">
-                    </div>
-                    <button type="submit" class="btn btn-primary green border-0" name="action" value="add_faculty_info">Add</button>
-                    <br /><br />
-                    <div class="form-group">
-                        <label for="existingfacultyInfo">Existing Faculty Information:</label>
-                        <select class="form-control" id="existingfacultyInfo" name="existingfacultyInfo">
-                            <?php
-                             // Loop through the faculty_info array to create dropdown options
-                            foreach ($faculty_info as $value) {
-                                echo "<option value='$faculty_info'>$value</option>";
-                        }
-                            ?>
-                    </select>
-                </div>
-                    <button type="submit" class="btn btn-primary maroon border-0" name="action" value="delete_faculty_info">Delete</button>
-                </form>
+            <div class="form-group">
+                <label for="count">Population:</label>
+                <input type="number" class="form-control" id="count" name="count" placeholder="Enter Population Number" required>
             </div>
-        </div>
+            <button type="submit" class="btn btn-primary green border-0" name="action" value="add_faculty_info">Add</button>
+        </form>
+        <br /><br />
+        <!-- Form for deleting faculty information -->
+        <form action="admin_op.php" method="post">
+            <div class="form-group">
+                <label for="existingfacultyInfo">Existing Faculty Information:</label>
+                <select class="form-control" id="existingfacultyInfo" name="existingfacultyInfo" required>
+                    <?php
+                    foreach ($faculty_info as $value) {
+                        echo "<option value='$value'>$value</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary maroon border-0" name="action" value="delete_faculty_info">Delete</button>
+        </form>
+    </div>
+</div>
     </div>
     <footer class="maroon p-4">
         <p class="text-center text-white" style="font-family: 'Avenir Black';">© 2024 DMPCS</p>
