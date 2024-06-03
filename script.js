@@ -21,5 +21,12 @@ $(document).ready(function() {
       $('.zoomed').removeClass('zoomed');
       $(this).hide();
     });
+
+    $(document).on('keyup', function(event) {
+      if (event.keyCode === 27) { // 27 is the key code for the escape key
+        $('.zoomed').removeClass('zoomed');
+        $('#overlay').hide();
+      }
+    });
   }
 });
