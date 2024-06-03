@@ -97,12 +97,12 @@
             <canvas id="numberOfPublications" class="w-100"></canvas>
           </div>
         </div>
-        <div class="p-3 chart-card m-2 card">
+        <!-- <div class="p-3 chart-card m-2 card">
           <div class="card-header">Research Involvement</div>
           <div class="card-body">
             <canvas id="researchInvolvement" class="w-100"></canvas>
           </div>
-     </div>
+     </div> -->
     </div>
     </div>
       <footer class="maroon p-4">
