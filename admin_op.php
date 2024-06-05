@@ -17,8 +17,6 @@ function redirectToStudentsPage() {
     exit();
 }
 
-// Remove the redundant declaration of redirectToFacultyPage()
-
 function fetchTimeID($schoolYear, $semester) {
     global $conn;
     $sql = "SELECT timeID FROM time_period WHERE SchoolYear = ? AND semester = ?";
@@ -53,7 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checkStmt->execute();
         $checkResult = $checkStmt->get_result();
         if ($checkResult->num_rows > 0) {
-            echo "Academic year and semester combination already exists.";
+            echo "<script type='text/javascript'>
+                    alert('Academic year and semester combination already exists.');
+                    window.location.href = 'admin.php';
+                </script>";
         } else {
             // Insert new academic year, semester, and generated timeID
             $sql = "INSERT INTO time_period (timeID, SchoolYear, semester) VALUES (?, ?, ?)";
@@ -61,11 +62,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($stmt) {
                 $stmt->bind_param("ssi", $timeID, $newSchoolYear, $semester);
                 if ($stmt->execute()) {
-                    echo "Added successfully.";
+                    echo "<script type='text/javascript'>
+                            alert('Added successfully.');
+                            window.location.href = 'admin.php';
+                          </script>";
                 } else {
-                    echo "Error adding: " . $stmt->error;
+                    echo "<script type='text/javascript'>
+                            alert('Error adding: " . $stmt->error . "');
+                            window.location.href = 'admin.php';
+                        </script>";
                 }
                 $stmt->close();
+                             
             }
         }
         $checkStmt->close();
@@ -85,20 +93,25 @@ if (isset($_POST['delete_acad'])) {
     $stmt = $conn->prepare($sql);
     
     if ($stmt === false) {
-        echo "Error preparing statement: " . $conn->error;
+        echo "<script>alert('Error preparing statement: " . $conn->error . "');</script>";
         exit;
-    }
+    }    
     
     // Bind parameters to the prepared statement
     $stmt->bind_param("si", $schoolYear, $semester);
 
     // Execute the deletion query
     if ($stmt->execute()) {
-        echo "Deleted successfully.";
+        echo "<script type='text/javascript'>
+                alert('Deleted successfully.');
+                window.location.href = 'admin.php';
+              </script>";
     } else {
-        echo "Error deleting: " . $stmt->error;
+        echo "<script type='text/javascript'>
+                    alert('Error deleting: " . $stmt->error . "');
+                    window.location.href = 'admin.php';
+                </script>";
     }
-
     // Close the statement
     $stmt->close();
 }
@@ -114,9 +127,15 @@ if (isset($_POST['add_degree'])) {
     $stmt->bind_param("ss", $degprogID, $name);
 
     if ($stmt->execute()) {
-        echo "Added successfully.";
+        echo "<script type='text/javascript'>
+                alert('Added successfully.');
+                window.location.href = 'admin.php';
+              </script>";
     } else {
-        echo "Error adding: " . $stmt->error;
+        echo "<script type='text/javascript'>
+                    alert('Error adding: " . $stmt->error . "');
+                    window.location.href = 'admin.php';
+            </script>";
     }
     $stmt->close();
 }
@@ -130,9 +149,15 @@ if (isset($_POST['delete_degree']) && isset($_POST['existingSY'])) {
     $deleteSql = "DELETE FROM deg_prog WHERE degprogID = '$degprogID'";
     
     if ($conn->query($deleteSql) === TRUE) {
-        echo "Deleted successfully.";
+        echo "<script type='text/javascript'>
+                alert('Deleted successfully.');
+                window.location.href = 'admin.php';
+              </script>";
     } else {
-        echo "Error deleting: " . $conn->error;
+        echo "<script type='text/javascript'>
+            alert('Error deleting: " . $conn->error . "');
+            window.location.href = 'admin.php';
+        </script>";
     }
 }
 
@@ -148,7 +173,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     // Ensure required fields are not empty
     if (empty($awardType) || empty($degprogID) || empty($yearLevel) || empty($SchoolYear) || empty($semester) || empty($count)) {
-        echo "All fields are required.";
+        echo "<script type='text/javascript'>
+                alert('All fields are required.');
+                window.location.href = 'admin.php';
+            </script>";
         return;
     }
 
@@ -201,9 +229,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmt = $conn->prepare("INSERT INTO student_awards (awardtypeID, degID, count) VALUES (?, ?, ?)");
     $stmt->bind_param("ssi", $awardtypeID, $degID, $count);
     if ($stmt->execute()) {
-        echo "Added successfully.";
+        echo "<script type='text/javascript'>
+                alert('Added successfully.');
+                window.location.href = 'admin.php';
+              </script>";
     } else {
-        echo "Error adding: " . $stmt->error;
+        echo "<script type='text/javascript'>
+                    alert('Error adding: " . $stmt->error . "');
+                    window.location.href = 'admin.php';
+                </script>";
     }
     $stmt->close();
 }
@@ -243,9 +277,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmt = $conn->prepare("DELETE FROM student_awards WHERE awardtypeID = ? AND degID = ?");
     $stmt->bind_param("ii", $awardtypeID, $degID);
     if ($stmt->execute()) {
-        echo "Deleted successfully.";
+        echo "<script type='text/javascript'>
+                alert('Deleted successfully.');
+                window.location.href = 'admin.php';
+              </script>";
     } else {
-        echo "Error deleting: " . $stmt->error;
+        echo "<script type='text/javascript'>
+                    alert('Error deleting: " . $stmt->error . "');
+                    window.location.href = 'admin.php';
+                </script>";
     }
     $stmt->close();
 }
@@ -273,9 +313,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmt = $conn->prepare("INSERT INTO college_degree (degID, yearLevel, degprogID, timeID, count) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $degID, $yearLevel, $degprogID, $timeID, $count);
     if ($stmt->execute()) {
-        echo "Added successfully.";
+        echo "<script type='text/javascript'>
+                alert('Added successfully.');
+                window.location.href = 'admin.php';
+              </script>";
     } else {
-        echo "Error adding: " . $stmt->error;
+        echo "<script type='text/javascript'>
+                alert('Error adding: " . $stmt->error . "');
+                window.location.href = 'admin.php';
+            </script>";
     }
     $stmt->close();
 }
@@ -289,7 +335,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     // Ensure required fields are not empty
     if (empty($eventName) || empty($schoolYear) || empty($semester) || empty($count)) {
-        echo "All fields are required.";
+        echo "<script type='text/javascript'>
+                alert('All fields are required.');
+                window.location.href = 'admin.php';
+            </script>";
         return;
     }
 
@@ -306,9 +355,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $stmt = $conn->prepare("INSERT INTO event (eventName, timeID, count) VALUES (?, ?, ?)");
         $stmt->bind_param("ssi", $eventName, $timeID, $count);
         if ($stmt->execute()) {
-            echo "Added successfully.";
+            echo "<script type='text/javascript'>
+                    alert('Added successfully.');
+                    window.location.href = 'admin.php';
+                  </script>";
         } else {
-            echo "Error adding event: " . $stmt->error;
+            echo "<script type='text/javascript'>
+                    alert('Error adding event: " . $stmt->error . "');
+                    window.location.href = 'admin.php';
+                </script>";
         }
         $stmt->close();
     }
@@ -326,13 +381,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $stmt->execute();
         
         if ($stmt->affected_rows > 0) {
-            echo "Deleted successfully.";
+            echo "<script type='text/javascript'>
+                    alert('Deleted successfully.');
+                    window.location.href = 'admin.php';
+                  </script>";
         } else {
-            echo "No event found with the name '$eventName'.";
+            echo "<script type='text/javascript'>
+            alert('No event found with the name '$eventName'.');
+            window.location.href = 'admin.php';
+          </script>";
         }
         $stmt->close();
     } else {
-        echo "Error preparing statement: " . $conn->error;
+        echo "<script>alert('Error preparing statement: " . $conn->error . "');</script>";
     }
 }
 
@@ -359,9 +420,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         if ($stmt) {
             $stmt->bind_param("ssi", $title, $timeID, $count);
             if ($stmt->execute()) {
-                echo "Added successfully.";
+                echo "<script type='text/javascript'>
+                        alert('Added successfully.');
+                        window.location.href = 'admin.php';
+                      </script>";
             } else {
-                echo "Error adding: " . $stmt->error;
+                echo "<script type='text/javascript'>
+                        alert('Error adding: " . $stmt->error . "');
+                        window.location.href = 'admin.php';
+                    </script>";
             }
             $stmt->close();
         }
@@ -386,17 +453,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         
         // Debug: Check if the statement executed
         if ($stmt->error) {
-            echo "Error executing statement: " . $stmt->error;
+            echo "<script>alert('Error executing statement: " . $stmt->error . "');</script>";
         }
 
         if ($stmt->affected_rows > 0) {
-            echo "Deleted successfully.";
+            echo "<script type='text/javascript'>
+                    alert('Deleted successfully.');
+                    window.location.href = 'admin.php';
+                </script>";
         } else {
-            echo "No publication found with the title '" . htmlspecialchars($title) . "'.";
+            echo "<script type='text/javascript'>
+                    alert('No publication found with the title '" . htmlspecialchars($title) . "'.');
+                    window.location.href = 'admin.php';
+                </script>";
         }
         $stmt->close();
     } else {
-        echo "Error preparing statement: " . $conn->error;
+        echo "<script>
+                alert('Error preparing statement: " . $conn->error . "');
+                window.location.href = 'admin.php'; 
+            </script>";
     }
 }
 
@@ -412,7 +488,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     // Ensure required fields are not empty
     if (empty($rankTitle) || empty($educAttainmentDesc) || empty($SchoolYear) || empty($semester) || empty($count)) {
-        echo "All fields are required.";
+        echo "<script>
+                alert('All fields are required');
+                window.location.href = 'admin.php'; 
+            </script>";
         return;
     }
 
@@ -456,9 +535,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmt = $conn->prepare("INSERT INTO faculty (rankID, educAttainmentID, timeID, count) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("sssi", $rankID, $educAttainmentID, $timeID, $count);
     if ($stmt->execute()) {
-        echo "Added successfully.";
+        echo "<script type='text/javascript'>
+                alert('Added successfully.');
+                window.location.href = 'admin.php';
+              </script>";
     } else {
-        echo "Error adding: " . $stmt->error;
+        $error_message = "Error adding publication: " . $stmt->error;
+        echo "<script type='text/javascript'>
+                alert('Error adding: " . $stmt->error . "');
+                window.location.href = 'admin.php';
+            </script>";
     }
     $stmt->close();
 }
@@ -513,15 +599,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmt = $conn->prepare("DELETE FROM faculty WHERE rankID = ? AND educAttainmentID = ? AND timeID = ?");
     $stmt->bind_param("sss", $rankID, $educAttainmentID, $timeID);
     if ($stmt->execute()) {
-        echo "Deleted successfully.";
+        echo "<script type='text/javascript'>
+                alert('Deleted successfully.');
+                window.location.href = 'admin.php';
+              </script>";
     } else {
-        echo "Error deleting: " . $stmt->error;
+        echo "<script type='text/javascript'>
+                alert('Error deleting: " . $stmt->error . "');
+                window.location.href = 'admin.php';
+            </script>";
     }
     $stmt->close();
 }
 
 $conn->close();
 ?>
-
-
-
