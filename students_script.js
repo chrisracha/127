@@ -7,7 +7,7 @@ function fetchChartData(localhost, callback) {
   fetch(localhost)
     .then((response) => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       return response.json();
     })
@@ -42,16 +42,16 @@ function renderEnrolleesCourseChart(chartData) {
   enrolleesCourseChart = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: ['Enrollees'],
+      labels: ["Enrollees"],
       datasets: datasets,
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
-          position: 'bottom'
-        }
-      }
+          position: "bottom",
+        },
+      },
     },
   });
 }
@@ -59,7 +59,11 @@ function renderEnrolleesCourseChart(chartData) {
 let enrolleesYearChart;
 function renderEnrolleesYearChart(chartData) {
   console.log("chartData:", chartData); // Debugging line
-  var labels = [...new Set(chartData.map((item) => item.SchoolYear + " - " + item.semester))];
+  var labels = [
+    ...new Set(
+      chartData.map((item) => item.SchoolYear + " - " + item.semester)
+    ),
+  ];
   var dataSets = {};
 
   chartData.forEach((item) => {
@@ -88,15 +92,18 @@ function renderEnrolleesYearChart(chartData) {
     };
   });
 
-  var overallTotalEnrollees = chartData.reduce((sum, item) => sum + Number(item.totalEnrollees), 0);
-  
+  var overallTotalEnrollees = chartData.reduce(
+    (sum, item) => sum + Number(item.totalEnrollees),
+    0
+  );
+
   console.log("overallTotalEnrollees:", overallTotalEnrollees); // Debugging line
-  
+
   datasets.push({
     label: "Total Enrollees",
     data: new Array(labels.length).fill(overallTotalEnrollees),
-    borderColor: '#000000',
-    backgroundColor: '#000000',
+    borderColor: "#000000",
+    backgroundColor: "#000000",
     borderWidth: 2,
     fill: false,
   });
@@ -112,22 +119,17 @@ function renderEnrolleesYearChart(chartData) {
       responsive: true,
       plugins: {
         legend: {
-          position: 'bottom'
-        }
+          position: "bottom",
+        },
       },
       scales: {
         y: {
-          beginAtZero: true 
-         }
-      }
+          beginAtZero: true,
+        },
+      },
     },
   });
 }
-
-
-  
-
-
 
 let studentsPerYear;
 
@@ -150,18 +152,23 @@ function renderstudentsPerYear(chartData) {
       backgroundColor: colors[degprogName] || "#FFFFFF",
       data: yearLevels.map((yearLevel) => {
         var item = chartData.find(
-          (item) => item.yearLevel === yearLevel && item.degprogName === degprogName
+          (item) =>
+            item.yearLevel === yearLevel && item.degprogName === degprogName
         );
-        console.log(`Year: ${yearLevel}, Program: ${degprogName}, Students: ${item ? item.totalStudents : 0}`);
+        console.log(
+          `Year: ${yearLevel}, Program: ${degprogName}, Students: ${
+            item ? item.totalStudents : 0
+          }`
+        );
         return item ? item.totalStudents : 0;
       }),
       options: {
         plugins: {
           legend: {
-            position: 'bottom'
-          }
-        }
-      }
+            position: "bottom",
+          },
+        },
+      },
     };
   });
 
@@ -181,9 +188,9 @@ function renderstudentsPerYear(chartData) {
       responsive: true,
       plugins: {
         legend: {
-          position: 'bottom'
-        }
-      }
+          position: "bottom",
+        },
+      },
     },
   });
 }
@@ -191,7 +198,11 @@ function renderstudentsPerYear(chartData) {
 let scholarsChart;
 
 function renderScholarsChart(chartData) {
-  var labels = [...new Set(chartData.map((item) => item.SchoolYear + " - " + item.semester))];
+  var labels = [
+    ...new Set(
+      chartData.map((item) => item.SchoolYear + " - " + item.semester)
+    ),
+  ];
   var dataSets = {};
 
   chartData.forEach((item) => {
@@ -221,15 +232,19 @@ function renderScholarsChart(chartData) {
   });
 
   // Calculate overall totals for College Scholar and University Scholar
-  var overallCS = chartData.filter(item => item.awardType === "College Scholar").reduce((sum, item) => sum + Number(item.totalScholars), 0);
-  var overallUS = chartData.filter(item => item.awardType === "University Scholar").reduce((sum, item) => sum + Number(item.totalScholars), 0);
+  var overallCS = chartData
+    .filter((item) => item.awardType === "College Scholar")
+    .reduce((sum, item) => sum + Number(item.totalScholars), 0);
+  var overallUS = chartData
+    .filter((item) => item.awardType === "University Scholar")
+    .reduce((sum, item) => sum + Number(item.totalScholars), 0);
 
   // Add overall totals to datasets
   datasets.push({
     label: "Overall College Scholar",
     data: new Array(labels.length).fill(overallCS),
-    borderColor: '#000000',
-    backgroundColor: '#000000',
+    borderColor: "#000000",
+    backgroundColor: "#000000",
     borderWidth: 2,
     fill: false,
   });
@@ -237,8 +252,8 @@ function renderScholarsChart(chartData) {
   datasets.push({
     label: "Overall University Scholar",
     data: new Array(labels.length).fill(overallUS),
-    borderColor: '#3b3c3d',
-    backgroundColor: '#3b3c3d',
+    borderColor: "#3b3c3d",
+    backgroundColor: "#3b3c3d",
     borderWidth: 2,
     fill: false,
   });
@@ -253,7 +268,7 @@ function renderScholarsChart(chartData) {
     options: {
       plugins: {
         legend: {
-          position: 'bottom',
+          position: "bottom",
         },
       },
       responsive: true,
@@ -261,7 +276,7 @@ function renderScholarsChart(chartData) {
         x: {
           title: {
             display: true,
-            text: 'School Year - Semester',
+            text: "School Year - Semester",
           },
         },
         y: {
@@ -275,7 +290,6 @@ function renderScholarsChart(chartData) {
   });
 }
 
-
 let USperDegProg;
 
 function renderUSperDegProg(chartData) {
@@ -283,7 +297,7 @@ function renderUSperDegProg(chartData) {
   var colors = {
     "Bachelor of Science in Computer Science": "#8E1537",
     "Bachelor of Science in Data Science": "#FFB81D",
-    "Bachelor of Science in  Applied Mathematics": "#005740"
+    "Bachelor of Science in  Applied Mathematics": "#005740",
   };
 
   // Get unique degree programs
@@ -310,24 +324,24 @@ function renderUSperDegProg(chartData) {
   USperDegProg = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: ['University Scholars'], // Use a static label because there's only one data point per dataset
+      labels: ["University Scholars"], // Use a static label because there's only one data point per dataset
       datasets: datasets,
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
-          position: 'bottom'
-        }
+          position: "bottom",
+        },
       },
       scales: {
         x: {
           beginAtZero: true,
         },
         y: {
-          beginAtZero: true
-        }
-      }
+          beginAtZero: true,
+        },
+      },
     },
   });
 }
@@ -338,7 +352,7 @@ function renderCSperDegProg(chartData) {
   var colors = {
     "Bachelor of Science in Computer Science": "#8E1537",
     "Bachelor of Science in Data Science": "#FFB81D",
-    "Bachelor of Science in  Applied Mathematics": "#005740"
+    "Bachelor of Science in  Applied Mathematics": "#005740",
   };
 
   // Get unique degree programs
@@ -365,24 +379,24 @@ function renderCSperDegProg(chartData) {
   CSperDegProg = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: ['College Scholars'], // Use a static label because there's only one data point per dataset
+      labels: ["College Scholars"], // Use a static label because there's only one data point per dataset
       datasets: datasets,
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
-          position: 'bottom'
-        }
+          position: "bottom",
+        },
       },
       scales: {
         x: {
           beginAtZero: true,
         },
         y: {
-          beginAtZero: true
-        }
-      }
+          beginAtZero: true,
+        },
+      },
     },
   });
 }
@@ -390,7 +404,11 @@ function renderCSperDegProg(chartData) {
 let PopulationLaudes;
 
 function renderPopulationLaudes(chartData) {
-  var labels = [...new Set(chartData.map((item) => item.SchoolYear + " - " + item.semester))];
+  var labels = [
+    ...new Set(
+      chartData.map((item) => item.SchoolYear + " - " + item.semester)
+    ),
+  ];
   var dataSets = {};
 
   // Fill the dataSets object with the corresponding values
@@ -420,18 +438,23 @@ function renderPopulationLaudes(chartData) {
     };
   });
 
-
   // Calculate overall totals for College Scholar and University Scholar
-  var overallCL = chartData.filter(item => item.awardType === "Cum Laude").reduce((sum, item) => sum + Number(item.totalRecipients), 0);
-  var overallMCL = chartData.filter(item => item.awardType === "Magna cum Laude").reduce((sum, item) => sum + Number(item.totalRecipients), 0);
-  var overallSCL = chartData.filter(item => item.awardType === "Summa cum Laude").reduce((sum, item) => sum + Number(item.totalRecipients), 0);
+  var overallCL = chartData
+    .filter((item) => item.awardType === "Cum Laude")
+    .reduce((sum, item) => sum + Number(item.totalRecipients), 0);
+  var overallMCL = chartData
+    .filter((item) => item.awardType === "Magna cum Laude")
+    .reduce((sum, item) => sum + Number(item.totalRecipients), 0);
+  var overallSCL = chartData
+    .filter((item) => item.awardType === "Summa cum Laude")
+    .reduce((sum, item) => sum + Number(item.totalRecipients), 0);
 
   // Add overall totals to datasets
   datasets.push({
     label: "Overall Cum Laude",
     data: new Array(labels.length).fill(overallCL),
-    borderColor: '#ab9097',
-    backgroundColor: '#ab9097',
+    borderColor: "#ab9097",
+    backgroundColor: "#ab9097",
     borderWidth: 2,
     fill: false,
   });
@@ -439,8 +462,8 @@ function renderPopulationLaudes(chartData) {
   datasets.push({
     label: "Overall Magna cum Laude",
     data: new Array(labels.length).fill(overallMCL),
-    borderColor: '#8aaba2',
-    backgroundColor: '#8aaba2',
+    borderColor: "#8aaba2",
+    backgroundColor: "#8aaba2",
     borderWidth: 2,
     fill: false,
   });
@@ -448,8 +471,8 @@ function renderPopulationLaudes(chartData) {
   datasets.push({
     label: "Overall Summa cum Laude",
     data: new Array(labels.length).fill(overallSCL),
-    borderColor: '#857e6f',
-    backgroundColor: '#857e6f',
+    borderColor: "#857e6f",
+    backgroundColor: "#857e6f",
     borderWidth: 2,
     fill: false,
   });
@@ -464,7 +487,7 @@ function renderPopulationLaudes(chartData) {
     options: {
       plugins: {
         legend: {
-          position: 'bottom',
+          position: "bottom",
         },
       },
       responsive: true,
@@ -472,7 +495,7 @@ function renderPopulationLaudes(chartData) {
         x: {
           title: {
             display: true,
-            text: 'School Year - Semester',
+            text: "School Year - Semester",
           },
         },
         y: {
@@ -489,49 +512,64 @@ function renderPopulationLaudes(chartData) {
 let enrollmentChartData;
 
 function renderenrollmentData(enrollmentData) {
-  const degreePrograms = [...new Set(enrollmentData.map(item => item.DegreeProgram))];
-  const labels = [...new Set(enrollmentData.map(item => 'School Year ' + item.SchoolYear + ', Semester ' + item.semester))];
+  const degreePrograms = [
+    ...new Set(enrollmentData.map((item) => item.DegreeProgram)),
+  ];
+  const labels = [
+    ...new Set(
+      enrollmentData.map(
+        (item) =>
+          "School Year " + item.SchoolYear + ", Semester " + item.semester
+      )
+    ),
+  ];
 
-  const datasets = degreePrograms.map(program => {
-    const programData = enrollmentData.filter(item => item.DegreeProgram === program);
-    const data = labels.map(label => {
-      const item = programData.find(d => 'School Year ' + d.SchoolYear + ', Semester ' + d.semester === label);
+  const datasets = degreePrograms.map((program) => {
+    const programData = enrollmentData.filter(
+      (item) => item.DegreeProgram === program
+    );
+    const data = labels.map((label) => {
+      const item = programData.find(
+        (d) =>
+          "School Year " + d.SchoolYear + ", Semester " + d.semester === label
+      );
       return item ? item.totalEnrollees : null;
     });
     const backgroundColor = getBackgroundColor(program); // Define color dynamically
     return {
       label: program,
       backgroundColor: backgroundColor,
-      data: data
+      data: data,
     };
   });
 
-  var ctx = document.getElementById('enrollmentData').getContext('2d');
+  var ctx = document.getElementById("enrollmentData").getContext("2d");
   enrollmentChartData = new Chart(ctx, {
-    type: 'bar',
+    type: "bar",
     data: {
       labels: labels,
-      datasets: datasets
+      datasets: datasets,
     },
     options: {
       barValueSpacing: 20,
       responsive: true,
       plugins: {
         legend: {
-          position: 'bottom'
-        }
-      } 
-    }
+          position: "bottom",
+        },
+      },
+    },
   });
 }
 
 function renderEvents(data) {
-  var tableBody = '';
-  data.events.forEach(function(event) {
-    tableBody += '<tr><td>' + event.eventName + '</td><td>' + event.count + '</td></tr>';
+  var tableBody = "";
+  data.events.forEach(function (event) {
+    tableBody +=
+      "<tr><td>" + event.eventName + "</td><td>" + event.count + "</td></tr>";
   });
 
-  $('#eventTable tbody').html(tableBody);
+  $("#eventTable tbody").html(tableBody);
 }
 
 // Helper function to dynamically assign background color based on degree program
@@ -548,67 +586,73 @@ function getBackgroundColor(program) {
   }
 }
 
-$(document).ready(function() {
-  $('#filterButton').on('submit', function(e) {
-      e.preventDefault();
+$(document).ready(function () {
+  $("#filterButton").on("submit", function (e) {
+    e.preventDefault();
 
-      var fromYear = $('#fromYear').val();
-      var toYear = $('#toYear').val();
-      var fromSemester = $('#fromSemester').val();
-      var toSemester = $('#toSemester').val();
+    var fromYear = $("#fromYear").val();
+    var toYear = $("#toYear").val();
+    var fromSemester = $("#fromSemester").val();
+    var toSemester = $("#toSemester").val();
 
-      console.log("Inputted in Form", fromYear, toYear, fromSemester, toSemester);
+    console.log("Inputted in Form", fromYear, toYear, fromSemester, toSemester);
 
-      $.ajax({
-          url: 'getchartdata.php',
-          method: 'POST',
-          data: {
-              fromYear: fromYear,
-              toYear: toYear,
-              fromSemester: fromSemester,
-              toSemester: toSemester
-          },
-          success: function(response) {
-              var data = JSON.parse(response);
-              rerenderCharts(data);
-          }
-      });
+    $.ajax({
+      url: "getchartdata.php",
+      method: "POST",
+      data: {
+        fromYear: fromYear,
+        toYear: toYear,
+        fromSemester: fromSemester,
+        toSemester: toSemester,
+      },
+      success: function (response) {
+        var data = JSON.parse(response);
+        rerenderCharts(data);
+      },
+    });
 
-      $.ajax({
-        url: 'getevent.php',
-        method: 'POST',
-        data: {
-            fromYear: fromYear,
-            toYear: toYear,
-            fromSemester: fromSemester,
-            toSemester: toSemester
-        },
-        success: function(data) {
-            var data = JSON.parse(data);
-            console.log(data);
+    $.ajax({
+      url: "getevent.php",
+      method: "POST",
+      data: {
+        fromYear: fromYear,
+        toYear: toYear,
+        fromSemester: fromSemester,
+        toSemester: toSemester,
+      },
+      success: function (data) {
+        var data = JSON.parse(data);
+        console.log(data);
 
-            var tableBody = '';
-            data.events.forEach(function(event) {
-            tableBody += '<tr><td>' + event.eventName + '</td><td>' + event.count + '</td></tr>';
-            });
+        var tableBody = "";
+        data.events.forEach(function (event) {
+          tableBody +=
+            "<tr><td>" +
+            event.eventName +
+            "</td><td>" +
+            event.count +
+            "</td></tr>";
+        });
 
-            $('#eventTable tbody').html(tableBody);
-        }
-      })
+        $("#eventTable tbody").html(tableBody);
+      },
+    });
+  });
+
+  function destroyCharts() {
+    enrolleesCourseChart.destroy();
+    enrolleesYearChart.destroy();
+    studentsPerYear.destroy();
+    scholarsChart.destroy();
+    USperDegProg.destroy();
+    CSperDegProg.destroy();
+    PopulationLaudes.destroy();
+    enrollmentChartData.destroy();
+  }
+
+  function rerenderCharts(data) {
+    destroyCharts();
+    renderCharts(data);
+  }
 });
-
-function destroyCharts() {
-  enrolleesCourseChart.destroy();
-  enrolleesYearChart.destroy();
-  studentsPerYear.destroy();
-  scholarsChart.destroy();
-  USperDegProg.destroy();
-  CSperDegProg.destroy();
-  PopulationLaudes.destroy();
-  enrollmentChartData.destroy();
-}
-
-function rerenderCharts(data) {
-  destroyCharts();
-  renderCharts(data);
-}});

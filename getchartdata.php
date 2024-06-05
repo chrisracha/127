@@ -20,22 +20,23 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+   die("Connection failed: " . $conn->connect_error);
 }
 
 $charts = [];
 
 // Helper function to execute a query and fetch all results
-function fetchQueryResults($conn, $sql) {
-    $result = $conn->query($sql);
-    if ($result === FALSE) {
-        die("Query failed: " . $conn->error);
-    }
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-    return $data;
+function fetchQueryResults($conn, $sql)
+{
+   $result = $conn->query($sql);
+   if ($result === FALSE) {
+      die("Query failed: " . $conn->error);
+   }
+   $data = [];
+   while ($row = $result->fetch_assoc()) {
+      $data[] = $row;
+   }
+   return $data;
 }
 
 // Query to get data for the total no. of enrollees per degree program
@@ -175,8 +176,8 @@ $sql7 = "SELECT
 
 $charts['CSperDegProg'] = fetchQueryResults($conn, $sql7);
 
- // Execute SQL query to get data for the total number of students who receive Latin honors along with their degree programs
- $sql8 = "SELECT time_period.SchoolYear, time_period.semester, award_type.awardType, deg_prog.name AS degreeProgram, SUM(student_awards.count) AS totalRecipients,(SELECT SUM(sa.count)
+// Execute SQL query to get data for the total number of students who receive Latin honors along with their degree programs
+$sql8 = "SELECT time_period.SchoolYear, time_period.semester, award_type.awardType, deg_prog.name AS degreeProgram, SUM(student_awards.count) AS totalRecipients,(SELECT SUM(sa.count)
             FROM student_awards sa
             JOIN award_type at ON sa.awardTypeID = at.awardTypeID
             WHERE at.awardTypeID IN ('CL', 'MCL', 'SCL')) AS grandTotal

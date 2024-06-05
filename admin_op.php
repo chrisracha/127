@@ -12,12 +12,14 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-function redirectToStudentsPage() {
+function redirectToStudentsPage()
+{
     header("Location: students.php");
     exit();
 }
 
-function fetchTimeID($schoolYear, $semester) {
+function fetchTimeID($schoolYear, $semester)
+{
     global $conn;
     $sql = "SELECT timeID FROM time_period WHERE SchoolYear = ? AND semester = ?";
     $stmt = $conn->prepare($sql);
@@ -73,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </script>";
                 }
                 $stmt->close();
-                             
             }
         }
         $checkStmt->close();
@@ -91,12 +92,12 @@ if (isset($_POST['delete_acad'])) {
     // Prepare the SQL statement for deletion
     $sql = "DELETE FROM time_period WHERE SchoolYear = ? AND semester = ?";
     $stmt = $conn->prepare($sql);
-    
+
     if ($stmt === false) {
         echo "<script>alert('Error preparing statement: " . $conn->error . "');</script>";
         exit;
-    }    
-    
+    }
+
     // Bind parameters to the prepared statement
     $stmt->bind_param("si", $schoolYear, $semester);
 
@@ -144,10 +145,10 @@ if (isset($_POST['add_degree'])) {
 if (isset($_POST['delete_degree']) && isset($_POST['existingSY'])) {
     // Sanitize the input to prevent SQL Injection
     $degprogID = $conn->real_escape_string($_POST['existingSY']);
-    
+
     // SQL to delete a degree program
     $deleteSql = "DELETE FROM deg_prog WHERE degprogID = '$degprogID'";
-    
+
     if ($conn->query($deleteSql) === TRUE) {
         echo "<script type='text/javascript'>
                 alert('Deleted successfully.');
@@ -379,7 +380,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     if ($stmt) {
         $stmt->bind_param("s", $eventName);
         $stmt->execute();
-        
+
         if ($stmt->affected_rows > 0) {
             echo "<script type='text/javascript'>
                     alert('Deleted successfully.');
@@ -450,7 +451,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     if ($stmt) {
         $stmt->bind_param("s", $title);
         $stmt->execute();
-        
+
         // Debug: Check if the statement executed
         if ($stmt->error) {
             echo "<script>alert('Error executing statement: " . $stmt->error . "');</script>";
@@ -613,4 +614,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 }
 
 $conn->close();
-?>

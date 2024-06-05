@@ -9,7 +9,7 @@ $fromYear = isset($_POST['fromYear']) ? $_POST['fromYear'] : '2022-2023';
 $fromSemester = isset($_POST['fromSemester']) ? $_POST['fromSemester'] : 1;
 $toYear = isset($_POST['toYear']) ? $_POST['toYear'] : '2022-2023';
 $toSemester = isset($_POST['toSemester']) ? $_POST['toSemester'] : 1;
- 
+
 $servername = "localhost";
 $username = "root";
 $password = "";

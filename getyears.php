@@ -39,4 +39,3 @@ $conn->close();
 $data = [
     'years' => $years
 ];
-?>

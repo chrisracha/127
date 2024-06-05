@@ -19,22 +19,23 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+   die("Connection failed: " . $conn->connect_error);
 }
 
 $charts = [];
 
 // Helper function to execute a query and fetch all results
-function fetchQueryResults($conn, $sql) {
-    $result = $conn->query($sql);
-    if ($result === FALSE) {
-        die("Query failed: " . $conn->error);
-    }
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-    return $data;
+function fetchQueryResults($conn, $sql)
+{
+   $result = $conn->query($sql);
+   if ($result === FALSE) {
+      die("Query failed: " . $conn->error);
+   }
+   $data = [];
+   while ($row = $result->fetch_assoc()) {
+      $data[] = $row;
+   }
+   return $data;
 }
 
 // Execute SQL query to retrieve the total count of faculty by rank
@@ -181,4 +182,3 @@ $sql7 = "SELECT
 $charts['facultyByEducAttainment'] = fetchQueryResults($conn, $sql7);
 echo json_encode($charts);
 $conn->close();
-?>
