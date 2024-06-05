@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // Fetch data for academic years
-$sql = "SELECT SchoolYear FROM time_period";
+$sql = "SELECT DISTINCT SchoolYear FROM time_period";
 $result = $conn->query($sql);
 $academic_years = array();
 if ($result->num_rows > 0) {
