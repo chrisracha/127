@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2024 at 07:34 PM
+-- Generation Time: Jun 06, 2024 at 08:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -78,6 +78,7 @@ INSERT INTO `college_degree` (`degID`, `yearLevel`, `degprogID`, `timeID`, `coun
 ('3BSCS23-2', 3, 'BSCS', '23-2', 25),
 ('4BSAM23-1', 4, 'BSAM', '23-1', 15),
 ('4BSAM23-2', 4, 'BSAM', '23-2', 13),
+('4BSAM26-2', 4, 'BSAM', '26-2', 45),
 ('4BSCS23-1', 4, 'BSCS', '23-1', 34),
 ('4BSCS23-2', 4, 'BSCS', '23-2', 30);
 
@@ -129,8 +130,8 @@ INSERT INTO `educ_attainment` (`educAttainmentID`, `attainment`) VALUES
 --
 
 CREATE TABLE `event` (
-  `eventID` varchar(2) NOT NULL,
-  `eventName` varchar(7) DEFAULT NULL,
+  `eventID` int(11) NOT NULL,
+  `eventName` varchar(10) DEFAULT NULL,
   `timeID` varchar(4) DEFAULT NULL,
   `count` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -140,13 +141,13 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`eventID`, `eventName`, `timeID`, `count`) VALUES
-('E1', 'Event 1', '23-1', 50),
-('E2', 'Event 2', '23-1', 45),
-('E3', 'Event 3', '23-2', 98),
-('E4', 'Event 4', '23-1', 35),
-('E5', 'Event 5', '23-1', 8),
-('E6', 'Event 6', '23-2', 35),
-('E8', 'Event 8', '24-1', 54);
+(1, 'Event 1', '23-1', 50),
+(2, 'Event 2', '23-1', 45),
+(3, 'Event 3', '23-2', 98),
+(4, 'Event 4', '23-1', 35),
+(5, 'Event 5', '23-1', 8),
+(19, 'Event 6', '24-1', 56),
+(20, 'Event 7', '26-1', 56);
 
 -- --------------------------------------------------------
 
@@ -155,10 +156,9 @@ INSERT INTO `event` (`eventID`, `eventName`, `timeID`, `count`) VALUES
 --
 
 CREATE TABLE `faculty` (
-  `facultyID` varchar(3) NOT NULL,
+  `facultyID` int(11) NOT NULL,
   `rankID` varchar(7) DEFAULT NULL,
   `educAttainmentID` varchar(2) DEFAULT NULL,
-  `publicationID` varchar(3) DEFAULT NULL,
   `timeID` varchar(4) DEFAULT NULL,
   `count` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -167,29 +167,32 @@ CREATE TABLE `faculty` (
 -- Dumping data for table `faculty`
 --
 
-INSERT INTO `faculty` (`facultyID`, `rankID`, `educAttainmentID`, `publicationID`, `timeID`, `count`) VALUES
-('F1', 'P1', 'A2', 'PR1', '23-1', 3),
-('F10', 'ASSOCP4', 'A3', 'PR1', '23-2', 10),
-('F11', 'ASSOCP5', 'A4', 'PR2', '23-1', 5),
-('F12', 'ASSISP1', 'A1', 'PR4', '23-2', 8),
-('F13', 'ASSISP2', 'A2', 'PR2', '23-1', 12),
-('F14', 'ASSISP3', 'A4', 'PR3', '23-2', 23),
-('F15', 'ASSISP4', 'A1', 'PR2', '23-1', 9),
-('F16', 'ASSISP5', 'A2', 'PR1', '23-2', 6),
-('F17', 'ASSISP6', 'A4', 'PR4', '23-1', 2),
-('F18', 'INS1', 'A2', 'PR3', '23-2', 2),
-('F19', 'INS2', 'A3', 'PR2', '23-1', 4),
-('F2', 'P2', 'A1', 'PR2', '23-2', 5),
-('F20', 'INS3', 'A2', 'PR5', '23-2', 3),
-('F21', 'LEC', 'A2', 'PR1', '23-1', 5),
-('F22', 'SLEC', 'A2', 'PR1', '23-2', 1),
-('F3', 'P3', 'A2', 'PR3', '23-1', 8),
-('F4', 'P4', 'A1', 'PR4', '23-2', 10),
-('F5', 'P5', 'A2', 'PR5', '23-1', 10),
-('F6', 'P6', 'A1', 'PR5', '23-2', 4),
-('F7', 'ASSOCP1', 'A3', 'PR2', '23-1', 6),
-('F8', 'ASSOCP2', 'A4', 'PR1', '23-2', 11),
-('F9', 'ASSOCP3', 'A2', 'PR3', '23-1', 13);
+INSERT INTO `faculty` (`facultyID`, `rankID`, `educAttainmentID`, `timeID`, `count`) VALUES
+(1, 'P1', 'A2', '23-1', 3),
+(2, 'ASSOCP4', 'A3', '23-2', 10),
+(3, 'ASSOCP5', 'A4', '23-1', 5),
+(4, 'ASSISP1', 'A1', '23-2', 8),
+(5, 'ASSISP2', 'A2', '23-1', 12),
+(6, 'ASSISP3', 'A4', '23-2', 23),
+(7, 'ASSISP5', 'A2', '23-2', 6),
+(8, 'ASSISP6', 'A4', '23-1', 2),
+(9, 'INS1', 'A2', '23-2', 2),
+(10, 'INS2', 'A3', '23-1', 4),
+(11, 'P2', 'A1', '23-2', 5),
+(12, 'INS3', 'A2', '23-2', 3),
+(13, 'LEC', 'A2', '23-1', 5),
+(14, 'SLEC', 'A2', '23-2', 1),
+(15, 'P3', 'A2', '23-1', 8),
+(16, 'P4', 'A1', '23-2', 10),
+(17, 'P5', 'A2', '23-1', 10),
+(18, 'P6', 'A1', '23-2', 4),
+(19, 'ASSOCP1', 'A3', '23-1', 6),
+(20, 'ASSOCP2', 'A4', '23-2', 11),
+(21, 'ASSOCP3', 'A2', '23-1', 13),
+(22, 'ASSISP1', 'A1', '26-1', 5),
+(23, 'LEC', 'A3', '26-1', 5),
+(24, 'ASSOCP2', 'A3', '26-1', 5),
+(27, 'LEC', 'A1', '26-1', 24);
 
 -- --------------------------------------------------------
 
@@ -198,8 +201,8 @@ INSERT INTO `faculty` (`facultyID`, `rankID`, `educAttainmentID`, `publicationID
 --
 
 CREATE TABLE `publication` (
-  `publicationID` varchar(3) NOT NULL,
-  `title` varchar(10) DEFAULT NULL,
+  `publicationID` int(11) NOT NULL,
+  `title` varchar(50) DEFAULT NULL,
   `timeID` varchar(4) DEFAULT NULL,
   `count` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -209,11 +212,11 @@ CREATE TABLE `publication` (
 --
 
 INSERT INTO `publication` (`publicationID`, `title`, `timeID`, `count`) VALUES
-('PR1', 'Research 1', '23-2', 3),
-('PR2', 'Research 2', '23-1', 2),
-('PR3', 'Research 3', '23-2', 4),
-('PR4', 'Research 4', '23-1', 3),
-('PR5', 'Research 5', '23-2', 5);
+(1, 'Research 1', '23-2', 3),
+(2, 'Research 2', '23-1', 2),
+(3, 'Research 3', '23-2', 4),
+(4, 'Research 4', '23-1', 3),
+(5, 'Research 5', '23-2', 5);
 
 -- --------------------------------------------------------
 
@@ -261,7 +264,7 @@ INSERT INTO `rank_title` (`rankID`, `title`) VALUES
 --
 
 CREATE TABLE `student_awards` (
-  `awardID` varchar(5) NOT NULL,
+  `awardID` int(11) NOT NULL,
   `awardTypeID` varchar(3) DEFAULT NULL,
   `degID` varchar(9) DEFAULT NULL,
   `count` int(2) DEFAULT NULL
@@ -272,24 +275,17 @@ CREATE TABLE `student_awards` (
 --
 
 INSERT INTO `student_awards` (`awardID`, `awardTypeID`, `degID`, `count`) VALUES
-('SAT1', 'US', '1BSAM23-1', 45),
-('SAT10', 'US', '1BSCS23-2', 45),
-('SAT11', 'US', '2BSCS23-1', 18),
-('SAT12', 'CS', '2BSCS23-2', 20),
-('SAT13', 'US', '3BSCS23-1', 16),
-('SAT14', 'CS', '3BSCS23-2', 23),
-('SAT15', 'CS', '4BSCS23-1', 22),
-('SAT16', 'SCL', '4BSCS23-2', 24),
-('SAT17', 'CS', '1BSDS23-1', 45),
-('SAT18', 'CS', '1BSDS23-2', 45),
-('SAT2', 'CS', '1BSAM23-2', 45),
-('SAT3', 'US', '2BSAM23-1', 23),
-('SAT4', 'CS', '2BSAM23-2', 12),
-('SAT5', 'CS', '3BSAM23-1', 23),
-('SAT6', 'US', '3BSAM23-2', 23),
-('SAT7', 'CS', '4BSAM23-1', 12),
-('SAT8', 'MCL', '4BSAM23-2', 8),
-('SAT9', 'US', '1BSCS23-1', 45);
+(1, 'US', '1BSAM23-1', 45),
+(2, 'US', '1BSCS23-2', 45),
+(3, 'US', '2BSCS23-1', 18),
+(4, 'CS', '2BSCS23-2', 20),
+(7, 'CS', '1BSDS23-1', 45),
+(8, 'CS', '1BSDS23-2', 45),
+(9, 'CS', '1BSAM23-2', 45),
+(10, 'US', '2BSAM23-1', 23),
+(11, 'CS', '2BSAM23-2', 12),
+(14, 'US', '1BSCS23-1', 45),
+(21, 'SCL', '4BSAM26-2', 12);
 
 -- --------------------------------------------------------
 
@@ -311,7 +307,9 @@ INSERT INTO `time_period` (`timeID`, `SchoolYear`, `semester`) VALUES
 ('23-1', '2022-2023', 1),
 ('23-2', '2022-2023', 2),
 ('24-1', '2023-2024', 1),
-('24-2', '2023-2024', 2);
+('24-2', '2023-2024', 2),
+('26-1', '2025-2026', 1),
+('26-2', '2025-2026', 2);
 
 --
 -- Indexes for dumped tables
@@ -357,7 +355,6 @@ ALTER TABLE `faculty`
   ADD PRIMARY KEY (`facultyID`),
   ADD KEY `fk_rankID` (`rankID`),
   ADD KEY `fk_educAttainmentID` (`educAttainmentID`),
-  ADD KEY `fk_publi_publicationID` (`publicationID`),
   ADD KEY `fk_t_timeID` (`timeID`);
 
 --
@@ -388,6 +385,34 @@ ALTER TABLE `time_period`
   ADD PRIMARY KEY (`timeID`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `event`
+--
+ALTER TABLE `event`
+  MODIFY `eventID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `faculty`
+--
+ALTER TABLE `faculty`
+  MODIFY `facultyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `publication`
+--
+ALTER TABLE `publication`
+  MODIFY `publicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `student_awards`
+--
+ALTER TABLE `student_awards`
+  MODIFY `awardID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -409,7 +434,6 @@ ALTER TABLE `event`
 --
 ALTER TABLE `faculty`
   ADD CONSTRAINT `fk_educAttainmentID` FOREIGN KEY (`educAttainmentID`) REFERENCES `educ_attainment` (`educAttainmentID`),
-  ADD CONSTRAINT `fk_publi_publicationID` FOREIGN KEY (`publicationID`) REFERENCES `publication` (`publicationID`),
   ADD CONSTRAINT `fk_rankID` FOREIGN KEY (`rankID`) REFERENCES `rank_title` (`rankID`),
   ADD CONSTRAINT `fk_t_timeID` FOREIGN KEY (`timeID`) REFERENCES `time_period` (`timeID`);
 
