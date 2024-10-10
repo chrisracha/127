@@ -11,7 +11,7 @@ function fetchChartData(localhost, callback) {
       return response.json();
     })
     .then((data) => callback(data))
-    .catch((error) => console.error("Error fetching data:", error));
+    // .catch((error) => console.error("Error fetching data:", error));
 }
 
 
