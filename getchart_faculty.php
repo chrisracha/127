@@ -19,23 +19,22 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-   die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
 $charts = [];
 
 // Helper function to execute a query and fetch all results
-function fetchQueryResults($conn, $sql)
-{
-   $result = $conn->query($sql);
-   if ($result === FALSE) {
-      die("Query failed: " . $conn->error);
-   }
-   $data = [];
-   while ($row = $result->fetch_assoc()) {
-      $data[] = $row;
-   }
-   return $data;
+function fetchQueryResults($conn, $sql) {
+    $result = $conn->query($sql);
+    if ($result === FALSE) {
+        die("Query failed: " . $conn->error);
+    }
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    return $data;
 }
 
 // Execute SQL query to retrieve the total count of faculty by rank
@@ -120,22 +119,22 @@ $sql4 = "SELECT
 $charts['numberOfPublications'] = fetchQueryResults($conn, $sql4);
 
 // Execute SQL query to retrieve the total faculty involvement per publication
-$sql5 = "SELECT 
-         publication.title AS publicationTitle,
-         SUM(faculty.count) AS totalFacultyParticipation
-      FROM 
-         publication
-      JOIN 
-         faculty ON publication.publicationID = faculty.publicationID
-      JOIN 
-         time_period ON publication.timeID = time_period.timeID
-      WHERE 
-         CAST(SUBSTRING_INDEX(time_period.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
-         AND time_period.semester BETWEEN $fromSemester AND $toSemester
-      GROUP BY 
-         publication.title";
+// $sql5 = "SELECT 
+//          publication.title AS publicationTitle,
+//          SUM(faculty.count) AS totalFacultyParticipation
+//       FROM 
+//          publication
+//       JOIN 
+//          faculty ON publication.publicationID = faculty.publicationID
+//       JOIN 
+//          time_period ON publication.timeID = time_period.timeID
+//       WHERE 
+//          CAST(SUBSTRING_INDEX(time_period.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+//          AND time_period.semester BETWEEN $fromSemester AND $toSemester
+//       GROUP BY 
+//          publication.title";
 
-$charts['researchInvolvement'] = fetchQueryResults($conn, $sql5);
+// $charts['researchInvolvement'] = fetchQueryResults($conn, $sql5);
 
 // Execute SQL query to retrieve the population of faculty by rank per semester
 $sq6 = "SELECT 
@@ -182,3 +181,4 @@ $sql7 = "SELECT
 $charts['facultyByEducAttainment'] = fetchQueryResults($conn, $sql7);
 echo json_encode($charts);
 $conn->close();
+?>
