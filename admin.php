@@ -144,7 +144,7 @@
                 <div class="p-3 chart-card m-2 card">
                     <div class="card-header">Update Degree Program Information</div>
                     <div class="card-body">
-                        <form action="admin_op.php" method="post">
+                        <form id="degreeProgramInfoForm" action="admin_op.php" method="post">
                             <input type="hidden" id="degID" name="degID" value="<?php echo isset($degID) ? $degID : ''; ?>">
                             <div class="form-group">
                                 <label for="degprogID">Degree Program:</label>
