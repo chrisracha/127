@@ -35,7 +35,7 @@
                 <div class="p-3 chart-card m-2 card">
                     <div class="card-header">Update Academic Year & Semester</div>
                     <div class="card-body">
-                        <form action="admin_op.php" method="post">
+                        <form id="academicYearForm" action="admin_op.php" method="post">
                             <div class="form-group">
                                 <label for="SchoolYear">Academic Year (Format: 2023-2024):</label>
                                 <input type="text" class="form-control" id="newSchoolYear" name="newSchoolYear" placeholder="XXXX-XXXX">
@@ -69,7 +69,7 @@
                 <div class="p-3 chart-card m-2 card">
                     <div class="card-header">Update Degree Program</div>
                     <div class="card-body">
-                        <form action="admin_op.php" method="post">
+                        <form id="degreeProgramForm" action="admin_op.php" method="post">
                             <div class="form-group">
                                 <label for="degprogID">Degree Program Code:</label>
                                 <input type="text" class="form-control" id="degprogID" name="degprogID" placeholder="Enter degree program code">
@@ -100,7 +100,7 @@
                 <div class="p-3 chart-card m-2 card">
                     <div class="card-header">Update Achievements</div>
                     <div class="card-body">
-                        <form action="admin_op.php" method="post">
+                        <form id="achievementsForm" action="admin_op.php" method="post">
                             <div class="form-group">
                                 <label for="awardType">Achievement:</label>
                                 <select class="form-control" id="awardType" name="awardType">
@@ -262,7 +262,7 @@
                 <div class="p-3 chart-card m-2 card">
                     <div class="card-header">Update Faculty Information</div>
                     <div class="card-body">
-                        <form action="admin_op.php" method="post">
+                        <form id="facultyInfoForm" action="admin_op.php" method="post">
                             <div class="form-group">
                                 <label for="rankTitle">Rank Title:</label>
                                 <select class="form-control" id="rankTitle" name="rankTitle" required>
