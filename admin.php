@@ -53,7 +53,7 @@
                             <button type="submit" class="btn btn-primary green border-0" name="add_acad">Add</button>
                         </form>
                         <br /><br />
-                        <form method="POST" action="">
+                        <form method="POST" action="" onsubmit="return confirmDelete()">
                             <div class="form-group">
                                 <label for="existingSY">Existing Academic Year:</label>
                                 <select class="form-control" id="existingSY" name="existingSY">
@@ -80,7 +80,7 @@
                             <button type="submit" class="btn btn-primary green border-0" name="add_degree">Add</button>
                         </form>
                         <br /><br />
-                        <form method="POST" action="">
+                        <form method="POST" action="" onsubmit="return confirmDelete()">
                             <div class="form-group">
                                 <label for="existingSY">Existing Degree Programs:</label>
                                 <select class="form-control" id="existingSY" name="existingSY">
@@ -137,7 +137,7 @@
                                     ?>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary maroon border-0" name="action" value="delete_achievement">Delete</button>
+                            <button type="submit" class="btn btn-primary maroon border-0" name="action" value="delete_achievement" onclick="return confirmDelete()">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -193,7 +193,7 @@
                             <button type="submit" class="btn btn-primary green border-0" name="action" value="add_deginfo">Add</button>
                         </form>
                         <br /><br />
-                        <form method="POST" action="">
+                        <form method="POST" action="" onsubmit="return confirmDelete()">
                             <div class="form-group">
                                 <label for="existingDPI">Existing Degree Program Information:</label>
                                 <select class="form-control" id="existingDPI" name="existingDPI">
@@ -246,17 +246,19 @@
                             <button type="submit" class="btn btn-primary green border-0" name="action" value="add_publication">Add</button>
                         </form>
                         <br /><br />
-                        <div class="form-group">
-                            <label for="existingPub">Existing Publications:</label>
-                            <select class="form-control" id="existingPub" name="existingPub">
-                                <?php
-                                foreach ($pub_title as $value) {
-                                    echo "<option value='$value'>$value</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary maroon border-0" name="action" value="delete_publication">Delete</button>
+                        <form method="POST" action="" onsubmit="return confirmDelete()">
+                            <div class="form-group">
+                                <label for="existingPub">Existing Publications:</label>
+                                <select class="form-control" id="existingPub" name="existingPub">
+                                    <?php
+                                    foreach ($pub_title as $value) {
+                                        echo "<option value='$value'>$value</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary maroon border-0" name="action" value="delete_publication">Delete</button>
+                        </form>
                     </div>
                 </div>
                 <div class="p-3 chart-card m-2 card">
@@ -310,7 +312,7 @@
                             <button type="submit" class="btn btn-primary green border-0" name="action" value="add_faculty_info">Add</button>
                         </form>
                         <br /><br />
-                        <form action="admin_op.php" method="post">
+                        <form action="admin_op.php" method="post" onsubmit="return confirmDelete()">
                             <div class="form-group">
                                 <label for="existingfacultyInfo">Existing Faculty Information:</label>
                                 <select class="form-control" id="existingfacultyInfo" name="existingfacultyInfo" required>
@@ -335,6 +337,10 @@
         document.getElementById('existingAcadYear').addEventListener('change', function() {
             document.getElementById('timeID').value = this.value;
         });
+
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this item?');
+        }
     </script>
     <script src="script.js"></script>
     <script src="students_script.js"></script>
