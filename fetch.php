@@ -12,125 +12,65 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch data for academic years
-$sql = "SELECT DISTINCT SchoolYear FROM time_period";
-$result = $conn->query($sql);
-$academic_years = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $academic_years[] = $row['SchoolYear'];
+// Function to fetch distinct data
+function fetchDistinctData($conn, $column, $table) {
+    $sql = "SELECT DISTINCT $column FROM $table";
+    $result = $conn->query($sql);
+    $data = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row[$column];
+        }
     }
+    return $data;
 }
+
+// Function to fetch detailed data
+function fetchDetailedData($conn, $sql, $format) {
+    $result = $conn->query($sql);
+    $data = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $formatted = vsprintf($format, $row);
+            $data[] = $formatted;
+        }
+    }
+    return $data;
+}
+
+// Fetch data for academic years
+$academic_years = fetchDistinctData($conn, 'SchoolYear', 'time_period');
 
 // Fetch data for semesters
-$sql = "SELECT DISTINCT Semester FROM time_period";
-$result = $conn->query($sql);
-$semesters = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $semesters[] = $row['Semester'];
-    }
-}
+$semesters = fetchDistinctData($conn, 'Semester', 'time_period');
 
 // Fetch data for yearLevel
-$sql = "SELECT DISTINCT yearLevel FROM college_degree";
-$result = $conn->query($sql);
-$yrLevel = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $yrLevel[] = $row['yearLevel'];
-    }
-}
+$yrLevel = fetchDistinctData($conn, 'yearLevel', 'college_degree');
 
 // Fetch data for degree programs, school year, and year level
 $sql = "SELECT cd.yearLevel, cd.degprogID, tp.SchoolYear, tp.semester
         FROM college_degree cd
         JOIN time_period tp ON cd.timeID = tp.timeID";
-$result = $conn->query($sql);
-
-// Array to hold the degree programs data
-$degree_programs = [];
-
-// Check if there are any rows returned
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Format the value as 'yearLevel, degprogID, SchoolYear, semester'
-        $value = "{$row['yearLevel']}, {$row['degprogID']}, {$row['SchoolYear']}, {$row['semester']}";
-        // Create a display name
-        $name = "{$row['yearLevel']} {$row['degprogID']} {$row['SchoolYear']} {$row['semester']}";
-        // Save it in the array with the formatted string as the key and display name as the value
-        $degree_programs[$value] = $name;
-    }
-}
-
+$degree_programs = fetchDetailedData($conn, $sql, '%s, %s, %s, %s');
 
 // Fetch data for degree programs
-$sql = "SELECT degprogID FROM deg_prog";
-$result = $conn->query($sql);
-$degree_prog = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $degree_prog[] = $row['degprogID'];
-    }
-}
+$degree_prog = fetchDistinctData($conn, 'degprogID', 'deg_prog');
 
 // Fetch data for award types
-$sql = "SELECT awardType FROM award_type";
-$result = $conn->query($sql);
-$awardtypes = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $awardtypes[] = $row['awardType'];
-    }
-}
+$awardtypes = fetchDistinctData($conn, 'awardType', 'award_type');
 
 // Fetch data for ranks
-$sql = "SELECT title FROM rank_title";
-$result = $conn->query($sql);
-$ranks = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $ranks[] = $row['title'];
-    }
-}
+$ranks = fetchDistinctData($conn, 'title', 'rank_title');
 
 // Fetch data for educational attainments
-$sql = "SELECT attainment FROM educ_attainment";
-$result = $conn->query($sql);
-$educational_attainments = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $educational_attainments[] = $row['attainment'];
-    }
-}
+$educational_attainments = fetchDistinctData($conn, 'attainment', 'educ_attainment');
 
 // Fetch for existing academic year and semester
 $sql = "SELECT SchoolYear, semester FROM time_period";
-$result = $conn->query($sql);
-
-$time_period_info = []; // Array to hold the time period data
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Format the value as 'SchoolYear, semester'
-        $time_period_op = "{$row['SchoolYear']}, {$row['semester']}";
-        // Save it in the array
-        $time_period_info[] = $time_period_op;
-    }
-}
+$time_period_info = fetchDetailedData($conn, $sql, '%s, %s');
 
 // Fetch existing degree programs
-$sql = "SELECT degprogID FROM deg_prog";
-$result = $conn->query($sql);
-
-$deg_programs = []; // Array to hold the degree program IDs
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Simply save the degprogID in the array
-        $deg_programs[] = $row['degprogID'];
-    }
-}
+$deg_programs = fetchDistinctData($conn, 'degprogID', 'deg_prog');
 
 // Fetch data for existing achievements
 $sql = "SELECT at.awardType, cd.yearLevel, cd.degprogID, tp.SchoolYear, tp.semester
@@ -138,85 +78,28 @@ $sql = "SELECT at.awardType, cd.yearLevel, cd.degprogID, tp.SchoolYear, tp.semes
         JOIN award_type at ON sa.awardTypeID = at.awardTypeID
         JOIN college_degree cd ON sa.degID = cd.degID
         JOIN time_period tp ON cd.timeID = tp.timeID";
-$result = $conn->query($sql);
-
-// Array to hold the achievements data
-$achievements = [];
-
-// Check if there are any rows returned
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Format the value as 'awardType, yearLevel, degprogID, SchoolYear, semester'
-        $achieve_op = "{$row['awardType']}, {$row['yearLevel']}, {$row['degprogID']}, {$row['SchoolYear']}, {$row['semester']}";
-        // Save it in the array
-        $achievements[] = $achieve_op;
-    }
-}
-
+$achievements = fetchDetailedData($conn, $sql, '%s, %s, %s, %s, %s');
 
 // Fetch data for existing degree program information
 $sql = "SELECT cd.yearLevel, cd.degprogID, tp.SchoolYear, tp.semester
         FROM college_degree cd
         JOIN time_period tp ON cd.timeID = tp.timeID";
-$result = $conn->query($sql);
-
-$degree_exist = []; // Array to hold the detailed degree program data
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Format the value as 'yearLevel, degprogID, SchoolYear, semester'
-        $degree_info = "{$row['yearLevel']}, {$row['degprogID']}, {$row['SchoolYear']}, {$row['semester']}";
-        // Save it in the array
-        $degree_exist[] = $degree_info;
-    }
-}
+$degree_exist = fetchDetailedData($conn, $sql, '%s, %s, %s, %s');
 
 // Fetch existing events
-$sql = "SELECT eventName FROM event";
-$result = $conn->query($sql);
-
-$event_name = []; // Array to hold the event names
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Simply save the eventName in the array
-        $event_name[] = $row['eventName'];
-    }
-}
+$event_name = fetchDistinctData($conn, 'eventName', 'event');
 
 // Fetch existing publications
-$sql = "SELECT title FROM publication";
-$result = $conn->query($sql);
+$pub_title = fetchDistinctData($conn, 'title', 'publication');
 
-$pub_title = []; // Array to hold the publication titles
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Simply save the title in the array
-        
-        $pub_title[] = $row['title'];
-    }
-}
 // Fetch the existing faculty information
 $sql = "SELECT rt.title, ea.attainment, tp.SchoolYear, tp.semester
         FROM faculty f
         JOIN rank_title rt ON f.rankID = rt.rankID
         JOIN educ_attainment ea ON f.educAttainmentID = ea.educAttainmentID
         JOIN time_period tp ON f.timeID = tp.timeID";
-$result = $conn->query($sql);
+$faculty_info = fetchDetailedData($conn, $sql, '%s, %s, %s, %s');
 
-// Array to hold the faculty data
-$faculty_info = [];
-
-// Check if there are any rows returned
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Format the value as 'title, attainment, SchoolYear, semester'
-        $faculty_op = "{$row['title']}, {$row['attainment']}, {$row['SchoolYear']}, {$row['semester']}";
-        // Save it in the array
-        $faculty_info[] = $faculty_op;
-    }
-}
 // Close connection
 $conn->close();
 ?>

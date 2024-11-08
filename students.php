@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DMPCS Dashboard - Students</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://kit.fontawesome.com/e2809407eb.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
@@ -131,10 +130,9 @@
   <footer class="maroon p-4">
     <p class="text-center text-white" style="font-family: 'Avenir';">© 2024 DMPCS</p>
   </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="script.js"></script>
+  <script src="students_script.js"></script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="script.js"></script>
-<script src="students_script.js"></script>
 
 </html>

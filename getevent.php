@@ -1,48 +1,53 @@
 <?php
 
-$fromYear = '2022-2023';
-$fromSemester = 1;
-$toYear = '2022-2023';
-$toSemester = 1;
-
-$fromYear = isset($_POST['fromYear']) ? $_POST['fromYear'] : '2022-2023';
-$fromSemester = isset($_POST['fromSemester']) ? $_POST['fromSemester'] : 1;
-$toYear = isset($_POST['toYear']) ? $_POST['toYear'] : '2022-2023';
-$toSemester = isset($_POST['toSemester']) ? $_POST['toSemester'] : 1;
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "dmpcs_dashboard";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+function getPostParam($param, $default) {
+    return isset($_POST[$param]) ? $_POST[$param] : $default;
 }
 
-// Execute SQL query to get event data
-$sql10 = "SELECT event.eventName, event.count 
-          FROM event 
-          INNER JOIN time_period ON event.timeId = time_period.timeId
-          WHERE CAST(SUBSTRING_INDEX(time_period.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
-          AND time_period.semester BETWEEN $fromSemester AND $toSemester";
-$result10 = $conn->query($sql10);
+$fromYear = getPostParam('fromYear', '2022-2023');
+$fromSemester = getPostParam('fromSemester', 1);
+$toYear = getPostParam('toYear', '2022-2023');
+$toSemester = getPostParam('toSemester', 1);
 
-if ($result10 === FALSE) {
-    die("Query failed: " . $conn->error);
+function getDbConnection() {
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "dmpcs_dashboard";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    return $conn;
 }
 
-$events = [];
-while ($row = $result10->fetch_assoc()) {
-    $events[] = $row;
+function getEventData($conn, $fromYear, $fromSemester, $toYear, $toSemester) {
+    $sql = "SELECT event.eventName, event.count 
+            FROM event 
+            INNER JOIN time_period ON event.timeId = time_period.timeId
+            WHERE CAST(SUBSTRING_INDEX(time_period.SchoolYear, '-', 1) AS UNSIGNED) BETWEEN CAST(SUBSTRING_INDEX('$fromYear', '-', 1) AS UNSIGNED) AND CAST(SUBSTRING_INDEX('$toYear', '-', 1) AS UNSIGNED)
+            AND time_period.semester BETWEEN $fromSemester AND $toSemester";
+    $result = $conn->query($sql);
+
+    if ($result === FALSE) {
+        die("Query failed: " . $conn->error);
+    }
+
+    $events = [];
+    while ($row = $result->fetch_assoc()) {
+        $events[] = $row;
+    }
+
+    return $events;
 }
 
-// Closing database connection
+$conn = getDbConnection();
+$events = getEventData($conn, $fromYear, $fromSemester, $toYear, $toSemester);
 $conn->close();
 
-// Combining charts and events data into a single array
 $data = [
     'events' => $events
 ];

@@ -40,19 +40,6 @@
   src: url("fonts/Inter-Black.woff2") format("woff2");
 }
 
-.admin_header {
-  background-color: white;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.indicator {
-  font-weight: bold;
-  font-family: "Inter Bold", Arial Bold, sans-serif !important;
-}
-
 body {
   background-image: url("images/background.png");
   background-repeat: no-repeat;
@@ -62,18 +49,29 @@ body {
   background-color: #f5f6fa;
 }
 
-section a,
-section i {
+.admin_header, .indicator, .select {
+  font-family: "Inter Bold", Arial Bold, sans-serif !important;
+}
+
+.admin_header {
+  background-color: white;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: #8e1537 !important;
+  text-transform: uppercase;
+}
+
+.indicator {
+  font-weight: bold;
+}
+
+section a, section i {
   text-transform: uppercase;
   font-weight: normal;
   color: #8e1537 !important;
   word-spacing: 10px;
-}
-
-.admin_header {
-  font-family: "Inter Bold", Arial Bold, sans-serif !important;
-  color: #8e1537 !important;
-  text-transform: uppercase;
 }
 
 .maroon {
@@ -95,8 +93,7 @@ label {
   font-size: 15px;
 }
 
-select,
-option {
+select, option {
   font-family: "Inter", Arial, sans-serif !important;
   font-size: 14px;
   color: #333333;
@@ -110,7 +107,6 @@ select {
   padding: 5px;
   border-radius: 5px;
   margin-right: 10px;
-  font-family: "Inter Bold", Arial Bold, sans-serif;
 }
 
 select:focus {
@@ -125,11 +121,9 @@ option:hover {
   label {
     font-size: 12px;
   }
-  select,
-  option {
+  select, option {
     font-size: 12px;
   }
-
   select {
     width: 100%;
   }
@@ -152,7 +146,7 @@ h2 {
 }
 
 .card-header {
-  font-family: "Inter Black", arial, sans-serif;
+  font-family: "Inter Black", Arial, sans-serif;
   font-size: 16px;
   text-transform: capitalize;
   font-weight: bold;
@@ -162,9 +156,6 @@ h2 {
   border-radius: 10px;
   border: none;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-}
-
-.card {
   outline-color: #8e1537;
   border-color: #8e1537;
 }
