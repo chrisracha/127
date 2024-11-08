@@ -6,7 +6,7 @@ function fetchChartData(localhost, callback) {
   fetch(localhost)
     .then((response) => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Network response error.');
       }
       return response.json();
     })
@@ -20,7 +20,6 @@ function renderCharts(data) {
   renderRatioByEduc(data.ratioByEduc);
   renderNumberOfTotalFaculty(data.numberOfTotalFaculty);
   renderNumberOfPublications(data.numberOfPublications);
-  // renderResearchInvolvement(data.researchInvolvement); 
   renderFacultySembyRank(data.facultySembyRank)
   renderFacultyByEducAttainment(data.facultyByEducAttainment)
 }
@@ -146,37 +145,6 @@ function renderNumberOfPublications(chartData) {
     }
   });
 }
-
-// let researchInvolvementChart;
-
-// function renderResearchInvolvement(chartData) {
-//   var publicationTitles = chartData.map((item) => item.publicationTitle);
-//   var totalFacultyParticipation = chartData.map((item) => item.totalFacultyParticipation);
-//   var customColors = ['#8E1537', '#FFB81D', '#005740', '#808080', '000000'];
-
-//   var ctx = document.getElementById('researchInvolvement').getContext("2d");
-//   researchInvolvementChart = new Chart(ctx, {
-//     type: 'bar',
-//     data: {
-//         labels: publicationTitles,
-//         datasets: [{
-//             label: 'Research Involvement',
-//             data: totalFacultyParticipation,
-//             backgroundColor: customColors,
-//             borderColor: customColors,
-//             borderWidth: 1
-//         }]
-//     },
-//     options: {
-//         responsive: true,
-//         plugins: {
-//           legend: {
-//             position: 'bottom'
-//           }
-//         }
-//     }
-//   });
-// }
 
 let facultySembyRankChart;
 
@@ -337,9 +305,6 @@ function rerenderCharts(data) {
 
   numberOfPublicationsChart.destroy();
   renderNumberOfPublications(data.numberOfPublications);
-
-  // researchInvolvementChart.destroy();
-  // renderResearchInvolvement(data.researchInvolvement);
 
   facultySembyRankChart.destroy();
   renderFacultySembyRank(data.facultySembyRank);
